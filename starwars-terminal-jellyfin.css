@@ -452,3 +452,43 @@ img.cardImage,
   display: none !important;
   content: none !important;
 }
+
+/* ── LAZY LOAD / POST-LOAD IMAGE FIX ───────────────────────── */
+/* Jellyfin adds these classes after images load — must not hide them */
+.cardImageContainer img,
+.cardImageContainer img.lazy,
+.cardImageContainer img.lazy-image,
+.cardImageContainer img.lazyloaded,
+.cardImageContainer img.lazyload,
+.cardImage,
+.cardImage.lazy,
+.cardImage.lazyloaded,
+img[data-src],
+img.lazy,
+img.lazyloaded {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  z-index: 10 !important;
+  position: relative !important;
+  background: transparent !important;
+}
+
+/* The cardPadder is a percentage-padding trick for aspect ratio —
+   it must NOT have a background or it covers the image */
+.cardPadder,
+.cardPadder-portrait,
+.cardPadder-backdrop,
+.cardPadder-square,
+.cardPadder-banner {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Jellyfin sets inline style background-color on .cardImageContainer
+   for placeholder colour — override it */
+.cardImageContainer[style],
+.cardImageContainer[style*="background"] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
