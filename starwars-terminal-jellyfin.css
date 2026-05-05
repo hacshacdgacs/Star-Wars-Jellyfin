@@ -414,3 +414,41 @@ button[is="emby-button"] {
   background: linear-gradient(transparent, rgba(0,0,0,0.95)) !important;
   border-top: 1px solid var(--kt-steel-border) !important;
 }
+
+/* ── IMAGE UNBLOCK FIX ──────────────────────────────────────── */
+/* Force all image wrappers to be transparent so posters show through */
+.card,
+.cardBox,
+.cardScalable,
+.cardPadder,
+.cardContent,
+.cardImageContainer,
+.cardImage {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Ensure images are always visible */
+.cardImageContainer img,
+.cardImage img,
+img.cardImage,
+.cardScalable img {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Remove any pseudo-element overlays on card containers */
+.card::after,
+.card::before,
+.cardBox::after,
+.cardBox::before,
+.cardScalable::after,
+.cardScalable::before,
+.cardImageContainer::after,
+.cardImageContainer::before {
+  display: none !important;
+  content: none !important;
+}
