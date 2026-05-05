@@ -1,0 +1,496 @@
+/* ============================================================
+   STAR WARS TERMINAL — Jellyfin Custom Theme
+   by Claude for Anthropic
+   
+   HOW TO INSTALL:
+   Go to Dashboard → Branding → Custom CSS
+   Paste this entire file, then click Save.
+   ============================================================ */
+
+/* ── FONTS ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+/* ── CORE PALETTE & VARIABLES ──────────────────────────────── */
+:root {
+  --sw-black:        #020b05;
+  --sw-dark:         #050f08;
+  --sw-panel:        #071209;
+  --sw-border:       #0d3318;
+  --sw-green:        #00ff41;
+  --sw-green-dim:    #009926;
+  --sw-green-glow:   rgba(0, 255, 65, 0.18);
+  --sw-green-faint:  rgba(0, 255, 65, 0.06);
+  --sw-amber:        #ffb300;
+  --sw-red:          #ff3c3c;
+  --sw-blue-imp:     #4fc3f7;
+  --sw-text:         #a8f0bb;
+  --sw-text-dim:     #4d8f5e;
+  --sw-scanline:     rgba(0, 255, 65, 0.03);
+  --sw-font-mono:    'Share Tech Mono', 'Courier New', monospace;
+  --sw-font-display: 'Orbitron', 'Share Tech Mono', monospace;
+}
+
+/* ── GLOBAL RESET & BASE ───────────────────────────────────── */
+* {
+  font-family: var(--sw-font-mono) !important;
+  letter-spacing: 0.04em;
+}
+
+/* Scanline overlay on the whole page */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    var(--sw-scanline) 0px,
+    var(--sw-scanline) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* CRT phosphor flicker */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+body,
+.backgroundContainer,
+.mainAnimatedPage,
+.mainDrawer {
+  background-color: var(--sw-black) !important;
+  color: var(--sw-text) !important;
+}
+
+/* ── TYPOGRAPHY ─────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6,
+.sectionTitle,
+.sectionTitleLink,
+.headerLogo,
+.libraryItemName {
+  font-family: var(--sw-font-display) !important;
+  color: var(--sw-green) !important;
+  text-shadow: 0 0 8px var(--sw-green), 0 0 20px rgba(0,255,65,0.4) !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+p, span, div, li, a, label, td, th {
+  color: var(--sw-text) !important;
+}
+
+a:hover {
+  color: var(--sw-green) !important;
+  text-shadow: 0 0 6px var(--sw-green) !important;
+}
+
+/* ── TOP HEADER / NAV ───────────────────────────────────────── */
+.skinHeader,
+.headerTop,
+.appbar-wrapper {
+  background: var(--sw-dark) !important;
+  border-bottom: 1px solid var(--sw-border) !important;
+  box-shadow: 0 2px 16px rgba(0,255,65,0.08) !important;
+}
+
+.headerLogo {
+  filter: drop-shadow(0 0 8px rgba(0,255,65,0.7)) !important;
+}
+
+/* Nav drawer */
+.mainDrawer,
+.navMenuOption,
+.drawer-open .mainDrawer {
+  background: var(--sw-dark) !important;
+  border-right: 1px solid var(--sw-border) !important;
+}
+
+.navMenuOption:hover,
+.navMenuOption.is-selected {
+  background: var(--sw-green-faint) !important;
+  border-left: 2px solid var(--sw-green) !important;
+}
+
+.navMenuOption.is-selected {
+  color: var(--sw-green) !important;
+}
+
+/* ── CARDS ──────────────────────────────────────────────────── */
+.card,
+.cardBox,
+.cardContent,
+.cardImageContainer {
+  background: var(--sw-panel) !important;
+  border: 1px solid var(--sw-border) !important;
+  border-radius: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+.card:hover .cardBox,
+.card:hover {
+  border-color: var(--sw-green) !important;
+  box-shadow:
+    0 0 10px var(--sw-green-glow),
+    inset 0 0 20px rgba(0,255,65,0.04) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Card title text */
+.cardText,
+.cardName {
+  font-family: var(--sw-font-mono) !important;
+  color: var(--sw-text) !important;
+  font-size: 0.78em !important;
+  letter-spacing: 0.06em !important;
+}
+
+/* Card overlay / play button */
+.cardOverlayButton-hover,
+.itemAction.cardOverlayButton {
+  background: rgba(0,255,65,0.15) !important;
+  border: 1px solid var(--sw-green) !important;
+  border-radius: 0 !important;
+  color: var(--sw-green) !important;
+}
+
+/* Played / watched indicator */
+.playedIndicator {
+  background: var(--sw-green-dim) !important;
+  color: var(--sw-black) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 6px var(--sw-green) !important;
+}
+
+/* Progress bar */
+.itemProgressBar,
+.cardProgressBar {
+  background: var(--sw-border) !important;
+  border-radius: 0 !important;
+  height: 3px !important;
+}
+
+.itemProgressBarForeground,
+.cardProgressBarForeground {
+  background: var(--sw-green) !important;
+  box-shadow: 0 0 6px var(--sw-green) !important;
+}
+
+/* ── SEARCH & INPUTS ─────────────────────────────────────────── */
+.emby-input,
+.emby-textarea,
+.emby-select,
+input,
+textarea,
+select {
+  background: var(--sw-dark) !important;
+  color: var(--sw-green) !important;
+  border: 1px solid var(--sw-green-dim) !important;
+  border-radius: 0 !important;
+  font-family: var(--sw-font-mono) !important;
+  caret-color: var(--sw-green) !important;
+}
+
+.emby-input:focus,
+input:focus {
+  border-color: var(--sw-green) !important;
+  box-shadow: 0 0 8px var(--sw-green-glow) !important;
+  outline: none !important;
+}
+
+/* Search header */
+.headerSearchInput {
+  background: transparent !important;
+  color: var(--sw-green) !important;
+  border-bottom: 1px solid var(--sw-green-dim) !important;
+}
+
+/* ── BUTTONS ─────────────────────────────────────────────────── */
+.raised,
+.button-submit,
+.emby-button,
+button[is="emby-button"] {
+  background: transparent !important;
+  color: var(--sw-green) !important;
+  border: 1px solid var(--sw-green) !important;
+  border-radius: 0 !important;
+  font-family: var(--sw-font-display) !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  transition: all 0.15s ease !important;
+}
+
+.raised:hover,
+.emby-button:hover {
+  background: var(--sw-green-faint) !important;
+  box-shadow: 0 0 12px var(--sw-green-glow) !important;
+}
+
+/* Primary / accent buttons */
+.raised.accent,
+.button-accent {
+  background: var(--sw-green-dim) !important;
+  color: var(--sw-black) !important;
+  border-color: var(--sw-green) !important;
+}
+
+/* ── DETAIL PAGE (movie/show page) ───────────────────────────── */
+.itemDetailPage,
+.detailPageContent,
+.detailPagePrimaryContent {
+  background: var(--sw-black) !important;
+}
+
+.itemName,
+.originalTitle {
+  font-family: var(--sw-font-display) !important;
+  color: var(--sw-green) !important;
+  text-shadow: 0 0 12px rgba(0,255,65,0.5) !important;
+  letter-spacing: 0.15em !important;
+}
+
+.overview,
+.itemMiscInfo,
+.mediaInfoItem {
+  color: var(--sw-text) !important;
+  font-size: 0.92em !important;
+  line-height: 1.8 !important;
+}
+
+/* Genre / tag pills */
+.genreItem,
+.tagItem,
+.emby-button.emby-button-textonly {
+  border: 1px solid var(--sw-border) !important;
+  border-radius: 0 !important;
+  color: var(--sw-green-dim) !important;
+  background: transparent !important;
+}
+
+.genreItem:hover,
+.tagItem:hover {
+  border-color: var(--sw-green) !important;
+  color: var(--sw-green) !important;
+}
+
+/* Star rating */
+.starRatingContainer {
+  color: var(--sw-amber) !important;
+}
+
+/* Runtime / year info */
+.mediaInfoItem,
+.itemCommunityRating {
+  color: var(--sw-text-dim) !important;
+}
+
+/* ── PLAY BUTTONS & TRANSPORT ────────────────────────────────── */
+.playButton,
+.btnPlay,
+.paper-icon-button-light,
+.itemDetailGalleryLink {
+  color: var(--sw-green) !important;
+}
+
+.playButton:hover {
+  color: var(--sw-black) !important;
+  background: var(--sw-green) !important;
+  box-shadow: 0 0 16px var(--sw-green) !important;
+}
+
+/* ── VIDEO PLAYER ────────────────────────────────────────────── */
+.videoPlayerContainer,
+#videoPlayer {
+  background: var(--sw-black) !important;
+}
+
+.osdControls,
+.playerBottomBar {
+  background: linear-gradient(transparent, rgba(0,0,0,0.9)) !important;
+  border-top: 1px solid var(--sw-border) !important;
+}
+
+/* OSD sliders */
+.mdl-slider__container,
+.emby-slider {
+  --slider-color: var(--sw-green) !important;
+}
+
+/* ── SECTIONS & BACKGROUNDS ──────────────────────────────────── */
+.homePage,
+.padded-top,
+.section2,
+.itemsContainer {
+  background: var(--sw-black) !important;
+}
+
+/* Section separators */
+.sectionTitleContainer {
+  border-bottom: 1px solid var(--sw-border) !important;
+  padding-bottom: 4px !important;
+  margin-bottom: 8px !important;
+}
+
+/* ── BACKDROP TINT ───────────────────────────────────────────── */
+.backdropImage {
+  filter: brightness(0.25) saturate(0.4) hue-rotate(100deg) !important;
+}
+
+.backgroundContainer.withBackdrop {
+  background-color: var(--sw-black) !important;
+}
+
+/* ── DIALOGS / MODALS ────────────────────────────────────────── */
+.dialogContainer,
+.dialog,
+.formDialogContent,
+.paperDialogPage {
+  background: var(--sw-panel) !important;
+  border: 1px solid var(--sw-green-dim) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 0 30px rgba(0,255,65,0.1) !important;
+  color: var(--sw-text) !important;
+}
+
+.formDialogHeader,
+.dialogHeader {
+  border-bottom: 1px solid var(--sw-border) !important;
+  color: var(--sw-green) !important;
+  font-family: var(--sw-font-display) !important;
+}
+
+/* ── MENUS & CONTEXT MENUS ───────────────────────────────────── */
+.actionSheetContent,
+.paperList,
+.listItem {
+  background: var(--sw-panel) !important;
+  border-color: var(--sw-border) !important;
+  color: var(--sw-text) !important;
+}
+
+.listItem:hover,
+.paper-listitem:hover {
+  background: var(--sw-green-faint) !important;
+  color: var(--sw-green) !important;
+}
+
+/* ── LOGIN PAGE ──────────────────────────────────────────────── */
+.readUserName,
+.loginPage {
+  background: var(--sw-black) !important;
+}
+
+/* Login title "GALACTIC ARCHIVE" feel */
+.headerLogo {
+  filter: drop-shadow(0 0 10px var(--sw-green)) !important;
+}
+
+/* ── SCROLLBAR ───────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  background: var(--sw-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sw-green-dim);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sw-green);
+  box-shadow: 0 0 6px var(--sw-green);
+}
+
+/* ── ICONS ───────────────────────────────────────────────────── */
+.material-icons,
+.md-icon,
+em[class^="md-"] {
+  color: var(--sw-green-dim) !important;
+}
+
+paper-icon-button:hover .material-icons,
+button:hover .material-icons {
+  color: var(--sw-green) !important;
+}
+
+/* ── TABBAR ──────────────────────────────────────────────────── */
+.emby-tabs-slider,
+.tabsContainerContent {
+  background: var(--sw-dark) !important;
+  border-bottom: 1px solid var(--sw-border) !important;
+}
+
+.emby-tab-button.is-selected,
+.emby-tab-button[aria-selected="true"] {
+  color: var(--sw-green) !important;
+  border-bottom: 2px solid var(--sw-green) !important;
+}
+
+.emby-tab-button:hover {
+  color: var(--sw-green) !important;
+  background: var(--sw-green-faint) !important;
+}
+
+/* ── CAST / CREW (Plex-style override) ───────────────────────── */
+.personCard .cardBox {
+  border-color: var(--sw-border) !important;
+}
+
+.personCard:hover .cardBox {
+  border-color: var(--sw-green) !important;
+}
+
+/* ── NOTIFICATION / TOAST ────────────────────────────────────── */
+.toast {
+  background: var(--sw-panel) !important;
+  border: 1px solid var(--sw-green-dim) !important;
+  border-radius: 0 !important;
+  color: var(--sw-green) !important;
+  font-family: var(--sw-font-mono) !important;
+}
+
+/* ── INLINE TERMINAL CURSOR BLINK on focused inputs ─────────── */
+@keyframes sw-blink {
+  0%, 100% { border-right-color: var(--sw-green); }
+  50%       { border-right-color: transparent; }
+}
+
+input:focus,
+.emby-input:focus {
+  animation: sw-blink 1s step-end infinite !important;
+  border-right: 2px solid var(--sw-green) !important;
+}
+
+/* ── GREEN GLOW PULSE on cards (subtle) ──────────────────────── */
+@keyframes sw-card-pulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(0,255,65,0.08); }
+  50%       { box-shadow: 0 0 12px rgba(0,255,65,0.18); }
+}
+
+.card:hover .cardBox {
+  animation: sw-card-pulse 2s ease-in-out infinite !important;
+}
+
+/* ── "IMPERIAL BOOTSCREEN" LOGIN ACCENT LINE ─────────────────── */
+.readUserName::before {
+  content: '> GALACTIC HOLONET ACCESS TERMINAL v4.7 ';
+  display: block;
+  color: var(--sw-green-dim);
+  font-size: 0.7em;
+  font-family: var(--sw-font-mono);
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
