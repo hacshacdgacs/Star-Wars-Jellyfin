@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v2.2 — High-Visibility Scanline Overlay & Gold Fix
+   v2.3 — Background Stack Fix & Gold Recovery
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -15,43 +15,39 @@
   --kt-text:         #8ab8d8;
 }
 
-/* ── SCANLINE OVERLAY (The Fix) ────────────────────────────── */
+/* ── THE IMAGE FIX (Background Stack) ───────────────────────── */
+/* Instead of an overlay, we use a gradient mask that doesn't block the image load[cite: 1] */
 .cardImageContainer {
-  position: relative !important;
-  background: #000 !important;
+  background-color: #000 !important;
 }
 
-/* Creating a physical overlay that won't disappear[cite: 1] */
-.cardImageContainer::after {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  /* Dark horizontal slats for the terminal look[cite: 1] */
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.4) 50%, 
-    transparent 50%
-  );
-  background-size: 100% 4px;
-  pointer-events: none; /* Allows clicking through to the image[cite: 1] */
-  z-index: 10;
-  transition: opacity 0.2s ease-in-out;
+.cardImage {
+  /* This creates the scanlines as a repeating linear gradient over the image[cite: 1] */
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.4) 0px,
+    rgba(0, 0, 0, 0.4) 2px,
+    transparent 2px,
+    transparent 4px
+  ) !important;
+  background-blend-mode: multiply !important;
+  filter: brightness(0.9) contrast(1.1) !important;
+  transition: all 0.2s ease-in-out !important;
 }
 
-/* ── HOVER REFINEMENT ───────────────────────────────────────── */
-/* Remove scanlines and brighten image on hover[cite: 1] */
-.card:hover .cardImageContainer::after {
-  opacity: 0.2; /* Subtle remains so it still feels like a screen[cite: 1] */
-}
-
-.card:hover .cardImage {
+/* Hover: Remove scanlines and brighten[cite: 1] */
+.card:hover .cardImage, 
+.card:focus .cardImage {
+  background-image: none !important;
   filter: brightness(1.1) contrast(1) saturate(1.1) !important;
 }
 
 /* ── GOLD TEXT RECOVERY (High Specificity) ──────────────────── */
+/* Forced gold color for all text elements when hovering the card[cite: 1] */
 .card:hover .cardText, 
 .card:hover .cardName,
 .card:hover .cardNameContainer,
+.card:hover .innerCardFooter,
 .card:hover * {
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 12px var(--kt-yellow-glow) !important;
@@ -77,7 +73,7 @@
 .sectionTitleLink::before { left: 0; border-right: none; border-radius: 6px 0 0 6px; }
 .sectionTitleLink::after { right: 0; border-left: none; border-radius: 0 6px 6px 0; }
 
-/* Forced Gold on Header Hover */
+/* Forced Gold on Header Hover[cite: 1] */
 .sectionTitleLink:hover * {
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
