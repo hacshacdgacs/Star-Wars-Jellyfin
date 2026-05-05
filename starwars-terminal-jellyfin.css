@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v1.6 — Nuclear Header Fix & Specificity Overdrive
+   v1.7 — Holographic Image Filters & Clean Headers
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -36,7 +36,7 @@ body, .backgroundContainer {
   background: transparent !important;
 }
 
-/* ── SCANLINE OVERLAY ───────────────────────────────────────── */
+/* ── GLOBAL SCANLINE OVERLAY ────────────────────────────────── */
 body::after {
   content: " ";
   position: fixed;
@@ -49,21 +49,38 @@ body::after {
   opacity: 0.3;
 }
 
-/* ── THE NUCLEAR HEADER FIX (No Box, Forced Gold Glow) ──────── */
-/* This targets the clickable container to remove the box seen in your image[cite: 1] */
+/* ── HOLOGRAPHIC IMAGE FILTERS ──────────────────────────────── */
+/* Tints images blue and adds a subtle scanline effect[cite: 1] */
+.cardImageContainer::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(rgba(106, 180, 255, 0.1), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cardImage {
+  filter: brightness(0.8) contrast(1.1) saturate(0.9) sepia(0.2) hue-rotate(180deg) !important;
+  transition: filter 0.3s ease !important;
+}
+
+/* When hovering, the "hologram" clears up slightly for better visibility[cite: 1] */
+.card:hover .cardImage {
+  filter: brightness(1) contrast(1) saturate(1.1) sepia(0) hue-rotate(0deg) !important;
+}
+
+/* ── HEADER CLEANUP (Nuclear Box Kill) ──────────────────────── */
 .sectionTitleContainer, 
 .sectionTitleLink,
 .button-flat.sectionTitleLink,
 .sectionTitleLink:hover,
-.sectionTitleLink:focus,
-.sectionTitleLink:active {
+.sectionTitleLink:focus {
   background: transparent !important;
   background-color: transparent !important;
   border: none !important;
-  border-color: transparent !important;
   box-shadow: none !important;
   outline: none !important;
-  text-decoration: none !important;
 }
 
 .sectionTitleLink {
@@ -73,7 +90,6 @@ body::after {
   padding: 10px 50px !important;
 }
 
-/* KOTOR Brackets[cite: 1] */
 .sectionTitleLink::before, .sectionTitleLink::after {
   content: "";
   position: absolute;
@@ -81,20 +97,18 @@ body::after {
   width: 15px;
   border: 2px solid var(--kt-blue);
   box-shadow: 0 0 8px var(--kt-blue-glow);
-  transition: all 0.2s ease-in-out;
   pointer-events: none;
 }
 .sectionTitleLink::before { left: 5px; border-right: none; border-radius: 10px 0 0 10px; }
 .sectionTitleLink::after { right: 5px; border-left: none; border-radius: 0 10px 10px 0; }
 
-/* Forced Gold Text on Hover (Prevents White Default)[cite: 1] */
+/* Header Hover Gold Glow[cite: 1] */
 .sectionTitleLink:hover .sectionTitle,
-.sectionTitleLink:hover .sectionTitleText,
 .sectionTitleLink:hover h2,
 .sectionTitleLink:hover h3,
 .sectionTitleLink:hover .sectionTitleIcon {
   color: var(--kt-yellow) !important;
-  text-shadow: 0 0 12px var(--kt-yellow-glow), 0 0 20px rgba(245, 197, 24, 0.2) !important;
+  text-shadow: 0 0 12px var(--kt-yellow-glow) !important;
 }
 
 .sectionTitleLink:hover::before, 
@@ -103,48 +117,25 @@ body::after {
   box-shadow: 0 0 12px var(--kt-yellow-glow) !important;
 }
 
-/* Text Base State */
-.sectionTitle, .sectionTitleText, h2, h3 {
-  font-family: var(--kt-font-ui) !important;
-  color: var(--kt-blue-bright) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em;
-}
-
-/* ── GLOBAL CLICKABLE INTERACTION ───────────────────────────── */
-a:hover, 
-.navMenuOption:hover,
-.emby-tab-button:hover,
-.button-flat:hover,
-.button-link:hover,
-.itemAction:hover,
-.cardText:hover {
-  color: var(--kt-yellow) !important;
-  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
-}
-
-/* ── CARDS (No Borders, Gold Hover) ─────────────────────────── */
+/* ── CARDS & INTERACTIVE TEXT ───────────────────────────────── */
 .cardBox, .cardInnerContainer, .cardPadder {
   border: none !important;
-  box-shadow: none !important;
   background: transparent !important;
 }
 
 .card:hover .cardText, 
-.card:hover .cardName,
-.card:hover .cardTextCentered {
+.card:hover .cardName {
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
-.cardText, .cardName {
+.cardText, .cardName, .sectionTitle {
   color: var(--kt-text) !important;
   text-transform: uppercase !important;
-  font-size: 0.85em !important;
-  transition: color 0.2s ease-in-out !important;
+  letter-spacing: 0.05em;
 }
 
-/* ── UI BUTTONS & ELEMENTS ──────────────────────────────────── */
+/* ── BUTTONS & UI ───────────────────────────────────────────── */
 .emby-button {
   background: rgba(10, 10, 30, 0.8) !important;
   border: 1px solid var(--kt-steel) !important;
@@ -172,14 +163,4 @@ a:hover,
 .mainDrawer {
   background: var(--kt-bg) !important;
   border-right: 1px solid var(--kt-steel) !important;
-}
-
-/* ── BACKDROP & OSD ─────────────────────────────────────────── */
-.backdropImage {
-  filter: brightness(0.15) saturate(0.5) hue-rotate(200deg) !important;
-}
-
-.osdControls, .playerBottomBar {
-  background: rgba(0,0,8,0.85) !important;
-  border-top: 1px solid var(--kt-steel) !important;
 }
