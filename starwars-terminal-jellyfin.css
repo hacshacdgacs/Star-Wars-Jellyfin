@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v0.9.1 — Updated for Video Visibility & Clean Cards
+   v0.9.2 — Fixed Video Transparency & Image Visibility
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -33,96 +33,41 @@
   --kt-font-ui:      'Orbitron', 'Trebuchet MS', monospace;
 }
 
-/* ── BASE & VIDEO FIXES ─────────────────────────────────────── */
+/* ── BASE & VIDEO TRANSPARENCY FIX ──────────────────────────── */
 body,
-.backgroundContainer,
-.mainAnimatedPage {
+.backgroundContainer {
   background-color: var(--kt-bg) !important;
   color: var(--kt-text) !important;
   font-family: var(--kt-font) !important;
 }
 
-/* Fix: Ensures video is not hidden by background colors or filters */
+/* Fix: Allow video to show through by making the page containers transparent during playback */
 .playbackPage .backgroundContainer,
-.playbackPage .mainAnimatedPage {
+.playbackPage .mainAnimatedPage,
+.playbackPage .videoPlayerContainer {
   background-color: transparent !important;
-}
-
-.videoPlayerContainer, 
-video {
-  filter: none !important;
+  background: transparent !important;
 }
 
 /* ── MATERIAL ICONS ─────────────────────────────────────────── */
-.material-icons,
-.md-icon,
-i.md-icon,
-span.material-icons {
+.material-icons, .md-icon, i.md-icon, span.material-icons {
   font-family: 'Material Icons' !important;
-  font-style: normal !important;
-  font-weight: normal !important;
-  display: inline-block !important;
   color: var(--kt-chrome) !important;
 }
 
-button:hover .material-icons,
-a:hover .material-icons {
-  color: var(--kt-blue) !important;
-}
-
 /* ── TYPOGRAPHY ─────────────────────────────────────────────── */
-h1, h2, h3, h4, h5, h6,
-.sectionTitle,
-.sectionTitleLink,
-.itemName,
-.originalTitle {
+h1, h2, h3, h4, h5, h6, .sectionTitle, .itemName {
   font-family: var(--kt-font-ui) !important;
   color: var(--kt-blue) !important;
   text-transform: uppercase !important;
   letter-spacing: 0.25em !important;
-  font-size: 0.85em !important;
-  text-shadow: 0 0 8px var(--kt-blue-glow), 0 0 20px rgba(106,180,255,0.15) !important;
+  text-shadow: 0 0 8px var(--kt-blue-glow) !important;
 }
 
-p, span:not(.material-icons), li, label, td, th {
-  color: var(--kt-text) !important;
-  font-family: var(--kt-font) !important;
-}
-
-a { color: var(--kt-blue) !important; }
-a:hover {
-  color: var(--kt-yellow) !important;
-  text-shadow: 0 0 8px var(--kt-yellow-glow) !important;
-}
-
-/* ── HEADER & SIDEBAR ───────────────────────────────────────── */
-.skinHeader,
-.headerTop,
-.appbar-wrapper {
-  background: linear-gradient(180deg, #0e0e22 0%, #080810 100%) !important;
-  border-bottom: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 1px 0 var(--kt-blue-dim), 0 0 20px rgba(106,180,255,0.08) !important;
-}
-
-.mainDrawer {
-  background: linear-gradient(180deg, #0c0c1e 0%, #080810 100%) !important;
-  border-right: 1px solid var(--kt-steel) !important;
-}
-
-.navMenuOption {
-  color: var(--kt-text-dim) !important;
-  text-transform: uppercase !important;
-  font-family: var(--kt-font-ui) !important;
-}
-
-.navMenuOption.is-selected {
-  color: var(--kt-yellow) !important;
-  border-left: 2px solid var(--kt-yellow) !important;
-}
-
-/* ── CARDS (Modified: Removed Image Borders) ────────────────── */
-.cardBox,
-.cardInnerContainer,
+/* ── CARDS (Removed Borders, Restored Visibility) ───────────── */
+/* Remove the heavy borders and outlines from the containers */
+.cardBox, 
+.cardInnerContainer, 
 .cardImageContainer {
   border: none !important;
   box-shadow: none !important;
@@ -130,83 +75,55 @@ a:hover {
   background: transparent !important;
 }
 
-/* Keep the text styled like the terminal menu */
-.cardText,
-.cardName,
-.cardTextCentered {
+/* Ensure the actual image is visible and not affected by the container's transparency */
+.cardImage {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Keep text styling for the terminal look */
+.cardText, .cardName {
   color: var(--kt-text) !important;
-  font-size: 0.78em !important;
   font-family: var(--kt-font) !important;
   letter-spacing: 0.06em !important;
 }
 
-.itemProgressBar,
-.cardProgressBar {
-  background: var(--kt-steel) !important;
-  height: 3px !important;
+/* ── HEADER & SIDEBAR ───────────────────────────────────────── */
+.skinHeader {
+  background: linear-gradient(180deg, #0e0e22 0%, #080810 100%) !important;
+  border-bottom: 1px solid var(--kt-steel) !important;
 }
 
-.itemProgressBarForeground,
-.cardProgressBarForeground {
-  background: var(--kt-blue) !important;
+.mainDrawer {
+  background: var(--kt-bg) !important;
+  border-right: 1px solid var(--kt-steel) !important;
 }
 
 /* ── INPUTS & BUTTONS ───────────────────────────────────────── */
-.emby-input, .emby-textarea, .emby-select, input, textarea, select {
+.emby-input, .emby-button {
   background: var(--kt-screen) !important;
   color: var(--kt-blue-bright) !important;
   border: 1px solid var(--kt-steel) !important;
-  font-family: var(--kt-font) !important;
-}
-
-.raised,
-.emby-button,
-button[is="emby-button"] {
-  background: linear-gradient(180deg, #0e0e22 0%, #080810 100%) !important;
-  color: var(--kt-blue) !important;
-  border: 1px solid var(--kt-steel) !important;
   font-family: var(--kt-font-ui) !important;
-  text-transform: uppercase !important;
-  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
 }
 
-.raised:hover,
 .emby-button:hover {
   color: var(--kt-yellow) !important;
   border-color: var(--kt-blue) !important;
 }
 
-/* ── DIALOGS & MENUS ────────────────────────────────────────── */
-.dialogContainer, .dialog, .formDialogContent {
-  background: var(--kt-screen) !important;
-  border: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 0 0 1px var(--kt-blue-dim), inset 0 0 40px rgba(0,0,30,0.6) !important;
-}
-
-.actionSheetContent, .paperList {
-  background: var(--kt-panel-mid) !important;
-  border: 1px solid var(--kt-steel) !important;
-}
-
-/* ── BACKDROP & SCROLLBAR ───────────────────────────────────── */
+/* ── BACKDROP FIX ───────────────────────────────────────────── */
+/* Apply filter to backdrop but disable it in the video player page */
 .backdropImage {
   filter: brightness(0.25) saturate(0.4) hue-rotate(200deg) !important;
 }
 
-/* Hide backdrop entirely during playback to prevent filter interference */
 .playbackPage .backdropImage {
   display: none !important;
 }
 
-::-webkit-scrollbar { width: 5px; background: var(--kt-bg); }
-::-webkit-scrollbar-thumb {
-  background: var(--kt-steel);
-  box-shadow: 0 0 4px var(--kt-blue-dim);
-}
-
 /* ── VIDEO PLAYER OSD ───────────────────────────────────────── */
-.osdControls,
-.playerBottomBar {
-  background: linear-gradient(transparent, rgba(0,0,8,0.97)) !important;
+.osdControls, .playerBottomBar {
+  background: rgba(0,0,8,0.8) !important;
   border-top: 1px solid var(--kt-steel) !important;
 }
