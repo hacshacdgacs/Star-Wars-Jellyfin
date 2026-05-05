@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v1.4 — Clean Headers & Unified Hover Logic
+   v1.6 — Nuclear Header Fix & Specificity Overdrive
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -49,81 +49,76 @@ body::after {
   opacity: 0.3;
 }
 
-/* ── KOTOR BRACKET HEADERS (Fixed Alignment & Invisible Box) ── */
-.sectionTitleContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* ── THE NUCLEAR HEADER FIX (No Box, Forced Gold Glow) ──────── */
+/* This targets the clickable container to remove the box seen in your image[cite: 1] */
+.sectionTitleContainer, 
+.sectionTitleLink,
+.button-flat.sectionTitleLink,
+.sectionTitleLink:hover,
+.sectionTitleLink:focus,
+.sectionTitleLink:active {
   background: transparent !important;
+  background-color: transparent !important;
   border: none !important;
-}
-
-/* Remove default focus/hover box styling from the header link */
-.sectionTitleLink, .sectionTitleLink:focus, .sectionTitleLink:active {
-  position: relative;
-  display: inline-flex !important;
-  align-items: center;
-  padding: 8px 45px !important;
-  background: transparent !important;
-  border: none !important;
+  border-color: transparent !important;
   box-shadow: none !important;
+  outline: none !important;
   text-decoration: none !important;
 }
 
-/* Left Bracket */
-.sectionTitleLink::before {
+.sectionTitleLink {
+  position: relative;
+  display: inline-flex !important;
+  align-items: center;
+  padding: 10px 50px !important;
+}
+
+/* KOTOR Brackets[cite: 1] */
+.sectionTitleLink::before, .sectionTitleLink::after {
   content: "";
   position: absolute;
-  left: 5px; top: 0; bottom: 0;
+  top: 5px; bottom: 5px;
   width: 15px;
   border: 2px solid var(--kt-blue);
-  border-right: none;
-  border-radius: 10px 0 0 10px;
-  box-shadow: -2px 0 8px var(--kt-blue-glow);
-  transition: all 0.2s ease;
+  box-shadow: 0 0 8px var(--kt-blue-glow);
+  transition: all 0.2s ease-in-out;
+  pointer-events: none;
 }
+.sectionTitleLink::before { left: 5px; border-right: none; border-radius: 10px 0 0 10px; }
+.sectionTitleLink::after { right: 5px; border-left: none; border-radius: 0 10px 10px 0; }
 
-/* Right Bracket */
-.sectionTitleLink::after {
-  content: "";
-  position: absolute;
-  right: 5px; top: 0; bottom: 0;
-  width: 15px;
-  border: 2px solid var(--kt-blue);
-  border-left: none;
-  border-radius: 0 10px 10px 0;
-  box-shadow: 2px 0 8px var(--kt-blue-glow);
-  transition: all 0.2s ease;
-}
-
-.sectionTitleText {
-  font-family: var(--kt-font-ui) !important;
-  color: var(--kt-blue-bright) !important;
-  text-transform: uppercase !important;
-  transition: all 0.2s ease;
-}
-
-/* Header Hover Logic: Text, Brackets, and Arrow all go Gold */
+/* Forced Gold Text on Hover (Prevents White Default)[cite: 1] */
+.sectionTitleLink:hover .sectionTitle,
 .sectionTitleLink:hover .sectionTitleText,
+.sectionTitleLink:hover h2,
+.sectionTitleLink:hover h3,
 .sectionTitleLink:hover .sectionTitleIcon {
   color: var(--kt-yellow) !important;
-  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
+  text-shadow: 0 0 12px var(--kt-yellow-glow), 0 0 20px rgba(245, 197, 24, 0.2) !important;
 }
 
 .sectionTitleLink:hover::before, 
 .sectionTitleLink:hover::after {
   border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 10px var(--kt-yellow-glow) !important;
+  box-shadow: 0 0 12px var(--kt-yellow-glow) !important;
 }
 
-/* ── GLOBAL INTERACTIVE GOLD GLOW ───────────────────────────── */
-/* Forces all clickable elements to use the gold terminal hover */
+/* Text Base State */
+.sectionTitle, .sectionTitleText, h2, h3 {
+  font-family: var(--kt-font-ui) !important;
+  color: var(--kt-blue-bright) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em;
+}
+
+/* ── GLOBAL CLICKABLE INTERACTION ───────────────────────────── */
 a:hover, 
 .navMenuOption:hover,
 .emby-tab-button:hover,
 .button-flat:hover,
 .button-link:hover,
-.itemAction:hover {
+.itemAction:hover,
+.cardText:hover {
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
@@ -146,11 +141,10 @@ a:hover,
   color: var(--kt-text) !important;
   text-transform: uppercase !important;
   font-size: 0.85em !important;
-  letter-spacing: 0.05em;
   transition: color 0.2s ease-in-out !important;
 }
 
-/* ── BUTTONS & TABS ─────────────────────────────────────────── */
+/* ── UI BUTTONS & ELEMENTS ──────────────────────────────────── */
 .emby-button {
   background: rgba(10, 10, 30, 0.8) !important;
   border: 1px solid var(--kt-steel) !important;
@@ -172,7 +166,7 @@ a:hover,
 /* ── HEADER & SIDEBAR ───────────────────────────────────────── */
 .skinHeader {
   background: #08081a !important;
-  border-bottom: 2px solid var(--kt-blue-dim) !important;
+  border-bottom: 2px solid var(--kt-blue) !important;
 }
 
 .mainDrawer {
