@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v2.1 — Persistent Mask & Gold Hover Recovery
+   v2.2 — High-Visibility Scanline Overlay & Gold Fix
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -15,37 +15,49 @@
   --kt-text:         #8ab8d8;
 }
 
-/* ── PREVENT IMAGE POP-IN ──────────────────────────────────── */
-/* We apply the "Glass" effect directly as a mask to the image itself.
-   This ensures that if the image is visible, the lines are visible. */
-.cardImage {
-  filter: brightness(0.8) contrast(1.1) !important;
-  /* Fixed scanline mask that moves with the image */
-  mask-image: linear-gradient(to bottom, #000 50%, transparent 50%);
-  mask-size: 100% 4px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 50%);
-  -webkit-mask-size: 100% 4px;
-  transition: all 0.2s ease-in-out !important;
+/* ── SCANLINE OVERLAY (The Fix) ────────────────────────────── */
+.cardImageContainer {
+  position: relative !important;
+  background: #000 !important;
 }
 
-/* ── RECOVER GOLD HOVER (Specificity Overdrive) ────────────── */
-/* Targeting the card and its children specifically to force the gold color */
-.card:hover .cardImage,
-.card:focus .cardImage {
-  filter: brightness(1.1) contrast(1) !important;
-  mask-image: none !important;
-  -webkit-mask-image: none !important;
+/* Creating a physical overlay that won't disappear[cite: 1] */
+.cardImageContainer::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  /* Dark horizontal slats for the terminal look[cite: 1] */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4) 50%, 
+    transparent 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none; /* Allows clicking through to the image[cite: 1] */
+  z-index: 10;
+  transition: opacity 0.2s ease-in-out;
 }
 
+/* ── HOVER REFINEMENT ───────────────────────────────────────── */
+/* Remove scanlines and brighten image on hover[cite: 1] */
+.card:hover .cardImageContainer::after {
+  opacity: 0.2; /* Subtle remains so it still feels like a screen[cite: 1] */
+}
+
+.card:hover .cardImage {
+  filter: brightness(1.1) contrast(1) saturate(1.1) !important;
+}
+
+/* ── GOLD TEXT RECOVERY (High Specificity) ──────────────────── */
 .card:hover .cardText, 
 .card:hover .cardName,
-.card:hover .innerCardFooter,
-.card:hover .cardNameContainer {
+.card:hover .cardNameContainer,
+.card:hover * {
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 12px var(--kt-yellow-glow) !important;
 }
 
-/* ── HEADER BRACKETS & GOLD RECOVERY ────────────────────────── */
+/* ── HEADER BRACKETS ────────────────────────────────────────── */
 .sectionTitleLink {
   position: relative;
   display: inline-flex !important;
@@ -71,13 +83,12 @@
   text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
-.sectionTitleLink:hover::before, 
-.sectionTitleLink:hover::after {
+.sectionTitleLink:hover::before, .sectionTitleLink:hover::after {
   border-color: var(--kt-yellow) !important;
   box-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
-/* ── LAYOUT & UI ───────────────────────────────────────────── */
+/* ── BASE LAYOUT ───────────────────────────────────────────── */
 body, .backgroundContainer {
   background-color: var(--kt-bg) !important;
   color: var(--kt-text) !important;
@@ -87,13 +98,6 @@ body, .backgroundContainer {
 .cardText, .sectionTitle, h2, .cardName {
   text-transform: uppercase !important;
   font-family: 'Orbitron', sans-serif !important;
-  letter-spacing: 1px;
-}
-
-.libraryBarItem {
-  border-radius: 2px !important;
-  border: 1px solid #2a3a52 !important;
-  background: rgba(10, 10, 30, 0.8) !important;
 }
 
 .skinHeader {
