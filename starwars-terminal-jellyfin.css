@@ -164,7 +164,7 @@ a:hover {
 .cardBox {
   background: var(--kt-panel) !important;
   border: 1px solid var(--kt-border) !important;
-  border-radius: 2px !important;
+  border-radius: 0.4em !important;
   transition: border-color 0.2s, box-shadow 0.2s !important;
 }
 
@@ -180,7 +180,7 @@ a:hover {
 .itemAction.cardOverlayButton {
   background: rgba(0, 0, 0, 0.5) !important;
   border: 1px solid var(--kt-cyan-dim) !important;
-  border-radius: 2px !important;
+  border-radius: 0.4em !important;
   color: var(--kt-cyan) !important;
 }
 
@@ -194,7 +194,7 @@ a:hover {
 .playedIndicator {
   background: var(--kt-cyan-dim) !important;
   color: var(--kt-black) !important;
-  border-radius: 2px !important;
+  border-radius: 0.4em !important;
 }
 
 .itemProgressBar,
@@ -388,4 +388,27 @@ button[is="emby-button"] {
 .playerBottomBar {
   background: linear-gradient(transparent, rgba(0,0,0,0.95)) !important;
   border-top: 1px solid var(--kt-bronze) !important;
+}
+
+/* ── ROUNDED IMAGE CORNERS ──────────────────────────────────── */
+.cardImageContainer,
+.cardImageContainer img,
+.cardImage,
+.cardImage img,
+.itemDetailImage,
+.itemDetailImage img,
+.personCardImage,
+.personCardImage img,
+.thumb,
+.thumb img,
+.squareCard .cardImageContainer,
+.backdropCard .cardImageContainer,
+.portraitCard .cardImageContainer {
+  border-radius: 8px !important;
+}
+
+/* Keep the card box corners matching */
+.card .cardBox,
+.cardBox {
+  border-radius: 8px !important;
 }
