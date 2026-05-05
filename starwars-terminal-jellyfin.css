@@ -1,6 +1,5 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v0.5 — Steel panels, blue screen inset, yellow accents
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -9,7 +8,6 @@
 
 /* ── CORE PALETTE ───────────────────────────────────────────── */
 :root {
-  /* Steel / chrome panel colours */
   --kt-bg:           #0e1117;
   --kt-panel:        #141820;
   --kt-panel-mid:    #1c2130;
@@ -17,25 +15,17 @@
   --kt-steel-light:  #4a5a6a;
   --kt-steel-border: #3a4a5a;
   --kt-chrome:       #6a8090;
-
-  /* Screen blue — the inset terminal screen colour */
   --kt-screen:       #0a1a2e;
   --kt-blue:         #4fc3f7;
   --kt-blue-dim:     #1a6a9a;
   --kt-blue-glow:    rgba(79, 195, 247, 0.2);
   --kt-blue-faint:   rgba(79, 195, 247, 0.07);
-
-  /* Yellow highlight — selected/active items */
   --kt-yellow:       #f5c518;
   --kt-yellow-dim:   #a88200;
-
-  /* Text */
   --kt-text:         #c8dae8;
   --kt-text-dim:     #6a8898;
   --kt-white:        #e8f4ff;
   --kt-black:        #000000;
-
-  /* Fonts */
   --kt-font:         'Share Tech Mono', 'Courier New', monospace;
   --kt-font-ui:      'Orbitron', 'Trebuchet MS', monospace;
 }
@@ -49,7 +39,7 @@ body,
   font-family: var(--kt-font) !important;
 }
 
-/* ── MATERIAL ICONS — must not be overridden ────────────────── */
+/* ── MATERIAL ICONS ─────────────────────────────────────────── */
 .material-icons,
 .md-icon,
 i.md-icon,
@@ -103,9 +93,7 @@ a:hover {
 .appbar-wrapper {
   background: linear-gradient(180deg, #1c2538 0%, #111828 100%) !important;
   border-bottom: 2px solid var(--kt-steel-border) !important;
-  box-shadow:
-    0 1px 0 var(--kt-steel-light),
-    0 3px 16px rgba(0,0,0,0.9) !important;
+  box-shadow: 0 1px 0 var(--kt-steel-light), 0 3px 16px rgba(0,0,0,0.9) !important;
 }
 
 /* ── SIDEBAR ────────────────────────────────────────────────── */
@@ -142,53 +130,9 @@ a:hover {
   margin-bottom: 10px !important;
 }
 
-/* ── CARDS — no border, no dark hover overlay ───────────────── */
-.card,
+/* ── CARDS — only style the box, never touch image containers ── */
 .cardBox {
-  background: transparent !important;
-  border: none !important;
   border-radius: 8px !important;
-  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
-}
-
-/* Subtle lift on hover, no colour overlay */
-.card:hover .cardBox,
-.card:focus .cardBox {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.6) !important;
-}
-
-/* Card images — rounded, no border, no background overlay */
-.cardImageContainer {
-  border-radius: 8px !important;
-  overflow: hidden !important;
-  background: #111 !important;
-  border: none !important;
-}
-
-.cardImageContainer img,
-img.cardImage {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  border-radius: 8px !important;
-  border: none !important;
-}
-
-/* REMOVE the dark hover fade that blacks out posters */
-.cardOverlayContainer,
-.cardOverlay,
-.cardScalable::after,
-.cardImageContainer::after {
-  display: none !important;
-}
-
-/* Keep the play button itself but without dark backdrop */
-.cardOverlayButton-hover,
-.itemAction.cardOverlayButton {
-  background: rgba(0,0,0,0.0) !important;
-  border: none !important;
-  color: var(--kt-blue) !important;
 }
 
 .cardText,
@@ -198,12 +142,6 @@ img.cardImage {
   font-size: 0.8em !important;
   font-family: var(--kt-font) !important;
   letter-spacing: 0.04em !important;
-}
-
-/* Yellow selected/active card text */
-.card.is-selected .cardName,
-.card:focus .cardName {
-  color: var(--kt-yellow) !important;
 }
 
 /* Progress bar */
@@ -288,23 +226,19 @@ button[is="emby-button"] {
   color: var(--kt-text-dim) !important;
 }
 
-.genreItem,
-.tagItem {
+.genreItem, .tagItem {
   border: 1px solid var(--kt-steel-border) !important;
   border-radius: 3px !important;
   color: var(--kt-text-dim) !important;
   background: transparent !important;
 }
 
-.genreItem:hover,
-.tagItem:hover {
+.genreItem:hover, .tagItem:hover {
   border-color: var(--kt-blue) !important;
   color: var(--kt-blue) !important;
 }
 
-.starRatingContainer {
-  color: var(--kt-yellow) !important;
-}
+.starRatingContainer { color: var(--kt-yellow) !important; }
 
 /* ── TABS ───────────────────────────────────────────────────── */
 .emby-tabs-slider,
@@ -326,11 +260,9 @@ button[is="emby-button"] {
   border-bottom: 2px solid var(--kt-yellow) !important;
 }
 
-.emby-tab-button:hover {
-  color: var(--kt-blue) !important;
-}
+.emby-tab-button:hover { color: var(--kt-blue) !important; }
 
-/* ── DIALOGS — screen inset look ────────────────────────────── */
+/* ── DIALOGS ────────────────────────────────────────────────── */
 .dialogContainer,
 .dialog,
 .formDialogContent,
@@ -338,10 +270,7 @@ button[is="emby-button"] {
   background: var(--kt-screen) !important;
   border: 2px solid var(--kt-steel-border) !important;
   border-radius: 4px !important;
-  box-shadow:
-    inset 0 0 30px rgba(0,0,0,0.5),
-    0 0 0 1px var(--kt-steel),
-    0 8px 40px rgba(0,0,0,0.9) !important;
+  box-shadow: 0 0 0 1px var(--kt-steel), 0 8px 40px rgba(0,0,0,0.9) !important;
   color: var(--kt-text) !important;
 }
 
@@ -385,19 +314,9 @@ button[is="emby-button"] {
 }
 
 /* ── SCROLLBAR ──────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-  background: var(--kt-bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--kt-steel);
-  border-radius: 2px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--kt-blue-dim);
-}
+::-webkit-scrollbar { width: 6px; background: var(--kt-bg); }
+::-webkit-scrollbar-thumb { background: var(--kt-steel); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--kt-blue-dim); }
 
 /* ── TOAST ──────────────────────────────────────────────────── */
 .toast {
@@ -413,82 +332,4 @@ button[is="emby-button"] {
 .playerBottomBar {
   background: linear-gradient(transparent, rgba(0,0,0,0.95)) !important;
   border-top: 1px solid var(--kt-steel-border) !important;
-}
-
-/* ── IMAGE UNBLOCK FIX ──────────────────────────────────────── */
-/* Force all image wrappers to be transparent so posters show through */
-.card,
-.cardBox,
-.cardScalable,
-.cardPadder,
-.cardContent,
-.cardImageContainer,
-.cardImage {
-  background: transparent !important;
-  background-color: transparent !important;
-}
-
-/* Ensure images are always visible */
-.cardImageContainer img,
-.cardImage img,
-img.cardImage,
-.cardScalable img {
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-/* Remove any pseudo-element overlays on card containers */
-.card::after,
-.card::before,
-.cardBox::after,
-.cardBox::before,
-.cardScalable::after,
-.cardScalable::before,
-.cardImageContainer::after,
-.cardImageContainer::before {
-  display: none !important;
-  content: none !important;
-}
-
-/* ── LAZY LOAD / POST-LOAD IMAGE FIX ───────────────────────── */
-/* Jellyfin adds these classes after images load — must not hide them */
-.cardImageContainer img,
-.cardImageContainer img.lazy,
-.cardImageContainer img.lazy-image,
-.cardImageContainer img.lazyloaded,
-.cardImageContainer img.lazyload,
-.cardImage,
-.cardImage.lazy,
-.cardImage.lazyloaded,
-img[data-src],
-img.lazy,
-img.lazyloaded {
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-  z-index: 10 !important;
-  position: relative !important;
-  background: transparent !important;
-}
-
-/* The cardPadder is a percentage-padding trick for aspect ratio —
-   it must NOT have a background or it covers the image */
-.cardPadder,
-.cardPadder-portrait,
-.cardPadder-backdrop,
-.cardPadder-square,
-.cardPadder-banner {
-  background: transparent !important;
-  background-color: transparent !important;
-}
-
-/* Jellyfin sets inline style background-color on .cardImageContainer
-   for placeholder colour — override it */
-.cardImageContainer[style],
-.cardImageContainer[style*="background"] {
-  background: transparent !important;
-  background-color: transparent !important;
 }
