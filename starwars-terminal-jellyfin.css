@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v0.9.2 — Fixed Video Transparency & Image Visibility
+   v0.9.3 — Fixed Image Visibility & Video Playback
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -15,7 +15,6 @@
   --kt-screen:       #06061e;
   --kt-steel:        #2a3a52;
   --kt-steel-light:  #3a5070;
-  --kt-steel-border: #2a3a52;
   --kt-chrome:       #5a7a9a;
   --kt-blue:         #6ab4ff;
   --kt-blue-bright:  #a0d4ff;
@@ -26,14 +25,11 @@
   --kt-yellow:       #f5c518;
   --kt-yellow-glow:  rgba(245, 197, 24, 0.3);
   --kt-text:         #8ab8d8;
-  --kt-text-dim:     #3a5a7a;
-  --kt-white:        #d0e8ff;
-  --kt-black:        #000000;
   --kt-font:         'Share Tech Mono', 'Courier New', monospace;
   --kt-font-ui:      'Orbitron', 'Trebuchet MS', monospace;
 }
 
-/* ── BASE & VIDEO TRANSPARENCY FIX ──────────────────────────── */
+/* ── BASE & VIDEO FIXES ─────────────────────────────────────── */
 body,
 .backgroundContainer {
   background-color: var(--kt-bg) !important;
@@ -41,18 +37,11 @@ body,
   font-family: var(--kt-font) !important;
 }
 
-/* Fix: Allow video to show through by making the page containers transparent during playback */
+/* Fix: Make page layers transparent ONLY during video playback */
 .playbackPage .backgroundContainer,
-.playbackPage .mainAnimatedPage,
-.playbackPage .videoPlayerContainer {
+.playbackPage .mainAnimatedPage {
   background-color: transparent !important;
   background: transparent !important;
-}
-
-/* ── MATERIAL ICONS ─────────────────────────────────────────── */
-.material-icons, .md-icon, i.md-icon, span.material-icons {
-  font-family: 'Material Icons' !important;
-  color: var(--kt-chrome) !important;
 }
 
 /* ── TYPOGRAPHY ─────────────────────────────────────────────── */
@@ -64,31 +53,36 @@ h1, h2, h3, h4, h5, h6, .sectionTitle, .itemName {
   text-shadow: 0 0 8px var(--kt-blue-glow) !important;
 }
 
-/* ── CARDS (Removed Borders, Restored Visibility) ───────────── */
-/* Remove the heavy borders and outlines from the containers */
+/* ── CARDS (RESTORE IMAGES & REMOVE BORDERS) ────────────────── */
+/* Strip borders/glow from containers without hiding contents */
 .cardBox, 
 .cardInnerContainer, 
-.cardImageContainer {
+.cardPadder {
   border: none !important;
   box-shadow: none !important;
   outline: none !important;
-  background: transparent !important;
+  background-color: transparent !important;
 }
 
-/* Ensure the actual image is visible and not affected by the container's transparency */
-.cardImage {
+/* Force images to be visible and at full opacity */
+.cardImage,
+.cardImageContainer {
+  background-size: cover !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 
-/* Keep text styling for the terminal look */
+/* Maintain the terminal text style under the images[cite: 1] */
 .cardText, .cardName {
   color: var(--kt-text) !important;
   font-family: var(--kt-font) !important;
-  letter-spacing: 0.06em !important;
+  font-size: 0.8em !important;
 }
 
-/* ── HEADER & SIDEBAR ───────────────────────────────────────── */
+/* ── HEADER & NAVIGATION ────────────────────────────────────── */
 .skinHeader {
   background: linear-gradient(180deg, #0e0e22 0%, #080810 100%) !important;
   border-bottom: 1px solid var(--kt-steel) !important;
@@ -99,12 +93,13 @@ h1, h2, h3, h4, h5, h6, .sectionTitle, .itemName {
   border-right: 1px solid var(--kt-steel) !important;
 }
 
-/* ── INPUTS & BUTTONS ───────────────────────────────────────── */
-.emby-input, .emby-button {
+/* ── BUTTONS ────────────────────────────────────────────────── */
+.emby-button {
   background: var(--kt-screen) !important;
   color: var(--kt-blue-bright) !important;
   border: 1px solid var(--kt-steel) !important;
   font-family: var(--kt-font-ui) !important;
+  text-transform: uppercase !important;
 }
 
 .emby-button:hover {
@@ -112,8 +107,7 @@ h1, h2, h3, h4, h5, h6, .sectionTitle, .itemName {
   border-color: var(--kt-blue) !important;
 }
 
-/* ── BACKDROP FIX ───────────────────────────────────────────── */
-/* Apply filter to backdrop but disable it in the video player page */
+/* ── BACKDROP & OSD ─────────────────────────────────────────── */
 .backdropImage {
   filter: brightness(0.25) saturate(0.4) hue-rotate(200deg) !important;
 }
@@ -122,8 +116,7 @@ h1, h2, h3, h4, h5, h6, .sectionTitle, .itemName {
   display: none !important;
 }
 
-/* ── VIDEO PLAYER OSD ───────────────────────────────────────── */
 .osdControls, .playerBottomBar {
-  background: rgba(0,0,8,0.8) !important;
+  background: rgba(0,0,8,0.85) !important;
   border-top: 1px solid var(--kt-steel) !important;
 }
