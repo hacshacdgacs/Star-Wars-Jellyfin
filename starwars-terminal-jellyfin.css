@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v0.9.3 — Fixed Image Visibility & Video Playback
+   v1.0 — Final Terminal Polish (Brackets, Scanlines, Gold)
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -9,114 +9,138 @@
 
 /* ── CORE PALETTE ───────────────────────────────────────────── */
 :root {
-  --kt-bg:           #080810;
-  --kt-panel:        #0d0d1a;
-  --kt-panel-mid:    #111124;
+  --kt-bg:           #05050f;
+  --kt-panel:        #0a0a1a;
   --kt-screen:       #06061e;
   --kt-steel:        #2a3a52;
-  --kt-steel-light:  #3a5070;
-  --kt-chrome:       #5a7a9a;
   --kt-blue:         #6ab4ff;
   --kt-blue-bright:  #a0d4ff;
-  --kt-blue-dim:     #1a4a8a;
   --kt-blue-glow:    rgba(106, 180, 255, 0.25);
-  --kt-blue-faint:   rgba(106, 180, 255, 0.07);
-  --kt-blue-inner:   rgba(106, 180, 255, 0.15);
-  --kt-yellow:       #f5c518;
-  --kt-yellow-glow:  rgba(245, 197, 24, 0.3);
+  --kt-yellow:       #f5c518; /* Iconic KOTOR Gold selection */
+  --kt-yellow-glow:  rgba(245, 197, 24, 0.4);
   --kt-text:         #8ab8d8;
-  --kt-font:         'Share Tech Mono', 'Courier New', monospace;
-  --kt-font-ui:      'Orbitron', 'Trebuchet MS', monospace;
+  --kt-font:         'Share Tech Mono', monospace;
+  --kt-font-ui:      'Orbitron', sans-serif;
 }
 
-/* ── BASE & VIDEO FIXES ─────────────────────────────────────── */
-body,
-.backgroundContainer {
+/* ── BASE & VIDEO TRANSPARENCY ──────────────────────────────── */
+body, .backgroundContainer {
   background-color: var(--kt-bg) !important;
   color: var(--kt-text) !important;
   font-family: var(--kt-font) !important;
 }
 
-/* Fix: Make page layers transparent ONLY during video playback */
+/* Fix: Allow video to show through during playback */
 .playbackPage .backgroundContainer,
 .playbackPage .mainAnimatedPage {
   background-color: transparent !important;
+}
+
+/* ── SCANLINE OVERLAY ───────────────────────────────────────── */
+body::after {
+  content: " ";
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.4;
+}
+
+/* ── KOTOR BRACKET HEADERS ──────────────────────────────────── */
+.sectionTitle {
+  position: relative;
+  display: inline-block;
+  padding: 0 40px !important;
+  margin-bottom: 20px !important;
+  font-family: var(--kt-font-ui) !important;
+  color: var(--kt-blue-bright) !important;
+  text-transform: uppercase !important;
+}
+
+/* Left Bracket */
+.sectionTitle::before {
+  content: "";
+  position: absolute;
+  left: 0; top: -5px; bottom: -5px;
+  width: 20px;
+  border: 2px solid var(--kt-blue);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  box-shadow: -2px 0 8px var(--kt-blue-glow);
+}
+
+/* Right Bracket */
+.sectionTitle::after {
+  content: "";
+  position: absolute;
+  right: 0; top: -5px; bottom: -5px;
+  width: 20px;
+  border: 2px solid var(--kt-blue);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  box-shadow: 2px 0 8px var(--kt-blue-glow);
+}
+
+/* ── CARDS (CLEAN & YELLOW HIGHLIGHT) ───────────────────────── */
+.cardBox, .cardInnerContainer {
+  border: none !important;
+  box-shadow: none !important;
   background: transparent !important;
 }
 
-/* ── TYPOGRAPHY ─────────────────────────────────────────────── */
-h1, h2, h3, h4, h5, h6, .sectionTitle, .itemName {
-  font-family: var(--kt-font-ui) !important;
-  color: var(--kt-blue) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.25em !important;
-  text-shadow: 0 0 8px var(--kt-blue-glow) !important;
+.cardImage {
+  border-radius: 2px !important;
+  transition: transform 0.2s ease-in-out !important;
 }
 
-/* ── CARDS (RESTORE IMAGES & REMOVE BORDERS) ────────────────── */
-/* Strip borders/glow from containers without hiding contents */
-.cardBox, 
-.cardInnerContainer, 
-.cardPadder {
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-  background-color: transparent !important;
+/* KOTOR Yellow-Gold highlight on hover */
+.card:hover .cardImage {
+  transform: scale(1.02);
 }
 
-/* Force images to be visible and at full opacity */
-.cardImage,
-.cardImageContainer {
-  background-size: cover !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+.card:hover .cardName {
+  color: var(--kt-yellow) !important;
+  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
-/* Maintain the terminal text style under the images[cite: 1] */
 .cardText, .cardName {
   color: var(--kt-text) !important;
-  font-family: var(--kt-font) !important;
-  font-size: 0.8em !important;
+  text-transform: uppercase;
+  font-size: 0.85em !important;
+  letter-spacing: 0.05em;
+}
+
+/* ── BUTTONS (TERMINAL STYLE) ───────────────────────────────── */
+.emby-button {
+  background: rgba(10, 10, 30, 0.8) !important;
+  border: 1px solid var(--kt-steel) !important;
+  border-radius: 0 !important; /* Sharp KOTOR corners */
+  color: var(--kt-blue) !important;
+  font-family: var(--kt-font-ui) !important;
+  box-shadow: inset 0 0 10px rgba(106, 180, 255, 0.1) !important;
+}
+
+.emby-button:hover {
+  background: var(--kt-blue-faint) !important;
+  color: var(--kt-yellow) !important;
+  border-color: var(--kt-yellow) !important;
 }
 
 /* ── HEADER & NAVIGATION ────────────────────────────────────── */
 .skinHeader {
-  background: linear-gradient(180deg, #0e0e22 0%, #080810 100%) !important;
-  border-bottom: 1px solid var(--kt-steel) !important;
+  background: #08081a !important;
+  border-bottom: 2px solid var(--kt-blue-dim) !important;
 }
 
-.mainDrawer {
-  background: var(--kt-bg) !important;
-  border-right: 1px solid var(--kt-steel) !important;
-}
-
-/* ── BUTTONS ────────────────────────────────────────────────── */
-.emby-button {
-  background: var(--kt-screen) !important;
-  color: var(--kt-blue-bright) !important;
-  border: 1px solid var(--kt-steel) !important;
-  font-family: var(--kt-font-ui) !important;
-  text-transform: uppercase !important;
-}
-
-.emby-button:hover {
+.emby-tab-button.is-selected {
   color: var(--kt-yellow) !important;
-  border-color: var(--kt-blue) !important;
+  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
-/* ── BACKDROP & OSD ─────────────────────────────────────────── */
+/* ── BACKDROP ───────────────────────────────────────────────── */
 .backdropImage {
-  filter: brightness(0.25) saturate(0.4) hue-rotate(200deg) !important;
-}
-
-.playbackPage .backdropImage {
-  display: none !important;
-}
-
-.osdControls, .playerBottomBar {
-  background: rgba(0,0,8,0.85) !important;
-  border-top: 1px solid var(--kt-steel) !important;
+  filter: brightness(0.15) saturate(0.5) hue-rotate(200deg) !important;
 }
