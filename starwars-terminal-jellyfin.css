@@ -1,496 +1,396 @@
 /* ============================================================
-   STAR WARS TERMINAL — Jellyfin Custom Theme
-   by Claude for Anthropic
+   KOTOR TERMINAL — Jellyfin Custom Theme
+   Inspired by Knights of the Old Republic I & II
    
    HOW TO INSTALL:
-   Go to Dashboard → Branding → Custom CSS
-   Paste this entire file, then click Save.
+   Dashboard → Branding → Custom CSS → Paste → Save
    ============================================================ */
 
-/* ── FONTS ─────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
-
-/* ── CORE PALETTE & VARIABLES ──────────────────────────────── */
+/* ── CORE PALETTE ───────────────────────────────────────────── */
 :root {
-  --sw-black:        #020b05;
-  --sw-dark:         #050f08;
-  --sw-panel:        #071209;
-  --sw-border:       #0d3318;
-  --sw-green:        #00ff41;
-  --sw-green-dim:    #009926;
-  --sw-green-glow:   rgba(0, 255, 65, 0.18);
-  --sw-green-faint:  rgba(0, 255, 65, 0.06);
-  --sw-amber:        #ffb300;
-  --sw-red:          #ff3c3c;
-  --sw-blue-imp:     #4fc3f7;
-  --sw-text:         #a8f0bb;
-  --sw-text-dim:     #4d8f5e;
-  --sw-scanline:     rgba(0, 255, 65, 0.03);
-  --sw-font-mono:    'Share Tech Mono', 'Courier New', monospace;
-  --sw-font-display: 'Orbitron', 'Share Tech Mono', monospace;
+  --kt-black:        #000000;
+  --kt-bg:           #040a06;
+  --kt-panel:        #0a0f0b;
+  --kt-bronze:       #8a6a2a;
+  --kt-bronze-light: #b8923a;
+  --kt-bronze-dark:  #4a3a18;
+  --kt-tan:          #c8a84a;
+  --kt-border:       #6a5020;
+  --kt-cyan:         #00e5cc;
+  --kt-cyan-dim:     #009980;
+  --kt-cyan-faint:   rgba(0, 229, 204, 0.08);
+  --kt-cyan-glow:    rgba(0, 229, 204, 0.25);
+  --kt-text:         #00e5cc;
+  --kt-text-body:    #00c4ae;
+  --kt-text-dim:     #007a6a;
+  --kt-inactive:     #4a7a70;
+  --kt-white:        #d0f0ec;
+  --kt-amber:        #ffb300;
+  --kt-red:          #cc3300;
+  --kt-font:         'Courier New', 'Lucida Console', monospace;
+  --kt-font-ui:      'Trebuchet MS', 'Courier New', monospace;
 }
 
-/* ── GLOBAL RESET & BASE ───────────────────────────────────── */
+/* ── BASE ───────────────────────────────────────────────────── */
 * {
-  font-family: var(--sw-font-mono) !important;
-  letter-spacing: 0.04em;
-}
-
-/* Scanline overlay on the whole page */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: repeating-linear-gradient(
-    0deg,
-    var(--sw-scanline) 0px,
-    var(--sw-scanline) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  pointer-events: none;
-  z-index: 9999;
-}
-
-/* CRT phosphor flicker */
-body::after {
-  content: '';
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 60%,
-    rgba(0, 0, 0, 0.55) 100%
-  );
-  pointer-events: none;
-  z-index: 9998;
+  font-family: var(--kt-font) !important;
+  letter-spacing: 0.05em !important;
 }
 
 body,
 .backgroundContainer,
-.mainAnimatedPage,
+.mainAnimatedPage {
+  background-color: var(--kt-bg) !important;
+  color: var(--kt-text-body) !important;
+}
+
+/* ── HEADER / NAV ───────────────────────────────────────────── */
+.skinHeader,
+.headerTop,
+.appbar-wrapper {
+  background: linear-gradient(180deg, #1a1208 0%, #0d0a04 100%) !important;
+  border-bottom: 2px solid var(--kt-bronze) !important;
+  box-shadow:
+    0 2px 0 var(--kt-bronze-dark),
+    0 4px 12px rgba(0,0,0,0.8) !important;
+}
+
+/* ── MAIN DRAWER / SIDEBAR ──────────────────────────────────── */
 .mainDrawer {
-  background-color: var(--sw-black) !important;
-  color: var(--sw-text) !important;
+  background: linear-gradient(180deg, #120e06 0%, #0a0804 100%) !important;
+  border-right: 2px solid var(--kt-bronze) !important;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.8) !important;
+}
+
+.navMenuOption {
+  color: var(--kt-text-dim) !important;
+  border-bottom: 1px solid var(--kt-bronze-dark) !important;
+  font-family: var(--kt-font-ui) !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+}
+
+.navMenuOption:hover {
+  background: var(--kt-cyan-faint) !important;
+  color: var(--kt-cyan) !important;
+  border-left: 3px solid var(--kt-cyan) !important;
+}
+
+.navMenuOption.is-selected {
+  background: rgba(0,229,204,0.06) !important;
+  color: var(--kt-cyan) !important;
+  border-left: 3px solid var(--kt-cyan) !important;
 }
 
 /* ── TYPOGRAPHY ─────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6,
 .sectionTitle,
-.sectionTitleLink,
-.headerLogo,
-.libraryItemName {
-  font-family: var(--sw-font-display) !important;
-  color: var(--sw-green) !important;
-  text-shadow: 0 0 8px var(--sw-green), 0 0 20px rgba(0,255,65,0.4) !important;
-  letter-spacing: 0.12em !important;
+.sectionTitleLink {
+  font-family: var(--kt-font-ui) !important;
+  color: var(--kt-cyan) !important;
   text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  text-shadow: 0 0 10px var(--kt-cyan-glow) !important;
 }
 
-p, span, div, li, a, label, td, th {
-  color: var(--sw-text) !important;
+p, span, div, li, label, td, th {
+  color: var(--kt-text-body) !important;
+}
+
+a {
+  color: var(--kt-cyan) !important;
 }
 
 a:hover {
-  color: var(--sw-green) !important;
-  text-shadow: 0 0 6px var(--sw-green) !important;
+  color: var(--kt-white) !important;
+  text-shadow: 0 0 6px var(--kt-cyan) !important;
 }
 
-/* ── TOP HEADER / NAV ───────────────────────────────────────── */
-.skinHeader,
-.headerTop,
-.appbar-wrapper {
-  background: var(--sw-dark) !important;
-  border-bottom: 1px solid var(--sw-border) !important;
-  box-shadow: 0 2px 16px rgba(0,255,65,0.08) !important;
+/* ── PANEL / SECTION BORDERS ────────────────────────────────── */
+.homePage,
+.detailPageContent,
+.itemDetailPage {
+  background: var(--kt-bg) !important;
 }
 
-.headerLogo {
-  filter: drop-shadow(0 0 8px rgba(0,255,65,0.7)) !important;
-}
-
-/* Nav drawer */
-.mainDrawer,
-.navMenuOption,
-.drawer-open .mainDrawer {
-  background: var(--sw-dark) !important;
-  border-right: 1px solid var(--sw-border) !important;
-}
-
-.navMenuOption:hover,
-.navMenuOption.is-selected {
-  background: var(--sw-green-faint) !important;
-  border-left: 2px solid var(--sw-green) !important;
-}
-
-.navMenuOption.is-selected {
-  color: var(--sw-green) !important;
+.sectionTitleContainer {
+  border-bottom: 1px solid var(--kt-bronze) !important;
+  padding-bottom: 6px !important;
+  margin-bottom: 10px !important;
 }
 
 /* ── CARDS ──────────────────────────────────────────────────── */
 .card,
-.cardBox,
-.cardContent,
-.cardImageContainer {
-  background: var(--sw-panel) !important;
-  border: 1px solid var(--sw-border) !important;
-  border-radius: 0 !important;
-  transition: all 0.2s ease !important;
+.cardBox {
+  background: var(--kt-panel) !important;
+  border: 1px solid var(--kt-border) !important;
+  border-radius: 2px !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
 }
 
 .card:hover .cardBox,
-.card:hover {
-  border-color: var(--sw-green) !important;
+.card:focus .cardBox {
+  border-color: var(--kt-cyan-dim) !important;
   box-shadow:
-    0 0 10px var(--sw-green-glow),
-    inset 0 0 20px rgba(0,255,65,0.04) !important;
-  transform: translateY(-1px) !important;
+    0 0 0 1px var(--kt-cyan-dim),
+    0 0 16px rgba(0, 229, 204, 0.15),
+    inset 0 0 12px rgba(0, 0, 0, 0.6) !important;
 }
 
-/* Card title text */
-.cardText,
-.cardName {
-  font-family: var(--sw-font-mono) !important;
-  color: var(--sw-text) !important;
-  font-size: 0.78em !important;
-  letter-spacing: 0.06em !important;
+.cardImageContainer,
+.cardImage,
+.cardContent {
+  background: var(--kt-black) !important;
 }
 
-/* Card overlay / play button */
 .cardOverlayButton-hover,
 .itemAction.cardOverlayButton {
-  background: rgba(0,255,65,0.15) !important;
-  border: 1px solid var(--sw-green) !important;
-  border-radius: 0 !important;
-  color: var(--sw-green) !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid var(--kt-cyan-dim) !important;
+  border-radius: 2px !important;
+  color: var(--kt-cyan) !important;
 }
 
-/* Played / watched indicator */
+.cardText,
+.cardName,
+.cardTextCentered {
+  color: var(--kt-text-body) !important;
+  font-family: var(--kt-font) !important;
+  font-size: 0.8em !important;
+}
+
 .playedIndicator {
-  background: var(--sw-green-dim) !important;
-  color: var(--sw-black) !important;
-  border-radius: 0 !important;
-  box-shadow: 0 0 6px var(--sw-green) !important;
+  background: var(--kt-cyan-dim) !important;
+  color: var(--kt-black) !important;
+  border-radius: 2px !important;
 }
 
-/* Progress bar */
 .itemProgressBar,
 .cardProgressBar {
-  background: var(--sw-border) !important;
-  border-radius: 0 !important;
+  background: var(--kt-bronze-dark) !important;
+  border-radius: 1px !important;
   height: 3px !important;
 }
 
 .itemProgressBarForeground,
 .cardProgressBarForeground {
-  background: var(--sw-green) !important;
-  box-shadow: 0 0 6px var(--sw-green) !important;
+  background: var(--kt-cyan) !important;
+  box-shadow: 0 0 4px var(--kt-cyan) !important;
 }
 
-/* ── SEARCH & INPUTS ─────────────────────────────────────────── */
+/* ── INPUTS & SEARCH ────────────────────────────────────────── */
 .emby-input,
 .emby-textarea,
 .emby-select,
 input,
 textarea,
 select {
-  background: var(--sw-dark) !important;
-  color: var(--sw-green) !important;
-  border: 1px solid var(--sw-green-dim) !important;
-  border-radius: 0 !important;
-  font-family: var(--sw-font-mono) !important;
-  caret-color: var(--sw-green) !important;
+  background: var(--kt-black) !important;
+  color: var(--kt-cyan) !important;
+  border: 1px solid var(--kt-bronze) !important;
+  border-radius: 2px !important;
+  font-family: var(--kt-font) !important;
+  caret-color: var(--kt-cyan) !important;
 }
 
 .emby-input:focus,
 input:focus {
-  border-color: var(--sw-green) !important;
-  box-shadow: 0 0 8px var(--sw-green-glow) !important;
+  border-color: var(--kt-cyan) !important;
+  box-shadow: 0 0 8px var(--kt-cyan-glow) !important;
   outline: none !important;
 }
 
-/* Search header */
 .headerSearchInput {
   background: transparent !important;
-  color: var(--sw-green) !important;
-  border-bottom: 1px solid var(--sw-green-dim) !important;
+  color: var(--kt-cyan) !important;
+  border-bottom: 1px solid var(--kt-bronze) !important;
 }
 
-/* ── BUTTONS ─────────────────────────────────────────────────── */
+/* ── BUTTONS ────────────────────────────────────────────────── */
 .raised,
-.button-submit,
 .emby-button,
 button[is="emby-button"] {
-  background: transparent !important;
-  color: var(--sw-green) !important;
-  border: 1px solid var(--sw-green) !important;
-  border-radius: 0 !important;
-  font-family: var(--sw-font-display) !important;
-  letter-spacing: 0.1em !important;
+  background: linear-gradient(180deg, #1a1208 0%, #0d0a04 100%) !important;
+  color: var(--kt-cyan) !important;
+  border: 1px solid var(--kt-bronze) !important;
+  border-radius: 2px !important;
+  font-family: var(--kt-font-ui) !important;
+  letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
   transition: all 0.15s ease !important;
+  box-shadow: inset 0 1px 0 rgba(184,146,58,0.2) !important;
 }
 
 .raised:hover,
 .emby-button:hover {
-  background: var(--sw-green-faint) !important;
-  box-shadow: 0 0 12px var(--sw-green-glow) !important;
+  border-color: var(--kt-cyan) !important;
+  color: var(--kt-white) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(184,146,58,0.2),
+    0 0 10px var(--kt-cyan-glow) !important;
 }
 
-/* Primary / accent buttons */
 .raised.accent,
 .button-accent {
-  background: var(--sw-green-dim) !important;
-  color: var(--sw-black) !important;
-  border-color: var(--sw-green) !important;
+  background: var(--kt-cyan-dim) !important;
+  color: var(--kt-black) !important;
+  border-color: var(--kt-cyan) !important;
 }
 
-/* ── DETAIL PAGE (movie/show page) ───────────────────────────── */
-.itemDetailPage,
-.detailPageContent,
-.detailPagePrimaryContent {
-  background: var(--sw-black) !important;
-}
-
+/* ── DETAIL PAGE ────────────────────────────────────────────── */
 .itemName,
 .originalTitle {
-  font-family: var(--sw-font-display) !important;
-  color: var(--sw-green) !important;
-  text-shadow: 0 0 12px rgba(0,255,65,0.5) !important;
-  letter-spacing: 0.15em !important;
+  font-family: var(--kt-font-ui) !important;
+  color: var(--kt-cyan) !important;
+  text-shadow: 0 0 12px rgba(0,229,204,0.4) !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
 }
 
-.overview,
-.itemMiscInfo,
-.mediaInfoItem {
-  color: var(--sw-text) !important;
-  font-size: 0.92em !important;
-  line-height: 1.8 !important;
+.overview {
+  color: var(--kt-text-body) !important;
+  line-height: 1.9 !important;
+  font-size: 0.93em !important;
 }
 
-/* Genre / tag pills */
+.mediaInfoItem,
+.itemMiscInfo {
+  color: var(--kt-text-dim) !important;
+}
+
 .genreItem,
-.tagItem,
-.emby-button.emby-button-textonly {
-  border: 1px solid var(--sw-border) !important;
-  border-radius: 0 !important;
-  color: var(--sw-green-dim) !important;
+.tagItem {
+  border: 1px solid var(--kt-border) !important;
+  border-radius: 2px !important;
+  color: var(--kt-inactive) !important;
   background: transparent !important;
 }
 
 .genreItem:hover,
 .tagItem:hover {
-  border-color: var(--sw-green) !important;
-  color: var(--sw-green) !important;
+  border-color: var(--kt-cyan-dim) !important;
+  color: var(--kt-cyan) !important;
 }
 
-/* Star rating */
 .starRatingContainer {
-  color: var(--sw-amber) !important;
+  color: var(--kt-amber) !important;
 }
 
-/* Runtime / year info */
-.mediaInfoItem,
-.itemCommunityRating {
-  color: var(--sw-text-dim) !important;
-}
-
-/* ── PLAY BUTTONS & TRANSPORT ────────────────────────────────── */
-.playButton,
-.btnPlay,
-.paper-icon-button-light,
-.itemDetailGalleryLink {
-  color: var(--sw-green) !important;
-}
-
-.playButton:hover {
-  color: var(--sw-black) !important;
-  background: var(--sw-green) !important;
-  box-shadow: 0 0 16px var(--sw-green) !important;
-}
-
-/* ── VIDEO PLAYER ────────────────────────────────────────────── */
-.videoPlayerContainer,
-#videoPlayer {
-  background: var(--sw-black) !important;
-}
-
-.osdControls,
-.playerBottomBar {
-  background: linear-gradient(transparent, rgba(0,0,0,0.9)) !important;
-  border-top: 1px solid var(--sw-border) !important;
-}
-
-/* OSD sliders */
-.mdl-slider__container,
-.emby-slider {
-  --slider-color: var(--sw-green) !important;
-}
-
-/* ── SECTIONS & BACKGROUNDS ──────────────────────────────────── */
-.homePage,
-.padded-top,
-.section2,
-.itemsContainer {
-  background: var(--sw-black) !important;
-}
-
-/* Section separators */
-.sectionTitleContainer {
-  border-bottom: 1px solid var(--sw-border) !important;
-  padding-bottom: 4px !important;
-  margin-bottom: 8px !important;
-}
-
-/* ── BACKDROP TINT ───────────────────────────────────────────── */
-.backdropImage {
-  filter: brightness(0.25) saturate(0.4) hue-rotate(100deg) !important;
-}
-
-.backgroundContainer.withBackdrop {
-  background-color: var(--sw-black) !important;
-}
-
-/* ── DIALOGS / MODALS ────────────────────────────────────────── */
-.dialogContainer,
-.dialog,
-.formDialogContent,
-.paperDialogPage {
-  background: var(--sw-panel) !important;
-  border: 1px solid var(--sw-green-dim) !important;
-  border-radius: 0 !important;
-  box-shadow: 0 0 30px rgba(0,255,65,0.1) !important;
-  color: var(--sw-text) !important;
-}
-
-.formDialogHeader,
-.dialogHeader {
-  border-bottom: 1px solid var(--sw-border) !important;
-  color: var(--sw-green) !important;
-  font-family: var(--sw-font-display) !important;
-}
-
-/* ── MENUS & CONTEXT MENUS ───────────────────────────────────── */
-.actionSheetContent,
-.paperList,
-.listItem {
-  background: var(--sw-panel) !important;
-  border-color: var(--sw-border) !important;
-  color: var(--sw-text) !important;
-}
-
-.listItem:hover,
-.paper-listitem:hover {
-  background: var(--sw-green-faint) !important;
-  color: var(--sw-green) !important;
-}
-
-/* ── LOGIN PAGE ──────────────────────────────────────────────── */
-.readUserName,
-.loginPage {
-  background: var(--sw-black) !important;
-}
-
-/* Login title "GALACTIC ARCHIVE" feel */
-.headerLogo {
-  filter: drop-shadow(0 0 10px var(--sw-green)) !important;
-}
-
-/* ── SCROLLBAR ───────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-  background: var(--sw-dark);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--sw-green-dim);
-  border-radius: 0;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--sw-green);
-  box-shadow: 0 0 6px var(--sw-green);
-}
-
-/* ── ICONS ───────────────────────────────────────────────────── */
-.material-icons,
-.md-icon,
-em[class^="md-"] {
-  color: var(--sw-green-dim) !important;
-}
-
-paper-icon-button:hover .material-icons,
-button:hover .material-icons {
-  color: var(--sw-green) !important;
-}
-
-/* ── TABBAR ──────────────────────────────────────────────────── */
+/* ── TABS ───────────────────────────────────────────────────── */
 .emby-tabs-slider,
 .tabsContainerContent {
-  background: var(--sw-dark) !important;
-  border-bottom: 1px solid var(--sw-border) !important;
+  background: var(--kt-panel) !important;
+  border-bottom: 2px solid var(--kt-bronze) !important;
+}
+
+.emby-tab-button {
+  color: var(--kt-text-dim) !important;
+  font-family: var(--kt-font-ui) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
 }
 
 .emby-tab-button.is-selected,
 .emby-tab-button[aria-selected="true"] {
-  color: var(--sw-green) !important;
-  border-bottom: 2px solid var(--sw-green) !important;
+  color: var(--kt-cyan) !important;
+  border-bottom: 2px solid var(--kt-cyan) !important;
 }
 
 .emby-tab-button:hover {
-  color: var(--sw-green) !important;
-  background: var(--sw-green-faint) !important;
+  color: var(--kt-cyan) !important;
 }
 
-/* ── CAST / CREW (Plex-style override) ───────────────────────── */
-.personCard .cardBox {
-  border-color: var(--sw-border) !important;
+/* ── DIALOGS ────────────────────────────────────────────────── */
+.dialogContainer,
+.dialog,
+.formDialogContent,
+.paperDialogPage {
+  background: var(--kt-panel) !important;
+  border: 2px solid var(--kt-bronze) !important;
+  border-radius: 2px !important;
+  box-shadow:
+    0 0 0 1px var(--kt-bronze-dark),
+    0 8px 40px rgba(0,0,0,0.9) !important;
+  color: var(--kt-text-body) !important;
 }
 
-.personCard:hover .cardBox {
-  border-color: var(--sw-green) !important;
+.formDialogHeader,
+.dialogHeader {
+  background: linear-gradient(180deg, #1a1208 0%, #0d0a04 100%) !important;
+  border-bottom: 2px solid var(--kt-bronze) !important;
+  color: var(--kt-cyan) !important;
+  font-family: var(--kt-font-ui) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
 }
 
-/* ── NOTIFICATION / TOAST ────────────────────────────────────── */
+/* ── MENUS ──────────────────────────────────────────────────── */
+.actionSheetContent,
+.paperList {
+  background: var(--kt-panel) !important;
+  border: 1px solid var(--kt-border) !important;
+}
+
+.listItem,
+.paper-listitem {
+  background: transparent !important;
+  color: var(--kt-text-body) !important;
+  border-bottom: 1px solid var(--kt-bronze-dark) !important;
+}
+
+.listItem:hover,
+.paper-listitem:hover {
+  background: var(--kt-cyan-faint) !important;
+  color: var(--kt-cyan) !important;
+}
+
+/* ── BACKDROP ───────────────────────────────────────────────── */
+.backdropImage {
+  filter: brightness(0.35) saturate(0.6) !important;
+}
+
+.backgroundContainer.withBackdrop {
+  background-color: var(--kt-bg) !important;
+}
+
+/* ── ICONS ──────────────────────────────────────────────────── */
+.material-icons,
+.md-icon {
+  color: var(--kt-bronze-light) !important;
+}
+
+button:hover .material-icons,
+paper-icon-button:hover .material-icons {
+  color: var(--kt-cyan) !important;
+}
+
+/* ── SCROLLBAR ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  background: var(--kt-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--kt-bronze-dark);
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--kt-bronze);
+}
+
+/* ── TOAST / NOTIFICATIONS ──────────────────────────────────── */
 .toast {
-  background: var(--sw-panel) !important;
-  border: 1px solid var(--sw-green-dim) !important;
-  border-radius: 0 !important;
-  color: var(--sw-green) !important;
-  font-family: var(--sw-font-mono) !important;
+  background: var(--kt-panel) !important;
+  border: 1px solid var(--kt-bronze) !important;
+  border-radius: 2px !important;
+  color: var(--kt-cyan) !important;
+  font-family: var(--kt-font) !important;
 }
 
-/* ── INLINE TERMINAL CURSOR BLINK on focused inputs ─────────── */
-@keyframes sw-blink {
-  0%, 100% { border-right-color: var(--sw-green); }
-  50%       { border-right-color: transparent; }
-}
-
-input:focus,
-.emby-input:focus {
-  animation: sw-blink 1s step-end infinite !important;
-  border-right: 2px solid var(--sw-green) !important;
-}
-
-/* ── GREEN GLOW PULSE on cards (subtle) ──────────────────────── */
-@keyframes sw-card-pulse {
-  0%, 100% { box-shadow: 0 0 4px rgba(0,255,65,0.08); }
-  50%       { box-shadow: 0 0 12px rgba(0,255,65,0.18); }
-}
-
-.card:hover .cardBox {
-  animation: sw-card-pulse 2s ease-in-out infinite !important;
-}
-
-/* ── "IMPERIAL BOOTSCREEN" LOGIN ACCENT LINE ─────────────────── */
-.readUserName::before {
-  content: '> GALACTIC HOLONET ACCESS TERMINAL v4.7 ';
-  display: block;
-  color: var(--sw-green-dim);
-  font-size: 0.7em;
-  font-family: var(--sw-font-mono);
-  letter-spacing: 0.1em;
-  margin-bottom: 8px;
+/* ── VIDEO PLAYER OSD ───────────────────────────────────────── */
+.osdControls,
+.playerBottomBar {
+  background: linear-gradient(transparent, rgba(0,0,0,0.95)) !important;
+  border-top: 1px solid var(--kt-bronze) !important;
 }
