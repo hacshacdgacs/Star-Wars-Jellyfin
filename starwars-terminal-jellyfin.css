@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v1.2 — Fixed Headers, Hover Effects, and Video Playback
+   v1.3 — Seamless Headers & Global Gold Interactive Logic
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -47,14 +47,15 @@ body::after {
   background-size: 100% 3px, 3px 100%;
   pointer-events: none;
   z-index: 999;
-  opacity: 0.4;
+  opacity: 0.3;
 }
 
-/* ── KOTOR BRACKET HEADERS (Fixed Alignment & Hover) ────────── */
+/* ── KOTOR BRACKET HEADERS (Borders Removed) ────────────────── */
 .sectionTitleContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none !important; /* Removes default Jellyfin box borders[cite: 1] */
 }
 
 .sectionTitle, .sectionTitleLink {
@@ -67,7 +68,8 @@ body::after {
   color: var(--kt-blue-bright) !important;
   text-transform: uppercase !important;
   text-decoration: none !important;
-  transition: color 0.2s ease, text-shadow 0.2s ease !important;
+  border: none !important; /* Ensures no box border around text[cite: 1] */
+  background: transparent !important;
 }
 
 /* Left Bracket */
@@ -96,8 +98,14 @@ body::after {
   transition: border-color 0.2s ease !important;
 }
 
-/* Hover Effect for Clickable Headers[cite: 1] */
-.sectionTitleLink:hover {
+/* ── GLOBAL CLICKABLE GOLD LOGIC ────────────────────────────── */
+/* Applies gold glow to links, buttons, and tab headers on hover[cite: 1] */
+a:hover, 
+.sectionTitleLink:hover,
+.navMenuOption:hover,
+.emby-tab-button:hover,
+.button-flat:hover,
+.button-link:hover {
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
@@ -122,7 +130,7 @@ body::after {
   border: none !important;
 }
 
-/* Title text turns gold on card hover[cite: 1] */
+/* Card titles turn gold on hover[cite: 1] */
 .card:hover .cardText, 
 .card:hover .cardName,
 .card:hover .cardTextCentered {
@@ -150,6 +158,7 @@ body::after {
 .emby-button:hover {
   color: var(--kt-yellow) !important;
   border-color: var(--kt-yellow) !important;
+  box-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
 .emby-tab-button.is-selected {
