@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v1.7 — Holographic Image Filters & Clean Headers
+   v1.8 — High-Intensity Hologram & UI Refinement
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -42,51 +42,67 @@ body::after {
   position: fixed;
   top: 0; left: 0; bottom: 0; right: 0;
   background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+              linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
   background-size: 100% 3px, 3px 100%;
   pointer-events: none;
   z-index: 999;
   opacity: 0.3;
 }
 
-/* ── HOLOGRAPHIC IMAGE FILTERS ──────────────────────────────── */
-/* Tints images blue and adds a subtle scanline effect[cite: 1] */
+/* ── INTENSE HOLOGRAPHIC IMAGE FILTERS ──────────────────────── */
+.cardImageContainer {
+  background: var(--kt-bg) !important;
+  overflow: hidden;
+}
+
+/* The Digital Mesh Overlay */
 .cardImageContainer::after {
   content: "";
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(rgba(106, 180, 255, 0.1), transparent);
+  /* Fine grid lines + Blue wash */
+  background-image: 
+    linear-gradient(rgba(106, 180, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(106, 180, 255, 0.15) 1px, transparent 1px);
+  background-size: 3px 3px;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
+  opacity: 0.8;
 }
 
+/* Stronger Blue Duotone Filter */
 .cardImage {
-  filter: brightness(0.8) contrast(1.1) saturate(0.9) sepia(0.2) hue-rotate(180deg) !important;
-  transition: filter 0.3s ease !important;
+  filter: brightness(0.7) contrast(1.4) saturate(0) sepia(1) hue-rotate(170deg) saturate(3) !important;
+  transition: all 0.3s ease !important;
 }
 
-/* When hovering, the "hologram" clears up slightly for better visibility[cite: 1] */
+/* Hover: The "Signal Clears" and the color returns */
 .card:hover .cardImage {
-  filter: brightness(1) contrast(1) saturate(1.1) sepia(0) hue-rotate(0deg) !important;
+  filter: brightness(1.1) contrast(1.1) saturate(1) sepia(0) hue-rotate(0deg) !important;
 }
 
-/* ── HEADER CLEANUP (Nuclear Box Kill) ──────────────────────── */
-.sectionTitleContainer, 
-.sectionTitleLink,
-.button-flat.sectionTitleLink,
-.sectionTitleLink:hover,
-.sectionTitleLink:focus {
+.card:hover .cardImageContainer::after {
+  opacity: 0.2; /* Fade out the grid on hover */
+}
+
+/* ── TOP NAV BAR REFINEMENT (Pill Removal) ──────────────────── */
+.libraryBarItem, .emby-button-outline {
+  border-radius: 0 !important;
+  border: 1px solid var(--kt-steel) !important;
+  background: rgba(10, 10, 30, 0.9) !important;
+  text-transform: uppercase !important;
+}
+
+/* ── HEADER CLEANUP & NUCLEAR BOX KILL ──────────────────────── */
+.sectionTitleContainer, .sectionTitleLink, .button-flat.sectionTitleLink {
   background: transparent !important;
-  background-color: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  outline: none !important;
 }
 
 .sectionTitleLink {
   position: relative;
   display: inline-flex !important;
-  align-items: center;
   padding: 10px 50px !important;
 }
 
@@ -96,35 +112,29 @@ body::after {
   top: 5px; bottom: 5px;
   width: 15px;
   border: 2px solid var(--kt-blue);
-  box-shadow: 0 0 8px var(--kt-blue-glow);
   pointer-events: none;
 }
 .sectionTitleLink::before { left: 5px; border-right: none; border-radius: 10px 0 0 10px; }
 .sectionTitleLink::after { right: 5px; border-left: none; border-radius: 0 10px 10px 0; }
 
-/* Header Hover Gold Glow[cite: 1] */
-.sectionTitleLink:hover .sectionTitle,
-.sectionTitleLink:hover h2,
-.sectionTitleLink:hover h3,
-.sectionTitleLink:hover .sectionTitleIcon {
+/* Header Hover Gold Glow */
+.sectionTitleLink:hover .sectionTitle, .sectionTitleLink:hover h2, .sectionTitleLink:hover h3 {
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 12px var(--kt-yellow-glow) !important;
 }
 
-.sectionTitleLink:hover::before, 
-.sectionTitleLink:hover::after {
+.sectionTitleLink:hover::before, .sectionTitleLink:hover::after {
   border-color: var(--kt-yellow) !important;
   box-shadow: 0 0 12px var(--kt-yellow-glow) !important;
 }
 
 /* ── CARDS & INTERACTIVE TEXT ───────────────────────────────── */
-.cardBox, .cardInnerContainer, .cardPadder {
+.cardBox, .cardInnerContainer {
   border: none !important;
   background: transparent !important;
 }
 
-.card:hover .cardText, 
-.card:hover .cardName {
+.card:hover .cardText, .card:hover .cardName {
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
@@ -135,14 +145,7 @@ body::after {
   letter-spacing: 0.05em;
 }
 
-/* ── BUTTONS & UI ───────────────────────────────────────────── */
-.emby-button {
-  background: rgba(10, 10, 30, 0.8) !important;
-  border: 1px solid var(--kt-steel) !important;
-  color: var(--kt-blue) !important;
-  font-family: var(--kt-font-ui) !important;
-}
-
+/* ── UI BUTTONS & ELEMENTS ──────────────────────────────────── */
 .emby-button:hover {
   color: var(--kt-yellow) !important;
   border-color: var(--kt-yellow) !important;
