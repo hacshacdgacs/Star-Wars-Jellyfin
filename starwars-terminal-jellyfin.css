@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v1.8 — High-Intensity Hologram & UI Refinement
+   v1.9 — Refined Holographic Glass & UI Cleanup
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -41,56 +41,44 @@ body::after {
   content: " ";
   position: fixed;
   top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-              linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-  background-size: 100% 3px, 3px 100%;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+  background-size: 100% 3px;
   pointer-events: none;
   z-index: 999;
-  opacity: 0.3;
+  opacity: 0.2;
 }
 
-/* ── INTENSE HOLOGRAPHIC IMAGE FILTERS ──────────────────────── */
+/* ── REFINED HOLOGRAPHIC GLASS FILTERS ──────────────────────── */
 .cardImageContainer {
   background: var(--kt-bg) !important;
   overflow: hidden;
 }
 
-/* The Digital Mesh Overlay */
+/* Subtle Scanline/Grid Overlay for Images Only[cite: 1] */
 .cardImageContainer::after {
   content: "";
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  /* Fine grid lines + Blue wash */
-  background-image: 
-    linear-gradient(rgba(106, 180, 255, 0.15) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(106, 180, 255, 0.15) 1px, transparent 1px);
-  background-size: 3px 3px;
+  background: linear-gradient(rgba(106, 180, 255, 0.05) 50%, transparent 50%);
+  background-size: 100% 4px;
   pointer-events: none;
   z-index: 2;
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
-/* Stronger Blue Duotone Filter */
+/* Subtle Blue Tint and Sharpness[cite: 1] */
 .cardImage {
-  filter: brightness(0.7) contrast(1.4) saturate(0) sepia(1) hue-rotate(170deg) saturate(3) !important;
+  filter: brightness(0.9) contrast(1.1) saturate(0.8) sepia(0.1) hue-rotate(185deg) !important;
   transition: all 0.3s ease !important;
 }
 
-/* Hover: The "Signal Clears" and the color returns */
+/* Hover: Clearer view[cite: 1] */
 .card:hover .cardImage {
-  filter: brightness(1.1) contrast(1.1) saturate(1) sepia(0) hue-rotate(0deg) !important;
+  filter: brightness(1.05) contrast(1) saturate(1) sepia(0) hue-rotate(0deg) !important;
 }
 
 .card:hover .cardImageContainer::after {
-  opacity: 0.2; /* Fade out the grid on hover */
-}
-
-/* ── TOP NAV BAR REFINEMENT (Pill Removal) ──────────────────── */
-.libraryBarItem, .emby-button-outline {
-  border-radius: 0 !important;
-  border: 1px solid var(--kt-steel) !important;
-  background: rgba(10, 10, 30, 0.9) !important;
-  text-transform: uppercase !important;
+  opacity: 0.1;
 }
 
 /* ── HEADER CLEANUP & NUCLEAR BOX KILL ──────────────────────── */
@@ -103,29 +91,29 @@ body::after {
 .sectionTitleLink {
   position: relative;
   display: inline-flex !important;
-  padding: 10px 50px !important;
+  padding: 8px 45px !important;
 }
 
 .sectionTitleLink::before, .sectionTitleLink::after {
   content: "";
   position: absolute;
-  top: 5px; bottom: 5px;
+  top: 0; bottom: 0;
   width: 15px;
   border: 2px solid var(--kt-blue);
   pointer-events: none;
 }
-.sectionTitleLink::before { left: 5px; border-right: none; border-radius: 10px 0 0 10px; }
-.sectionTitleLink::after { right: 5px; border-left: none; border-radius: 0 10px 10px 0; }
+.sectionTitleLink::before { left: 5px; border-right: none; border-radius: 8px 0 0 8px; }
+.sectionTitleLink::after { right: 5px; border-left: none; border-radius: 0 8px 8px 0; }
 
-/* Header Hover Gold Glow */
+/* Header Hover Gold Glow[cite: 1] */
 .sectionTitleLink:hover .sectionTitle, .sectionTitleLink:hover h2, .sectionTitleLink:hover h3 {
   color: var(--kt-yellow) !important;
-  text-shadow: 0 0 12px var(--kt-yellow-glow) !important;
+  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
 .sectionTitleLink:hover::before, .sectionTitleLink:hover::after {
   border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 12px var(--kt-yellow-glow) !important;
+  box-shadow: 0 0 8px var(--kt-yellow-glow) !important;
 }
 
 /* ── CARDS & INTERACTIVE TEXT ───────────────────────────────── */
@@ -146,10 +134,15 @@ body::after {
 }
 
 /* ── UI BUTTONS & ELEMENTS ──────────────────────────────────── */
+.libraryBarItem, .emby-button-outline {
+  border-radius: 0 !important;
+  border: 1px solid var(--kt-steel) !important;
+  background: rgba(10, 10, 30, 0.8) !important;
+}
+
 .emby-button:hover {
   color: var(--kt-yellow) !important;
   border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
 .emby-tab-button.is-selected {
