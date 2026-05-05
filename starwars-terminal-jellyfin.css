@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v1.1 — Full Integrated Terminal Experience
+   v1.2 — Fixed Headers, Hover Effects, and Video Playback
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -30,7 +30,7 @@ body, .backgroundContainer {
   font-family: var(--kt-font) !important;
 }
 
-/* Fix: Make layers transparent during video playback to prevent black screen[cite: 1] */
+/* Fix: Allow video to show through during playback[cite: 1] */
 .playbackPage .backgroundContainer,
 .playbackPage .mainAnimatedPage {
   background-color: transparent !important;
@@ -50,40 +50,64 @@ body::after {
   opacity: 0.4;
 }
 
-/* ── KOTOR BRACKET HEADERS ──────────────────────────────────── */
-.sectionTitle {
+/* ── KOTOR BRACKET HEADERS (Fixed Alignment & Hover) ────────── */
+.sectionTitleContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionTitle, .sectionTitleLink {
   position: relative;
-  display: inline-block;
-  padding: 0 40px !important;
-  margin-bottom: 20px !important;
+  display: inline-flex !important;
+  align-items: center;
+  padding: 4px 40px !important;
+  margin: 0 !important;
   font-family: var(--kt-font-ui) !important;
   color: var(--kt-blue-bright) !important;
   text-transform: uppercase !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease, text-shadow 0.2s ease !important;
 }
 
-.sectionTitle::before {
+/* Left Bracket */
+.sectionTitle::before, .sectionTitleLink::before {
   content: "";
   position: absolute;
-  left: 0; top: -5px; bottom: -5px;
-  width: 20px;
+  left: 0; top: 0; bottom: 0;
+  width: 15px;
   border: 2px solid var(--kt-blue);
   border-right: none;
-  border-radius: 10px 0 0 10px;
+  border-radius: 8px 0 0 8px;
   box-shadow: -2px 0 8px var(--kt-blue-glow);
+  transition: border-color 0.2s ease !important;
 }
 
-.sectionTitle::after {
+/* Right Bracket */
+.sectionTitle::after, .sectionTitleLink::after {
   content: "";
   position: absolute;
-  right: 0; top: -5px; bottom: -5px;
-  width: 20px;
+  right: 0; top: 0; bottom: 0;
+  width: 15px;
   border: 2px solid var(--kt-blue);
   border-left: none;
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 8px 8px 0;
   box-shadow: 2px 0 8px var(--kt-blue-glow);
+  transition: border-color 0.2s ease !important;
 }
 
-/* ── CARDS (RESTORED IMAGES, NO BORDERS, GOLD HOVER) ────────── */
+/* Hover Effect for Clickable Headers[cite: 1] */
+.sectionTitleLink:hover {
+  color: var(--kt-yellow) !important;
+  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
+}
+
+.sectionTitleLink:hover::before, 
+.sectionTitleLink:hover::after {
+  border-color: var(--kt-yellow) !important;
+}
+
+/* ── CARDS (No Borders, Gold Hover) ─────────────────────────── */
 .cardBox, .cardInnerContainer, .cardPadder {
   border: none !important;
   box-shadow: none !important;
@@ -95,9 +119,10 @@ body::after {
   border-radius: 2px !important;
   opacity: 1 !important;
   visibility: visible !important;
+  border: none !important;
 }
 
-/* Gold Title text and glow on card hover[cite: 1] */
+/* Title text turns gold on card hover[cite: 1] */
 .card:hover .cardText, 
 .card:hover .cardName,
 .card:hover .cardTextCentered {
