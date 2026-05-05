@@ -1,10 +1,11 @@
 /* ============================================================
    KOTOR TERMINAL — Jellyfin Custom Theme
    Inspired by Knights of the Old Republic I & II
-   
-   HOW TO INSTALL:
-   Dashboard → Branding → Custom CSS → Paste → Save
    ============================================================ */
+
+/* ── FONTS ──────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 /* ── CORE PALETTE ───────────────────────────────────────────── */
 :root {
@@ -14,48 +15,118 @@
   --kt-bronze:       #8a6a2a;
   --kt-bronze-light: #b8923a;
   --kt-bronze-dark:  #4a3a18;
-  --kt-tan:          #c8a84a;
   --kt-border:       #6a5020;
   --kt-cyan:         #00e5cc;
   --kt-cyan-dim:     #009980;
   --kt-cyan-faint:   rgba(0, 229, 204, 0.08);
   --kt-cyan-glow:    rgba(0, 229, 204, 0.25);
-  --kt-text:         #00e5cc;
   --kt-text-body:    #00c4ae;
   --kt-text-dim:     #007a6a;
   --kt-inactive:     #4a7a70;
   --kt-white:        #d0f0ec;
   --kt-amber:        #ffb300;
-  --kt-red:          #cc3300;
-  --kt-font:         'Courier New', 'Lucida Console', monospace;
-  --kt-font-ui:      'Trebuchet MS', 'Courier New', monospace;
+  --kt-font:         'Share Tech Mono', 'Courier New', monospace;
+  --kt-font-ui:      'Orbitron', 'Trebuchet MS', monospace;
 }
 
 /* ── BASE ───────────────────────────────────────────────────── */
-* {
-  font-family: var(--kt-font) !important;
-  letter-spacing: 0.05em !important;
-}
-
 body,
 .backgroundContainer,
 .mainAnimatedPage {
   background-color: var(--kt-bg) !important;
   color: var(--kt-text-body) !important;
+  font-family: var(--kt-font) !important;
 }
 
-/* ── HEADER / NAV ───────────────────────────────────────────── */
+/* ── MATERIAL ICONS FIX ─────────────────────────────────────── */
+/* Ensure icon font renders correctly and isn't overridden */
+.material-icons,
+.md-icon,
+i.md-icon,
+span.material-icons {
+  font-family: 'Material Icons' !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  word-wrap: normal !important;
+  direction: ltr !important;
+  -webkit-font-feature-settings: 'liga' !important;
+  font-feature-settings: 'liga' !important;
+  -webkit-font-smoothing: antialiased !important;
+  color: var(--kt-bronze-light) !important;
+}
+
+button:hover .material-icons,
+paper-icon-button:hover .material-icons,
+a:hover .material-icons {
+  color: var(--kt-cyan) !important;
+}
+
+/* ── CARD IMAGE FIX — critical ──────────────────────────────── */
+/* Do NOT apply background-color to image containers */
+.cardImageContainer {
+  background-color: #111 !important;
+  overflow: hidden !important;
+}
+
+.cardImageContainer img,
+.cardImage img,
+img.cardImage,
+.cardContent img {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Lazy-loaded images */
+.lazy,
+.cardImageContainer .lazy {
+  opacity: 1 !important;
+}
+
+/* ── TYPOGRAPHY ─────────────────────────────────────────────── */
+/* Only apply font to non-icon elements */
+h1, h2, h3, h4, h5, h6,
+.sectionTitle,
+.sectionTitleLink,
+.itemName,
+.originalTitle {
+  font-family: var(--kt-font-ui) !important;
+  color: var(--kt-cyan) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  text-shadow: 0 0 10px var(--kt-cyan-glow) !important;
+}
+
+p, span:not(.material-icons), div, li, label, td, th {
+  color: var(--kt-text-body) !important;
+  font-family: var(--kt-font) !important;
+}
+
+a {
+  color: var(--kt-cyan) !important;
+}
+
+a:hover {
+  color: var(--kt-white) !important;
+  text-shadow: 0 0 6px var(--kt-cyan) !important;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────── */
 .skinHeader,
 .headerTop,
 .appbar-wrapper {
   background: linear-gradient(180deg, #1a1208 0%, #0d0a04 100%) !important;
   border-bottom: 2px solid var(--kt-bronze) !important;
-  box-shadow:
-    0 2px 0 var(--kt-bronze-dark),
-    0 4px 12px rgba(0,0,0,0.8) !important;
+  box-shadow: 0 2px 0 var(--kt-bronze-dark), 0 4px 12px rgba(0,0,0,0.8) !important;
 }
 
-/* ── MAIN DRAWER / SIDEBAR ──────────────────────────────────── */
+/* ── SIDEBAR ────────────────────────────────────────────────── */
 .mainDrawer {
   background: linear-gradient(180deg, #120e06 0%, #0a0804 100%) !important;
   border-right: 2px solid var(--kt-bronze) !important;
@@ -65,9 +136,8 @@ body,
 .navMenuOption {
   color: var(--kt-text-dim) !important;
   border-bottom: 1px solid var(--kt-bronze-dark) !important;
-  font-family: var(--kt-font-ui) !important;
-  letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
 }
 
 .navMenuOption:hover {
@@ -82,37 +152,7 @@ body,
   border-left: 3px solid var(--kt-cyan) !important;
 }
 
-/* ── TYPOGRAPHY ─────────────────────────────────────────────── */
-h1, h2, h3, h4, h5, h6,
-.sectionTitle,
-.sectionTitleLink {
-  font-family: var(--kt-font-ui) !important;
-  color: var(--kt-cyan) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.15em !important;
-  text-shadow: 0 0 10px var(--kt-cyan-glow) !important;
-}
-
-p, span, div, li, label, td, th {
-  color: var(--kt-text-body) !important;
-}
-
-a {
-  color: var(--kt-cyan) !important;
-}
-
-a:hover {
-  color: var(--kt-white) !important;
-  text-shadow: 0 0 6px var(--kt-cyan) !important;
-}
-
-/* ── PANEL / SECTION BORDERS ────────────────────────────────── */
-.homePage,
-.detailPageContent,
-.itemDetailPage {
-  background: var(--kt-bg) !important;
-}
-
+/* ── SECTION TITLES ─────────────────────────────────────────── */
 .sectionTitleContainer {
   border-bottom: 1px solid var(--kt-bronze) !important;
   padding-bottom: 6px !important;
@@ -133,14 +173,7 @@ a:hover {
   border-color: var(--kt-cyan-dim) !important;
   box-shadow:
     0 0 0 1px var(--kt-cyan-dim),
-    0 0 16px rgba(0, 229, 204, 0.15),
-    inset 0 0 12px rgba(0, 0, 0, 0.6) !important;
-}
-
-.cardImageContainer,
-.cardImage,
-.cardContent {
-  background: var(--kt-black) !important;
+    0 0 16px rgba(0, 229, 204, 0.15) !important;
 }
 
 .cardOverlayButton-hover,
@@ -155,7 +188,6 @@ a:hover {
 .cardName,
 .cardTextCentered {
   color: var(--kt-text-body) !important;
-  font-family: var(--kt-font) !important;
   font-size: 0.8em !important;
 }
 
@@ -178,7 +210,7 @@ a:hover {
   box-shadow: 0 0 4px var(--kt-cyan) !important;
 }
 
-/* ── INPUTS & SEARCH ────────────────────────────────────────── */
+/* ── INPUTS ─────────────────────────────────────────────────── */
 .emby-input,
 .emby-textarea,
 .emby-select,
@@ -189,7 +221,6 @@ select {
   color: var(--kt-cyan) !important;
   border: 1px solid var(--kt-bronze) !important;
   border-radius: 2px !important;
-  font-family: var(--kt-font) !important;
   caret-color: var(--kt-cyan) !important;
 }
 
@@ -214,39 +245,19 @@ button[is="emby-button"] {
   color: var(--kt-cyan) !important;
   border: 1px solid var(--kt-bronze) !important;
   border-radius: 2px !important;
-  font-family: var(--kt-font-ui) !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
   transition: all 0.15s ease !important;
-  box-shadow: inset 0 1px 0 rgba(184,146,58,0.2) !important;
 }
 
 .raised:hover,
 .emby-button:hover {
   border-color: var(--kt-cyan) !important;
   color: var(--kt-white) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(184,146,58,0.2),
-    0 0 10px var(--kt-cyan-glow) !important;
-}
-
-.raised.accent,
-.button-accent {
-  background: var(--kt-cyan-dim) !important;
-  color: var(--kt-black) !important;
-  border-color: var(--kt-cyan) !important;
+  box-shadow: 0 0 10px var(--kt-cyan-glow) !important;
 }
 
 /* ── DETAIL PAGE ────────────────────────────────────────────── */
-.itemName,
-.originalTitle {
-  font-family: var(--kt-font-ui) !important;
-  color: var(--kt-cyan) !important;
-  text-shadow: 0 0 12px rgba(0,229,204,0.4) !important;
-  letter-spacing: 0.12em !important;
-  text-transform: uppercase !important;
-}
-
 .overview {
   color: var(--kt-text-body) !important;
   line-height: 1.9 !important;
@@ -285,7 +296,6 @@ button[is="emby-button"] {
 
 .emby-tab-button {
   color: var(--kt-text-dim) !important;
-  font-family: var(--kt-font-ui) !important;
   text-transform: uppercase !important;
   letter-spacing: 0.1em !important;
 }
@@ -308,9 +318,7 @@ button[is="emby-button"] {
   background: var(--kt-panel) !important;
   border: 2px solid var(--kt-bronze) !important;
   border-radius: 2px !important;
-  box-shadow:
-    0 0 0 1px var(--kt-bronze-dark),
-    0 8px 40px rgba(0,0,0,0.9) !important;
+  box-shadow: 0 0 0 1px var(--kt-bronze-dark), 0 8px 40px rgba(0,0,0,0.9) !important;
   color: var(--kt-text-body) !important;
 }
 
@@ -319,7 +327,6 @@ button[is="emby-button"] {
   background: linear-gradient(180deg, #1a1208 0%, #0d0a04 100%) !important;
   border-bottom: 2px solid var(--kt-bronze) !important;
   color: var(--kt-cyan) !important;
-  font-family: var(--kt-font-ui) !important;
   text-transform: uppercase !important;
   letter-spacing: 0.1em !important;
 }
@@ -353,17 +360,6 @@ button[is="emby-button"] {
   background-color: var(--kt-bg) !important;
 }
 
-/* ── ICONS ──────────────────────────────────────────────────── */
-.material-icons,
-.md-icon {
-  color: var(--kt-bronze-light) !important;
-}
-
-button:hover .material-icons,
-paper-icon-button:hover .material-icons {
-  color: var(--kt-cyan) !important;
-}
-
 /* ── SCROLLBAR ──────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
@@ -379,13 +375,12 @@ paper-icon-button:hover .material-icons {
   background: var(--kt-bronze);
 }
 
-/* ── TOAST / NOTIFICATIONS ──────────────────────────────────── */
+/* ── TOAST ──────────────────────────────────────────────────── */
 .toast {
   background: var(--kt-panel) !important;
   border: 1px solid var(--kt-bronze) !important;
   border-radius: 2px !important;
   color: var(--kt-cyan) !important;
-  font-family: var(--kt-font) !important;
 }
 
 /* ── VIDEO PLAYER OSD ───────────────────────────────────────── */
