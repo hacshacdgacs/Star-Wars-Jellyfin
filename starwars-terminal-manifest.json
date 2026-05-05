@@ -1,11 +1,11 @@
 [
   {
     "name": "Star Wars Terminal",
-    "author": "YOUR_USERNAME",
+    "author": "hacshacdgacs",
     "url": [
       {
         "majorServerVersions": [10, 11],
-        "urls": ["https://cdn.jsdelivr.net/gh/YOUR_USERNAME/YOUR_REPO@main/starwars-terminal-jellyfin.css"]
+        "urls": ["https://cdn.jsdelivr.net/gh/hacshacdgacs/Star-Wars-Jellyfin@main/starwars-terminal-jellyfin.css"]
       }
     ],
     "colorSchemes": []
