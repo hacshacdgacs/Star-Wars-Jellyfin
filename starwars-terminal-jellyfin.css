@@ -177,3 +177,113 @@ input,textarea,select {
   background:#04041a!important;
   border:1px solid var(--kt-steel)!important;
 }
+/* ============================================================
+   🔴 HARD OVERRIDE PATCH — VIDEO + HEADERS
+   Put this at the VERY END of your CSS
+   ============================================================ */
+
+
+/* ─────────────────────────────────────────────
+   1. VIDEO: FORCE VISIBILITY (ANTI-DISAPPEAR)
+   ───────────────────────────────────────────── */
+
+/* Target ALL known Jellyfin player roots */
+body[class*="video"] video,
+body[class*="Video"] video,
+.htmlvideoplayer video,
+.videoPlayerContainer video {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  z-index: 2147483647 !important;
+  position: relative !important;
+  background: #000 !important;
+}
+
+/* Kill ANY overlay that could sit above video */
+body[class*="video"] *::before,
+body[class*="video"] *::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Remove filters/blending that can hide video */
+body[class*="video"] * {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Force container stacking sanity */
+.videoPlayerContainer,
+.htmlvideoplayer,
+.htmlvideoplayer-wrap {
+  position: relative !important;
+  z-index: 0 !important;
+  isolation: isolate !important;
+  background: #000 !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   2. REMOVE HEADER BOXES COMPLETELY
+   ───────────────────────────────────────────── */
+
+.sectionTitleLink,
+.sectionTitleButton,
+.emby-tab-button,
+.navMenuOption,
+button,
+a {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+
+/* Kill focus/active artifacts */
+*:focus,
+*:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   3. GOLD HOVER (ULTRA-AGGRESSIVE)
+   ───────────────────────────────────────────── */
+
+/* Catch EVERYTHING clickable */
+a:hover,
+button:hover,
+[role="button"]:hover,
+.emby-tab-button:hover,
+.sectionTitleLink:hover,
+.navMenuOption:hover {
+  color: #f5c518 !important;
+  text-shadow:
+    0 0 10px rgba(245,197,24,0.8),
+    0 0 20px rgba(245,197,24,0.4) !important;
+}
+
+/* Also force children to inherit */
+a:hover *,
+button:hover *,
+.sectionTitleLink:hover *,
+.emby-tab-button:hover *,
+.navMenuOption:hover * {
+  color: inherit !important;
+  text-shadow: inherit !important;
+}
+
+
+/* ─────────────────────────────────────────────
+   4. DEBUG (OPTIONAL — REMOVE LATER)
+   This helps confirm hover is actually firing
+   ───────────────────────────────────────────── */
+
+/*
+a:hover, button:hover {
+  background: rgba(255,0,0,0.2) !important;
+}
+*/
