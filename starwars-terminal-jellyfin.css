@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v3.8 — No scanline overlay, video fix, gold hover fixed
+   v4.0 — Clean rewrite, video player untouched
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -36,6 +36,29 @@ body,
   background-color: var(--kt-bg) !important;
   color: var(--kt-text) !important;
   font-family: var(--kt-font) !important;
+}
+
+/* ── SCANLINE OVERLAY — hidden during video ─────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 10, 40, 0.25) 0px,
+    rgba(0, 10, 40, 0.25) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+body:has(.videoPlayerContainer)::after,
+body:has(.htmlvideoplayer) ::after,
+body:has(#videoPlayer)::after {
+  display: none;
 }
 
 /* ── MATERIAL ICONS ─────────────────────────────────────────── */
@@ -78,7 +101,6 @@ p, span:not(.material-icons), li, label, td, th {
 /* ── UNIVERSAL GOLD HOVER ───────────────────────────────────── */
 a:hover,
 a:hover span:not(.material-icons),
-button:hover span:not(.material-icons),
 .card:hover .cardText,
 .card:hover .cardName,
 .card:hover .cardTextCentered,
@@ -95,9 +117,7 @@ button:hover span:not(.material-icons),
 .genreItem:hover,
 .tagItem:hover,
 .sectionTitleLink:hover,
-.sectionTitleLink:hover *:not(.material-icons),
-.raised:hover,
-.emby-button:hover span:not(.material-icons) {
+.sectionTitleLink:hover *:not(.material-icons) {
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
@@ -192,7 +212,7 @@ button:hover .material-icons {
   margin-bottom: 10px !important;
 }
 
-/* ── NEXT UP & FLAT BUTTONS — no box ───────────────────────── */
+/* ── FLAT BUTTONS — no box ──────────────────────────────────── */
 .button-flat,
 a.button-flat,
 .emby-button.button-flat,
@@ -262,10 +282,9 @@ input:focus {
   border-bottom: 1px solid var(--kt-steel) !important;
 }
 
-/* ── BUTTONS ────────────────────────────────────────────────── */
-.raised,
-.emby-button,
-button[is="emby-button"] {
+/* ── BUTTONS — exclude video player controls ────────────────── */
+.raised:not(.videoPlayer *),
+button[is="emby-button"]:not(.videoPlayer *):not(.videoOsd *):not(.osdControls *) {
   background: linear-gradient(180deg, #0e0e22 0%, #05050f 100%) !important;
   color: var(--kt-blue) !important;
   border: 1px solid var(--kt-steel) !important;
@@ -278,9 +297,10 @@ button[is="emby-button"] {
 }
 
 .raised:hover,
-.emby-button:hover {
+button[is="emby-button"]:not(.videoPlayer *):not(.osdControls *):hover {
   border-color: var(--kt-yellow) !important;
   box-shadow: 0 0 12px var(--kt-yellow-glow) !important;
+  color: var(--kt-yellow) !important;
 }
 
 /* ── DETAIL PAGE ────────────────────────────────────────────── */
@@ -399,19 +419,4 @@ button[is="emby-button"] {
   border-radius: 3px !important;
   color: var(--kt-blue-bright) !important;
   font-family: var(--kt-font) !important;
-}
-
-/* ── VIDEO PLAYER — leave completely alone ──────────────────── */
-video {
-  z-index: auto !important;
-  position: static !important;
-  filter: none !important;
-}
-
-/* ── HIDE SCANLINES DURING VIDEO PLAYBACK ───────────────────── */
-body.backdrop-img-url::after,
-body:has(#videoPlayer)::after,
-body:has(.videoPlayerContainer)::after,
-body:has(.htmlvideoplayer)::after {
-  display: none !important;
 }
