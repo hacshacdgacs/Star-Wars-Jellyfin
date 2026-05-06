@@ -421,33 +421,67 @@ button[is="emby-button"]:not(.videoPlayer *):not(.osdControls *):hover {
   font-family: var(--kt-font) !important;
 }
 
-/* ── VIDEO PAGE — reset everything ──────────────────────────── */
-.videoPlayerContainer,
-.videoPlayerContainer *,
-.htmlvideoplayer,
-.htmlvideoplayer *,
-.videoOsdPage,
-.videoOsdPage *,
-#videoPlayer,
-#videoPlayer * {
-  background: transparent !important;
-  background-color: transparent !important;
-  color: inherit !important;
-  font-family: inherit !important;
-  border: none !important;
-  box-shadow: none !important;
-  filter: none !important;
-  text-shadow: none !important;
-  letter-spacing: normal !important;
-  text-transform: none !important;
+/* ── VIDEO PAGE — minimal overlay only, preserve player functionality ── */
+/* Remove scanline overlay during video playback */
+body:has(.videoPlayerContainer)::after,
+body:has(.htmlvideoplayer)::after,
+body:has(#videoPlayer)::after {
+  display: none;
 }
 
+/* Only reset visual styling, NOT layout/positioning properties */
+.videoPlayerContainer,
+.htmlvideoplayer,
+.videoOsdPage,
+#videoPlayer {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Style overlays minimally without breaking player */
+.videoOsdPage {
+  background: rgba(0,0,0,0.75) !important;
+}
+
+.videoOsdPage button:not(.material-icons),
+.videoOsdPage .btnPlayPause,
+.videoOsdPage .osdControls button {
+  background: rgba(5,5,15,0.8) !important;
+  color: var(--kt-blue) !important;
+  border: 1px solid var(--kt-steel) !important;
+}
+
+.videoOsdPage button:hover,
+.videoOsdPage .btnPlayPause:hover {
+  border-color: var(--kt-yellow) !important;
+  color: var(--kt-yellow) !important;
+}
+
+/* Video element itself - preserve all native functionality */
 video,
 video * {
   background: #000 !important;
-  filter: none !important;
-  position: relative !important;
-  display: block !important;
   width: 100% !important;
   height: 100% !important;
+  object-fit: contain !important;
+}
+
+/* Preserve technical metadata and controls */
+.videoPlayerContainer .videoOsdControls,
+.htmlvideoplayer .videoOsdControls {
+  z-index: 3 !important;
+}
+
+/* Don't strip critical properties from video containers */
+.videoPlayerContainer,
+.htmlvideoplayer {
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+/* Keep subtitle and audio track selection working */
+.videoOsdPage .osdControls select {
+  background: rgba(5,5,15,0.9) !important;
+  color: var(--kt-blue) !important;
+  border: 1px solid var(--kt-steel) !important;
 }
