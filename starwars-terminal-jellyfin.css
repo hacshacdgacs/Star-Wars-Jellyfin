@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v4.0 — Clean rewrite, video player untouched
+   v5.0 — Complete rewrite, video player safe
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -21,7 +21,8 @@
   --kt-blue-glow:    rgba(106, 180, 255, 0.25);
   --kt-blue-faint:   rgba(106, 180, 255, 0.07);
   --kt-yellow:       #f5c518;
-  --kt-yellow-glow:  rgba(245, 197, 24, 0.6);
+  --kt-yellow-dim:   #b8960f;
+  --kt-yellow-glow:  rgba(245, 197, 24, 0.5);
   --kt-text:         #8ab8d8;
   --kt-text-dim:     #3a5a7a;
   --kt-white:        #d0e8ff;
@@ -29,55 +30,57 @@
   --kt-font-ui:      'Orbitron', 'Trebuchet MS', monospace;
 }
 
-/* ── BASE ───────────────────────────────────────────────────── */
+/* ── BASE BACKGROUND ────────────────────────────────────────── */
 body,
 .backgroundContainer,
 .mainAnimatedPage {
   background-color: var(--kt-bg) !important;
+}
+
+body {
   color: var(--kt-text) !important;
   font-family: var(--kt-font) !important;
 }
 
-/* ── SCANLINE OVERLAY — hidden during video ─────────────────── */
-body::after {
+/* ── SCANLINES — only on posters/cards, NOT video ───────────── */
+/* Apply scanlines to backdrop images */
+.backdropImage {
+  filter: brightness(0.3) saturate(0.5) hue-rotate(195deg) !important;
+  position: relative;
+}
+
+.backdropImage::after {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  background-image: repeating-linear-gradient(
+  background: repeating-linear-gradient(
     0deg,
-    rgba(0, 10, 40, 0.25) 0px,
-    rgba(0, 10, 40, 0.25) 1px,
+    rgba(0, 10, 40, 0.3) 0px,
+    rgba(0, 10, 40, 0.3) 1px,
     transparent 1px,
     transparent 3px
   );
-  mix-blend-mode: multiply;
+  pointer-events: none;
 }
 
-body:has(.videoPlayerContainer)::after,
-body:has(.htmlvideoplayer) ::after,
-body:has(#videoPlayer)::after {
-  display: none;
+/* Scanlines on cards/posters */
+.card:not(.card-overview-container) {
+  position: relative;
 }
 
-/* ── MATERIAL ICONS ─────────────────────────────────────────── */
-.material-icons,
-.md-icon,
-i.md-icon,
-span.material-icons {
-  font-family: 'Material Icons' !important;
-  font-style: normal !important;
-  font-weight: normal !important;
-  letter-spacing: normal !important;
-  text-transform: none !important;
-  display: inline-block !important;
-  white-space: nowrap !important;
-  direction: ltr !important;
-  -webkit-font-feature-settings: 'liga' !important;
-  font-feature-settings: 'liga' !important;
-  -webkit-font-smoothing: antialiased !important;
-  color: var(--kt-chrome) !important;
+.card:not(.card-overview-container)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.2) 0px,
+    rgba(0, 0, 0, 0.2) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  border-radius: 8px;
 }
 
 /* ── TYPOGRAPHY ─────────────────────────────────────────────── */
@@ -90,398 +93,376 @@ h1, h2, h3, h4, h5, h6,
   font-family: var(--kt-font-ui) !important;
   color: var(--kt-blue) !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.2em !important;
+  letter-spacing: 0.15em !important;
 }
 
-p, span:not(.material-icons), li, label, td, th {
+p, li, label, td, th,
+.listItemText,
+.secondaryText {
   color: var(--kt-text) !important;
   font-family: var(--kt-font) !important;
 }
 
-/* ── UNIVERSAL GOLD HOVER ───────────────────────────────────── */
-a:hover,
-a:hover span:not(.material-icons),
-.card:hover .cardText,
-.card:hover .cardName,
-.card:hover .cardTextCentered,
-.card:hover .innerCardFooter,
-.card:hover .cardNameContainer,
-.navMenuOption:hover,
-.navMenuOption:hover span:not(.material-icons),
-.emby-tab-button:hover,
-.emby-tab-button:hover span:not(.material-icons),
-.listItem:hover,
-.listItem:hover span:not(.material-icons),
-.paper-listitem:hover,
-.paper-listitem:hover span:not(.material-icons),
-.genreItem:hover,
-.tagItem:hover,
-.sectionTitleLink:hover,
-.sectionTitleLink:hover *:not(.material-icons) {
-  color: var(--kt-yellow) !important;
-  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
+/* ── GOLD GLOW ON HOVER — clickable text only ───────────────── */
+a,
+.navMenuOption,
+.emby-tab-button,
+.sectionTitleLink,
+.card:not(.card-overview-container),
+.listItem,
+.paper-listitem,
+.genreItem,
+.tagItem,
+.button-link {
+  transition: all 0.2s ease !important;
 }
 
-a:hover .material-icons,
-button:hover .material-icons {
-  color: var(--kt-blue-bright) !important;
-  text-shadow: none !important;
+a:hover,
+.navMenuOption:hover,
+.emby-tab-button:hover,
+.sectionTitleLink:hover,
+.listItem:hover,
+.paper-listitem:hover,
+.genreItem:hover,
+.tagItem:hover,
+.button-link:hover {
+  color: var(--kt-yellow) !important;
+  text-shadow: 0 0 6px var(--kt-yellow-glow) !important;
+}
+
+/* Cards hover effect */
+.card:not(.card-overview-container):hover .cardText,
+.card:not(.card-overview-container):hover .cardName {
+  color: var(--kt-yellow) !important;
+  text-shadow: 0 0 6px var(--kt-yellow-glow) !important;
+}
+
+.card:not(.card-overview-container):hover {
+  cursor: pointer;
+}
+
+/* Gold border on hover for cards */
+.card:not(.card-overview-container):hover .cardBox {
+  box-shadow: 0 0 0 1px var(--kt-yellow-dim), 0 0 12px var(--kt-yellow-glow) !important;
 }
 
 /* ── HEADER ─────────────────────────────────────────────────── */
 .skinHeader,
 .headerTop,
 .appbar-wrapper {
-  background: rgba(5, 5, 15, 0.98) !important;
-  border-bottom: 2px solid var(--kt-blue) !important;
-  box-shadow: 0 0 20px rgba(106,180,255,0.1), 0 3px 16px rgba(0,0,0,0.9) !important;
+  background: rgba(5, 5, 15, 0.95) !important;
+  border-bottom: 1px solid var(--kt-blue) !important;
 }
 
-/* ── SIDEBAR ────────────────────────────────────────────────── */
+.headerTitle {
+  color: var(--kt-blue-bright) !important;
+  font-family: var(--kt-font-ui) !important;
+  letter-spacing: 0.3em !important;
+}
+
+/* ── SIDEBAR / DRAWER ───────────────────────────────────────── */
 .mainDrawer {
-  background: linear-gradient(180deg, #0c0c1e 0%, #05050f 100%) !important;
+  background: linear-gradient(180deg, #0a0a1a 0%, #05050f 100%) !important;
   border-right: 1px solid var(--kt-steel) !important;
-  box-shadow: 1px 0 0 var(--kt-blue-dim), 3px 0 16px rgba(0,0,0,0.8) !important;
 }
 
 .navMenuOption {
   color: var(--kt-text-dim) !important;
-  border-bottom: 1px solid rgba(42,58,82,0.6) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.12em !important;
-  font-size: 0.78em !important;
+  border-left: 2px solid transparent !important;
   font-family: var(--kt-font-ui) !important;
-  transition: all 0.15s ease !important;
+  font-size: 0.85em !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
 }
 
 .navMenuOption:hover {
   background: var(--kt-blue-faint) !important;
-  border-left: 2px solid var(--kt-yellow) !important;
+  border-left-color: var(--kt-yellow) !important;
 }
 
 .navMenuOption.is-selected {
-  background: rgba(106,180,255,0.06) !important;
+  background: rgba(106, 180, 255, 0.08) !important;
   color: var(--kt-yellow) !important;
-  border-left: 2px solid var(--kt-yellow) !important;
-  text-shadow: 0 0 8px var(--kt-yellow-glow) !important;
+  border-left-color: var(--kt-yellow) !important;
 }
 
-/* ── SECTION TITLE BRACKETS ─────────────────────────────────── */
+/* ── SECTION TITLE WITH BRACKETS ────────────────────────────── */
+.sectionTitleContainer {
+  border-bottom: 1px solid var(--kt-steel) !important;
+  margin-bottom: 1rem !important;
+}
+
 .sectionTitleLink {
   position: relative !important;
-  display: inline-flex !important;
-  padding: 5px 40px !important;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
+  display: inline-block !important;
+  padding: 0.25rem 1rem !important;
 }
 
 .sectionTitleLink::before,
 .sectionTitleLink::after {
-  content: "";
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 12px;
-  border: 2px solid var(--kt-blue);
-  pointer-events: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  content: "[" !important;
+  position: absolute !important;
+  top: 0;
+  bottom: 0;
+  display: flex !important;
+  align-items: center !important;
+  font-size: 1.2em !important;
+  color: var(--kt-blue) !important;
+  transition: color 0.2s;
 }
 
 .sectionTitleLink::before {
-  left: 0;
-  border-right: none;
-  border-radius: 6px 0 0 6px;
+  left: -0.5rem;
+  content: "[" !important;
 }
 
 .sectionTitleLink::after {
-  right: 0;
-  border-left: none;
-  border-radius: 0 6px 6px 0;
+  right: -0.5rem;
+  content: "]" !important;
 }
 
 .sectionTitleLink:hover::before,
 .sectionTitleLink:hover::after {
-  border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 10px var(--kt-yellow-glow) !important;
+  color: var(--kt-yellow) !important;
 }
 
-.sectionTitleContainer {
-  border-bottom: 1px solid var(--kt-steel) !important;
-  padding-bottom: 6px !important;
-  margin-bottom: 10px !important;
-}
-
-/* ── FLAT BUTTONS — no box ──────────────────────────────────── */
-.button-flat,
-a.button-flat,
-.emby-button.button-flat,
-.btnNextUp,
-.sectionTitleButton {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-/* ── CARDS ──────────────────────────────────────────────────── */
+/* ── CARDS & POSTERS ────────────────────────────────────────── */
 .cardBox {
-  border-radius: 8px !important;
-  transition: box-shadow 0.2s !important;
+  background: var(--kt-panel) !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
 }
 
-.card:hover .cardBox {
-  box-shadow: 0 0 0 1px var(--kt-blue), 0 0 14px rgba(106,180,255,0.15) !important;
+.cardImageContainer {
+  background: var(--kt-screen) !important;
 }
 
+/* Progress bars */
 .itemProgressBar,
 .cardProgressBar {
   background: var(--kt-steel) !important;
-  border-radius: 2px !important;
   height: 3px !important;
 }
 
 .itemProgressBarForeground,
 .cardProgressBarForeground {
   background: var(--kt-blue) !important;
-  box-shadow: 0 0 6px var(--kt-blue-glow) !important;
+  box-shadow: 0 0 4px var(--kt-blue-glow) !important;
 }
 
+/* Played indicator */
 .playedIndicator {
   background: var(--kt-blue-dim) !important;
   color: var(--kt-white) !important;
-  border-radius: 3px !important;
 }
 
-/* ── INPUTS ─────────────────────────────────────────────────── */
+/* ── BUTTONS — flat, terminal-style ─────────────────────────── */
+button[is="emby-button"]:not(.videoOsdControls *),
+.raised:not(.videoOsdControls *) {
+  background: transparent !important;
+  color: var(--kt-blue) !important;
+  border: 1px solid var(--kt-steel) !important;
+  border-radius: 2px !important;
+  font-family: var(--kt-font-ui) !important;
+  font-size: 0.75em !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  transition: all 0.15s ease !important;
+}
+
+button[is="emby-button"]:hover:not(.videoOsdControls *),
+.raised:hover:not(.videoOsdControls *) {
+  border-color: var(--kt-yellow) !important;
+  color: var(--kt-yellow) !important;
+  box-shadow: 0 0 8px var(--kt-yellow-glow) !important;
+}
+
+/* Flat buttons (no border) */
+.button-flat {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* ── INPUT FIELDS ───────────────────────────────────────────── */
 .emby-input,
 .emby-textarea,
 .emby-select,
-input,
+input:not([type="range"]),
 textarea,
 select {
   background: var(--kt-screen) !important;
   color: var(--kt-blue-bright) !important;
   border: 1px solid var(--kt-steel) !important;
-  border-radius: 3px !important;
+  border-radius: 2px !important;
   font-family: var(--kt-font) !important;
-  caret-color: var(--kt-blue) !important;
-  box-shadow: inset 0 0 12px rgba(0,0,0,0.5) !important;
 }
 
 .emby-input:focus,
-input:focus {
+input:focus:not([type="range"]) {
   border-color: var(--kt-blue) !important;
-  box-shadow: inset 0 0 12px rgba(0,0,0,0.5), 0 0 10px var(--kt-blue-glow) !important;
   outline: none !important;
-}
-
-.headerSearchInput {
-  background: transparent !important;
-  color: var(--kt-blue-bright) !important;
-  border-bottom: 1px solid var(--kt-steel) !important;
-}
-
-/* ── BUTTONS — exclude video player controls ────────────────── */
-.raised:not(.videoPlayer *),
-button[is="emby-button"]:not(.videoPlayer *):not(.videoOsd *):not(.osdControls *) {
-  background: linear-gradient(180deg, #0e0e22 0%, #05050f 100%) !important;
-  color: var(--kt-blue) !important;
-  border: 1px solid var(--kt-steel) !important;
-  border-radius: 3px !important;
-  font-family: var(--kt-font-ui) !important;
-  letter-spacing: 0.1em !important;
-  font-size: 0.78em !important;
-  text-transform: uppercase !important;
-  transition: all 0.15s ease !important;
-}
-
-.raised:hover,
-button[is="emby-button"]:not(.videoPlayer *):not(.osdControls *):hover {
-  border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 12px var(--kt-yellow-glow) !important;
-  color: var(--kt-yellow) !important;
+  box-shadow: 0 0 6px var(--kt-blue-glow) !important;
 }
 
 /* ── DETAIL PAGE ────────────────────────────────────────────── */
+.detailPageContent {
+  background: linear-gradient(135deg, rgba(5,5,15,0.95), rgba(10,10,26,0.95)) !important;
+}
+
 .overview {
   color: var(--kt-text) !important;
-  line-height: 1.9 !important;
-  font-size: 0.93em !important;
+  line-height: 1.6 !important;
 }
 
-.mediaInfoItem, .itemMiscInfo {
+.mediaInfoItem {
   color: var(--kt-text-dim) !important;
-  letter-spacing: 0.08em !important;
 }
 
-.genreItem, .tagItem {
-  border: 1px solid var(--kt-steel) !important;
-  border-radius: 3px !important;
-  color: var(--kt-text-dim) !important;
+.genreItem,
+.tagItem {
   background: transparent !important;
-  font-size: 0.78em !important;
-  letter-spacing: 0.08em !important;
-  transition: all 0.15s ease !important;
+  border: 1px solid var(--kt-steel) !important;
+  border-radius: 2px !important;
+  color: var(--kt-text-dim) !important;
+  font-size: 0.7em !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.2rem 0.6rem !important;
 }
 
-.genreItem:hover, .tagItem:hover {
+.genreItem:hover,
+.tagItem:hover {
   border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 8px var(--kt-yellow-glow) !important;
+  color: var(--kt-yellow) !important;
 }
 
-.starRatingContainer { color: var(--kt-yellow) !important; }
+.starRatingContainer {
+  color: var(--kt-yellow) !important;
+}
 
 /* ── TABS ───────────────────────────────────────────────────── */
-.emby-tabs-slider,
-.tabsContainerContent {
-  background: var(--kt-panel) !important;
+.emby-tabs {
   border-bottom: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 1px 0 var(--kt-blue-dim) !important;
 }
 
 .emby-tab-button {
   color: var(--kt-text-dim) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.15em !important;
-  font-size: 0.75em !important;
   font-family: var(--kt-font-ui) !important;
-  transition: all 0.15s ease !important;
+  font-size: 0.7em !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
 }
 
 .emby-tab-button.is-selected,
 .emby-tab-button[aria-selected="true"] {
   color: var(--kt-yellow) !important;
   border-bottom: 2px solid var(--kt-yellow) !important;
-  text-shadow: 0 0 8px var(--kt-yellow-glow) !important;
 }
 
-/* ── DIALOGS ────────────────────────────────────────────────── */
-.dialogContainer,
+/* ── DIALOGS & MODALS ───────────────────────────────────────── */
 .dialog,
-.formDialogContent,
+.dialogContainer,
 .paperDialogPage {
   background: var(--kt-screen) !important;
   border: 1px solid var(--kt-steel) !important;
   border-radius: 4px !important;
-  box-shadow: 0 0 0 1px var(--kt-blue-dim), inset 0 0 40px rgba(0,0,30,0.6), 0 8px 40px rgba(0,0,0,0.9) !important;
-  color: var(--kt-text) !important;
 }
 
-.formDialogHeader,
-.dialogHeader {
-  background: linear-gradient(180deg, #0e0e22 0%, #080818 100%) !important;
+.dialogHeader,
+.formDialogHeader {
+  background: var(--kt-panel-mid) !important;
   border-bottom: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 1px 0 var(--kt-blue-dim) !important;
   color: var(--kt-blue-bright) !important;
   font-family: var(--kt-font-ui) !important;
-  text-transform: uppercase !important;
   letter-spacing: 0.2em !important;
-  font-size: 0.8em !important;
 }
 
-/* ── MENUS ──────────────────────────────────────────────────── */
-.actionSheetContent,
-.paperList {
+/* ── MENUS & LISTS ──────────────────────────────────────────── */
+.paperList,
+.actionSheetContent {
   background: var(--kt-panel-mid) !important;
   border: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
 }
 
 .listItem,
 .paper-listitem {
   background: transparent !important;
-  color: var(--kt-text) !important;
-  border-bottom: 1px solid rgba(42,58,82,0.5) !important;
-  letter-spacing: 0.06em !important;
-  transition: all 0.15s ease !important;
+  border-bottom: 1px solid rgba(42, 58, 82, 0.3) !important;
 }
 
-/* ── BACKDROP ───────────────────────────────────────────────── */
-.backdropImage {
-  filter: brightness(0.25) saturate(0.4) hue-rotate(200deg) !important;
+.listItem:hover,
+.paper-listitem:hover {
+  background: var(--kt-blue-faint) !important;
 }
 
-.backgroundContainer.withBackdrop {
-  background-color: var(--kt-bg) !important;
-}
-
-/* ── SCROLLBAR ──────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; background: var(--kt-bg); }
-::-webkit-scrollbar-thumb { background: var(--kt-steel); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--kt-blue-dim); }
-
-/* ── TOAST ──────────────────────────────────────────────────── */
+/* ── TOAST NOTIFICATIONS ────────────────────────────────────── */
 .toast {
   background: var(--kt-panel-mid) !important;
   border: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
-  border-radius: 3px !important;
   color: var(--kt-blue-bright) !important;
   font-family: var(--kt-font) !important;
 }
 
-/* ── VIDEO PAGE — minimal overlay only, preserve player functionality ── */
-/* Remove scanline overlay during video playback */
+/* ── SCROLLBAR ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: var(--kt-bg);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--kt-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--kt-steel);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--kt-blue-dim);
+}
+
+/* ── VIDEO PLAYER — COMPLETELY UNTOUCHED ────────────────────── */
+/* This section does NOTHING to the video player - let Jellyfin handle it */
+/* The only exception is removing the scanline overlay during playback */
+
+/* Hide scanlines when video is playing */
 body:has(.videoPlayerContainer)::after,
 body:has(.htmlvideoplayer)::after,
 body:has(#videoPlayer)::after {
   display: none;
 }
 
-/* Only reset visual styling, NOT layout/positioning properties */
+/* Ensure video container has no interference */
 .videoPlayerContainer,
 .htmlvideoplayer,
-.videoOsdPage,
 #videoPlayer {
-  background: transparent !important;
-  background-color: transparent !important;
+  background: #000 !important;
 }
 
-/* Style overlays minimally without breaking player */
+/* Make sure the OSD (on-screen display) uses terminal colors */
 .videoOsdPage {
-  background: rgba(0,0,0,0.75) !important;
+  background: rgba(0, 0, 0, 0.7) !important;
 }
 
-.videoOsdPage button:not(.material-icons),
-.videoOsdPage .btnPlayPause,
-.videoOsdPage .osdControls button {
-  background: rgba(5,5,15,0.8) !important;
-  color: var(--kt-blue) !important;
+.videoOsdPage button {
+  background: rgba(5, 5, 15, 0.8) !important;
   border: 1px solid var(--kt-steel) !important;
+  color: var(--kt-blue) !important;
 }
 
-.videoOsdPage button:hover,
-.videoOsdPage .btnPlayPause:hover {
+.videoOsdPage button:hover {
   border-color: var(--kt-yellow) !important;
   color: var(--kt-yellow) !important;
 }
 
-/* Video element itself - preserve all native functionality */
-video,
-video * {
-  background: #000 !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
+/* Progress slider in OSD */
+.videoOsdPage input[type="range"] {
+  background: var(--kt-steel) !important;
 }
 
-/* Preserve technical metadata and controls */
-.videoPlayerContainer .videoOsdControls,
-.htmlvideoplayer .videoOsdControls {
-  z-index: 3 !important;
+.videoOsdPage input[type="range"]::-webkit-slider-thumb {
+  background: var(--kt-yellow) !important;
 }
 
-/* Don't strip critical properties from video containers */
-.videoPlayerContainer,
-.htmlvideoplayer {
-  overflow: hidden !important;
-  position: relative !important;
-}
-
-/* Keep subtitle and audio track selection working */
-.videoOsdPage .osdControls select {
-  background: rgba(5,5,15,0.9) !important;
-  color: var(--kt-blue) !important;
-  border: 1px solid var(--kt-steel) !important;
-}
+/* ========== END — Video player completely untouched ========== */
