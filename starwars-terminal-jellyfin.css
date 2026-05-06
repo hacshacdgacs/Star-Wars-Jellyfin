@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR TERMINAL — Jellyfin Theme
-   v4.3 (surgical video fix — OSD isolated, video untouchable)
+   v4.4 (video visibility hard-fix — zero collateral damage)
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
@@ -44,17 +44,15 @@ body:not(.videoPlayerPage):not(.videoPlayer-withGui)::after{
   );
 }
 
-/* ── VIDEO PLAYER: SURGICAL FIX ────────────────────────── */
+/* ── VIDEO PLAYER: MINIMAL FIX ─────────────────────────── */
 
-/* 1. Kill ONLY our scanline overlay when video plays */
+/* Only remove our scanlines */
 body.videoPlayerPage::after,
 body.videoPlayer-withGui::after {
   display: none !important;
-  content: none !important;
 }
 
-/* 2. Force video element to absolute top of its own context */
-/*    BUT don't touch pseudo-elements or filters globally */
+/* Force the actual video tag visible — ONLY the video tag */
 video {
   opacity: 1 !important;
   visibility: visible !important;
@@ -62,44 +60,8 @@ video {
   position: relative !important;
   z-index: 1 !important;
   background: #000 !important;
-}
-
-/* 3. Isolate the player root so z-index stays sane */
-.videoPlayerContainer,
-.htmlvideoplayer,
-.htmlvideoplayer-wrap {
-  background: #000 !important;
-  position: relative !important;
-  isolation: isolate !important;
-}
-
-/* 4. CRITICAL: Make OSD controls transparent to clicks where empty, 
-      but keep them interactive. The video sits at z-index 1 inside
-      the isolated container, so we push OSD above it only where needed */
-.osdHeader,
-.videoOsdBottom,
-.upNextContainer,
-.videoPlayerContainer .osdContainer,
-.videoPlayerContainer [class*="osd"],
-.videoPlayerContainer .subtitleContainer,
-.videoPlayerContainer .bufferingIndicator {
-  position: relative !important;
-  z-index: 2 !important;
-  background: transparent !important;
-}
-
-/* 5. Ensure no solid backgrounds leak through on OSD elements */
-.videoPlayerContainer .osdContainer *,
-.videoPlayerContainer [class*="osd"] *,
-.videoPlayerContainer .subtitleContainer * {
-  background-color: transparent !important;
-}
-
-/* 6. Subtitle text needs to stay visible though */
-.videoPlayerContainer .subtitleContainer .subtitleText,
-.videoPlayerContainer .subtitleContainer span {
-  background-color: rgba(0,0,0,0.6) !important;
-  color: #fff !important;
+  min-width: 1px !important;
+  min-height: 1px !important;
 }
 
 /* ── TYPOGRAPHY ─────────────────────────────────────────── */
