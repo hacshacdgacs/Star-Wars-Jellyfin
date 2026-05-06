@@ -1,12 +1,10 @@
 /* ============================================================
    KOTOR TERMINAL — Jellyfin Theme
-   v4.2 (fixed video visibility + image loading)
+   v4.3 (surgical video fix — OSD isolated, video untouchable)
    ============================================================ */
 
-/* ── FONTS ───────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
 
-/* ── COLORS ──────────────────────────────────────────────── */
 :root {
   --kt-bg:#05050f;
   --kt-panel:#0a0a1a;
@@ -46,29 +44,62 @@ body:not(.videoPlayerPage):not(.videoPlayer-withGui)::after{
   );
 }
 
-/* ── VIDEO PLAYER FIXES ────────────────────────────────── */
+/* ── VIDEO PLAYER: SURGICAL FIX ────────────────────────── */
 
-/* Only kill OUR scanline overlay when video plays */
+/* 1. Kill ONLY our scanline overlay when video plays */
 body.videoPlayerPage::after,
 body.videoPlayer-withGui::after {
   display: none !important;
   content: none !important;
 }
 
-/* Force video element visible - targeted only at the video tag itself */
+/* 2. Force video element to absolute top of its own context */
+/*    BUT don't touch pseudo-elements or filters globally */
 video {
   opacity: 1 !important;
   visibility: visible !important;
   display: block !important;
+  position: relative !important;
+  z-index: 1 !important;
   background: #000 !important;
 }
 
-/* Ensure player containers have sane stacking */
+/* 3. Isolate the player root so z-index stays sane */
 .videoPlayerContainer,
 .htmlvideoplayer,
 .htmlvideoplayer-wrap {
   background: #000 !important;
   position: relative !important;
+  isolation: isolate !important;
+}
+
+/* 4. CRITICAL: Make OSD controls transparent to clicks where empty, 
+      but keep them interactive. The video sits at z-index 1 inside
+      the isolated container, so we push OSD above it only where needed */
+.osdHeader,
+.videoOsdBottom,
+.upNextContainer,
+.videoPlayerContainer .osdContainer,
+.videoPlayerContainer [class*="osd"],
+.videoPlayerContainer .subtitleContainer,
+.videoPlayerContainer .bufferingIndicator {
+  position: relative !important;
+  z-index: 2 !important;
+  background: transparent !important;
+}
+
+/* 5. Ensure no solid backgrounds leak through on OSD elements */
+.videoPlayerContainer .osdContainer *,
+.videoPlayerContainer [class*="osd"] *,
+.videoPlayerContainer .subtitleContainer * {
+  background-color: transparent !important;
+}
+
+/* 6. Subtitle text needs to stay visible though */
+.videoPlayerContainer .subtitleContainer .subtitleText,
+.videoPlayerContainer .subtitleContainer span {
+  background-color: rgba(0,0,0,0.6) !important;
+  color: #fff !important;
 }
 
 /* ── TYPOGRAPHY ─────────────────────────────────────────── */
@@ -82,7 +113,7 @@ h1,h2,h3,h4,h5,h6,
   letter-spacing:.2em!important;
 }
 
-/* ── REMOVE ALL HEADER BOXES ─────────────────────────────── */
+/* ── REMOVE HEADER BOXES ───────────────────────────────── */
 .sectionTitleLink,
 .sectionTitleButton,
 .emby-tab-button,
@@ -93,7 +124,6 @@ h1,h2,h3,h4,h5,h6,
   outline:none!important;
 }
 
-/* also kill focus/active artifacts */
 .sectionTitleLink:focus,
 .sectionTitleLink:active,
 .emby-tab-button:focus,
@@ -103,7 +133,7 @@ button:focus {
   box-shadow:none!important;
 }
 
-/* ── GOLD HOVER (STRONG SELECTORS) ───────────────────────── */
+/* ── GOLD HOVER ───────────────────────────────────────── */
 .sectionTitleLink:hover,
 .sectionTitleLink:hover *,
 .emby-tab-button:hover,
@@ -158,20 +188,15 @@ input,textarea,select {
 }
 
 /* ── IMAGES FIX ─────────────────────────────────────────── */
-/* Ensure Jellyfin image containers aren't hidden */
 .cardImageContainer,
 .cardImage,
 .itemImage,
 .backdropImage,
 .imgTag,
-.imageTag {
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: block !important;
-}
-
-/* Force lazy-loaded images to appear when loaded */
+.imageTag,
 .lazy-image-loaded,
 .lazy-image-image {
   opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
 }
