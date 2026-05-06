@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v3.0 — HoloLines + Universal Gold Hover
+   v3.1 — Scanlines via body overlay, no card interference
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -37,6 +37,25 @@ body,
   background-color: var(--kt-bg) !important;
   color: var(--kt-text) !important;
   font-family: var(--kt-font) !important;
+}
+
+/* ── HOLOLINE SCANLINES — on body, not on cards ─────────────── */
+/* Sits over the whole page as a fixed overlay with pointer-events
+   none so it never blocks clicks or image loading              */
+body::after {
+  content: '' !important;
+  position: fixed !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 9999 !important;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 10, 40, 0.3) 0px,
+    rgba(0, 10, 40, 0.3) 1px,
+    transparent 1px,
+    transparent 3px
+  ) !important;
+  mix-blend-mode: multiply !important;
 }
 
 /* ── MATERIAL ICONS ─────────────────────────────────────────── */
@@ -76,11 +95,9 @@ p, span:not(.material-icons), li, label, td, th {
   font-family: var(--kt-font) !important;
 }
 
-/* ── UNIVERSAL GOLD HOVER — all clickable/interactive text ──── */
+/* ── UNIVERSAL GOLD HOVER ───────────────────────────────────── */
 a:hover,
-a:hover *,
 a:hover span:not(.material-icons),
-button:hover,
 button:hover span:not(.material-icons),
 .card:hover .cardText,
 .card:hover .cardName,
@@ -88,29 +105,23 @@ button:hover span:not(.material-icons),
 .card:hover .innerCardFooter,
 .card:hover .cardNameContainer,
 .navMenuOption:hover,
-.navMenuOption:hover *,
+.navMenuOption:hover span:not(.material-icons),
 .emby-tab-button:hover,
 .emby-tab-button:hover span:not(.material-icons),
 .listItem:hover,
-.listItem:hover *,
+.listItem:hover span:not(.material-icons),
 .paper-listitem:hover,
-.paper-listitem:hover *,
+.paper-listitem:hover span:not(.material-icons),
 .genreItem:hover,
 .tagItem:hover,
 .sectionTitleLink:hover,
-.sectionTitleLink:hover *,
-.itemDetailGalleryLink:hover,
-.itemDetailGalleryLink:hover *,
+.sectionTitleLink:hover span:not(.material-icons),
 .raised:hover,
-.emby-button:hover,
-.emby-button:hover span:not(.material-icons),
-.headerButton:hover,
-.headerButton:hover span:not(.material-icons) {
+.emby-button:hover span:not(.material-icons) {
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
-/* Icons stay blue on hover, not gold */
 a:hover .material-icons,
 button:hover .material-icons {
   color: var(--kt-blue-bright) !important;
@@ -123,9 +134,7 @@ button:hover .material-icons {
 .appbar-wrapper {
   background: rgba(5, 5, 15, 0.98) !important;
   border-bottom: 2px solid var(--kt-blue) !important;
-  box-shadow:
-    0 0 20px rgba(106,180,255,0.1),
-    0 3px 16px rgba(0,0,0,0.9) !important;
+  box-shadow: 0 0 20px rgba(106,180,255,0.1), 0 3px 16px rgba(0,0,0,0.9) !important;
 }
 
 /* ── SIDEBAR ────────────────────────────────────────────────── */
@@ -201,58 +210,16 @@ button:hover .material-icons {
   margin-bottom: 10px !important;
 }
 
-/* ── HOLOLINE IMAGE EFFECT ───────────────────────────────────── */
-/* Scanlines sit on top of the image as a CSS background on the
-   container AFTER the img — so the img itself is never touched  */
-.cardImageContainer {
-  position: relative !important;
-  background-color: #000 !important;
-}
-
-.cardImageContainer::after {
-  content: '' !important;
-  display: block !important;
-  position: absolute !important;
-  inset: 0 !important;
-  pointer-events: none !important;
-  z-index: 3 !important;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(0, 20, 60, 0.35) 0px,
-      rgba(0, 20, 60, 0.35) 1px,
-      transparent 1px,
-      transparent 3px
-    ) !important;
-  /* Blue tint overlay blended over the scanlines */
-  background-color: rgba(10, 30, 80, 0.15) !important;
-  mix-blend-mode: multiply !important;
-  border-radius: inherit !important;
-  transition: opacity 0.2s ease !important;
-  opacity: 1 !important;
-}
-
-/* On hover — fade out the hololines so the image is clear */
-.card:hover .cardImageContainer::after {
-  opacity: 0 !important;
-}
-
-/* Cards — double border glow, never touch image itself */
+/* ── CARDS — only style cardBox, never image containers ─────── */
 .cardBox {
   border-radius: 8px !important;
-  outline: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
-  transition: outline-color 0.2s, box-shadow 0.2s !important;
+  transition: box-shadow 0.2s !important;
 }
 
 .card:hover .cardBox {
-  outline-color: var(--kt-blue-dim) !important;
-  box-shadow:
-    0 0 0 1px var(--kt-blue),
-    0 0 14px rgba(106,180,255,0.15) !important;
+  box-shadow: 0 0 0 1px var(--kt-blue), 0 0 14px rgba(106,180,255,0.15) !important;
 }
 
-/* Progress bar */
 .itemProgressBar,
 .cardProgressBar {
   background: var(--kt-steel) !important;
@@ -314,13 +281,12 @@ button[is="emby-button"] {
   font-size: 0.78em !important;
   text-transform: uppercase !important;
   transition: all 0.15s ease !important;
-  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
 }
 
 .raised:hover,
 .emby-button:hover {
   border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 0 1px var(--kt-yellow), 0 0 12px var(--kt-yellow-glow) !important;
+  box-shadow: 0 0 12px var(--kt-yellow-glow) !important;
 }
 
 /* ── DETAIL PAGE ────────────────────────────────────────────── */
@@ -385,10 +351,7 @@ button[is="emby-button"] {
   background: var(--kt-screen) !important;
   border: 1px solid var(--kt-steel) !important;
   border-radius: 4px !important;
-  box-shadow:
-    0 0 0 1px var(--kt-blue-dim),
-    inset 0 0 40px rgba(0,0,30,0.6),
-    0 8px 40px rgba(0,0,0,0.9) !important;
+  box-shadow: 0 0 0 1px var(--kt-blue-dim), inset 0 0 40px rgba(0,0,30,0.6), 0 8px 40px rgba(0,0,0,0.9) !important;
   color: var(--kt-text) !important;
 }
 
@@ -432,11 +395,7 @@ button[is="emby-button"] {
 
 /* ── SCROLLBAR ──────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; background: var(--kt-bg); }
-::-webkit-scrollbar-thumb {
-  background: var(--kt-steel);
-  border-radius: 2px;
-  box-shadow: 0 0 4px var(--kt-blue-dim);
-}
+::-webkit-scrollbar-thumb { background: var(--kt-steel); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--kt-blue-dim); }
 
 /* ── TOAST ──────────────────────────────────────────────────── */
