@@ -424,3 +424,43 @@ button[is="emby-button"] {
   background: linear-gradient(transparent, rgba(0,0,8,0.97)) !important;
   border-top: 1px solid var(--kt-steel) !important;
 }
+
+/* ── SECTION TITLE GOLD HOVER — restored from v3.2 ─────────── */
+.sectionTitleLink:hover,
+.sectionTitleLink:hover .sectionTitle,
+.sectionTitleLink:hover h2,
+.sectionTitleLink:hover span:not(.material-icons),
+.sectionTitleLink:hover *:not(.material-icons),
+.itemsContainer .sectionTitleLink:hover *,
+.homePage .sectionTitleLink:hover * {
+  color: var(--kt-yellow) !important;
+  text-shadow: 0 0 10px var(--kt-yellow-glow), 0 0 20px rgba(245,197,24,0.3) !important;
+}
+
+.sectionTitleLink:hover::before,
+.sectionTitleLink:hover::after {
+  border-color: var(--kt-yellow) !important;
+  box-shadow: 0 0 10px var(--kt-yellow-glow) !important;
+}
+
+/* ── VIDEO PLAYER FIX ───────────────────────────────────────── */
+.videoPlayerContainer,
+.htmlvideoplayer,
+.htmlvideoplayer-wrap {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.videoPlayerContainer *,
+.htmlvideoplayer *,
+.htmlvideoplayer-wrap * {
+  background-color: transparent !important;
+}
+
+video {
+  background: transparent !important;
+  background-color: transparent !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
