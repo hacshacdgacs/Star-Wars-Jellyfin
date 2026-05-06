@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v3.1 — Scanlines via body overlay, no card interference
+   v3.4 — Clean video player, hololine scanlines, gold hover
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -14,7 +14,6 @@
   --kt-panel-mid:    #0e0e22;
   --kt-screen:       #04041a;
   --kt-steel:        #2a3a52;
-  --kt-steel-light:  #3a5070;
   --kt-chrome:       #5a7a9a;
   --kt-blue:         #6ab4ff;
   --kt-blue-bright:  #a0d4ff;
@@ -39,10 +38,8 @@ body,
   font-family: var(--kt-font) !important;
 }
 
-/* ── HOLOLINE SCANLINES — on body, not on cards ─────────────── */
-/* Sits over the whole page as a fixed overlay with pointer-events
-   none so it never blocks clicks or image loading              */
-body::after {
+/* ── HOLOLINE SCANLINES — only on non-video pages ───────────── */
+body:not(.videoPlayer-withGui)::after {
   content: '' !important;
   position: fixed !important;
   inset: 0 !important;
@@ -116,6 +113,8 @@ button:hover span:not(.material-icons),
 .tagItem:hover,
 .sectionTitleLink:hover,
 .sectionTitleLink:hover span:not(.material-icons),
+.sectionTitleLink:hover .sectionTitle,
+.sectionTitleLink:hover h2,
 .raised:hover,
 .emby-button:hover span:not(.material-icons) {
   color: var(--kt-yellow) !important;
@@ -210,7 +209,17 @@ button:hover .material-icons {
   margin-bottom: 10px !important;
 }
 
-/* ── CARDS — only style cardBox, never image containers ─────── */
+/* ── NEXT UP BUTTON — no box ────────────────────────────────── */
+.button-flat,
+a.button-flat,
+.emby-button.button-flat {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* ── CARDS ──────────────────────────────────────────────────── */
 .cardBox {
   border-radius: 8px !important;
   transition: box-shadow 0.2s !important;
@@ -296,8 +305,7 @@ button[is="emby-button"] {
   font-size: 0.93em !important;
 }
 
-.mediaInfoItem,
-.itemMiscInfo {
+.mediaInfoItem, .itemMiscInfo {
   color: var(--kt-text-dim) !important;
   letter-spacing: 0.08em !important;
 }
@@ -408,87 +416,13 @@ button[is="emby-button"] {
   font-family: var(--kt-font) !important;
 }
 
-/* ── VIDEO PLAYER OSD ───────────────────────────────────────── */
-.osdControls,
-.playerBottomBar {
-  background: linear-gradient(transparent, rgba(0,0,8,0.97)) !important;
-  border-top: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 -1px 0 var(--kt-blue-dim) !important;
-}
-
-/* ── NEXT UP BUTTON — remove box ────────────────────────────── */
-.nextUpButton,
-.button-flat,
-a.button-flat,
-.emby-button.button-flat {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-/* Target the specific Next Up / section navigation buttons */
-.sectionTitleButton,
-.btnNextUp,
-[data-action="nextup"] {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* ── SECTION TITLE HOVER — force gold, not white ────────────── */
-.sectionTitleLink:hover,
-.sectionTitleLink:hover .sectionTitle,
-.sectionTitleLink:hover h2,
-.sectionTitleLink:hover span,
-.sectionTitle:hover,
-.listItemBody:hover .sectionTitle {
-  color: var(--kt-yellow) !important;
-  text-shadow: 0 0 10px var(--kt-yellow-glow), 0 0 20px rgba(245,197,24,0.3) !important;
-}
-
-.sectionTitleLink:hover::before,
-.sectionTitleLink:hover::after {
-  border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 10px var(--kt-yellow-glow) !important;
-}
-
-/* Catch-all: any header/title link hover should be gold not white */
-.itemsContainer .sectionTitleLink:hover *,
-.homePage .sectionTitleLink:hover * {
-  color: var(--kt-yellow) !important;
-  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
-}
-
-/* ── VIDEO PLAYER — completely unstyled ─────────────────────── */
-/* Hide the scanline overlay when the video player is active */
-.videoPlayerContainer ~ body::after,
-.htmlvideoplayer-wrap body::after {
-  display: none !important;
-}
-
-/* The scanline body::after must not cover the video element */
-video,
+/* ── VIDEO PLAYER — completely untouched ────────────────────── */
+/* Only hide the scanline overlay, touch nothing else */
 .videoPlayerContainer,
 .htmlvideoplayer,
 .htmlvideoplayer-wrap,
 #videoPlayer,
-.videoPlayer {
-  position: relative !important;
-  z-index: 10000 !important;
-  filter: none !important;
-  background: transparent !important;
-}
-
-/* Hide scanline overlay entirely on the video page */
-.videoOsdPage body::after,
-.fullscreenVideo body::after {
-  display: none !important;
-}
-
-/* When video player is open, suppress the body overlay */
-body.videoPlayer-withGui::after,
-body:has(video)::after,
-body:has(.htmlvideoplayer)::after {
-  display: none !important;
+.videoPlayer,
+video {
+  all: revert !important;
 }
