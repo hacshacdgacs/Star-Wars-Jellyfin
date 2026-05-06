@@ -1,170 +1,179 @@
 /* ============================================================
-   KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v4.0 (fixed video + corrected header behavior)
+   KOTOR TERMINAL — Jellyfin Theme
+   v4.1 (hard-fixed video + header cleanup)
    ============================================================ */
 
-/* ── FONTS ──────────────────────────────────────────────────── */
+/* ── FONTS ───────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-/* ── CORE PALETTE ───────────────────────────────────────────── */
+/* ── COLORS ──────────────────────────────────────────────── */
 :root {
-  --kt-bg: #05050f;
-  --kt-panel: #0a0a1a;
-  --kt-panel-mid: #0e0e22;
-  --kt-screen: #04041a;
-  --kt-steel: #2a3a52;
-  --kt-chrome: #5a7a9a;
-  --kt-blue: #6ab4ff;
-  --kt-blue-bright: #a0d4ff;
-  --kt-blue-dim: #1a4a8a;
-  --kt-blue-glow: rgba(106,180,255,0.25);
-  --kt-blue-faint: rgba(106,180,255,0.07);
-  --kt-yellow: #f5c518;
-  --kt-yellow-glow: rgba(245,197,24,0.6);
-  --kt-text: #8ab8d8;
-  --kt-text-dim: #3a5a7a;
-  --kt-white: #d0e8ff;
-  --kt-font: 'Share Tech Mono', monospace;
-  --kt-font-ui: 'Orbitron', monospace;
+  --kt-bg:#05050f;
+  --kt-panel:#0a0a1a;
+  --kt-steel:#2a3a52;
+  --kt-blue:#6ab4ff;
+  --kt-blue-dim:#1a4a8a;
+  --kt-yellow:#f5c518;
+  --kt-yellow-glow:rgba(245,197,24,0.6);
+  --kt-text:#8ab8d8;
+  --kt-text-dim:#3a5a7a;
+  --kt-font:'Share Tech Mono', monospace;
+  --kt-font-ui:'Orbitron', monospace;
 }
 
-/* ── BASE ───────────────────────────────────────────────────── */
+/* ── BASE ───────────────────────────────────────────────── */
 body,
 .backgroundContainer,
 .mainAnimatedPage {
-  background-color: var(--kt-bg) !important;
-  color: var(--kt-text) !important;
-  font-family: var(--kt-font) !important;
+  background:var(--kt-bg)!important;
+  color:var(--kt-text)!important;
+  font-family:var(--kt-font)!important;
 }
 
-/* ── SCANLINES (DISABLED DURING VIDEO) ─────────────────────── */
-body:not(.videoPlayerPage):not(.videoPlayer-withGui)::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  background-image: repeating-linear-gradient(
+/* ── SCANLINES (NON-VIDEO ONLY) ─────────────────────────── */
+body:not(.videoPlayerPage):not(.videoPlayer-withGui)::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:10;
+  background:repeating-linear-gradient(
     0deg,
-    rgba(0,10,40,0.3) 0px,
-    rgba(0,10,40,0.3) 1px,
+    rgba(0,10,40,.3) 0px,
+    rgba(0,10,40,.3) 1px,
     transparent 1px,
     transparent 3px
   );
-  mix-blend-mode: multiply;
 }
 
-/* HARD KILL overlay in video mode */
-body.videoPlayerPage::after,
-body.videoPlayer-withGui::after {
-  display: none !important;
+/* ── ABSOLUTE VIDEO PROTECTION ───────────────────────────── */
+
+/* kill ALL overlays globally when video is active */
+body.videoPlayerPage *,
+body.videoPlayer-withGui * {
+  mix-blend-mode: normal !important;
+  filter: none !important;
 }
 
-/* ── ICONS ─────────────────────────────────────────────────── */
-.material-icons {
-  font-family: 'Material Icons' !important;
-  color: var(--kt-chrome) !important;
+/* remove pseudo elements everywhere in video mode */
+body.videoPlayerPage *::before,
+body.videoPlayerPage *::after,
+body.videoPlayer-withGui *::before,
+body.videoPlayer-withGui *::after {
+  display:none!important;
+  content:none!important;
 }
 
-/* ── TYPOGRAPHY ─────────────────────────────────────────────── */
+/* isolate player */
+.videoPlayerContainer,
+.htmlvideoplayer,
+.htmlvideoplayer-wrap {
+  background:#000!important;
+  position:relative!important;
+  z-index:0!important;
+  isolation:isolate!important;
+}
+
+/* force video to top */
+video {
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  position:relative!important;
+  z-index:999!important;
+  opacity:1!important;
+  visibility:visible!important;
+  background:#000!important;
+}
+
+/* ensure nothing overlays video */
+.videoPlayerContainer * {
+  z-index:auto!important;
+}
+
+/* ── TYPOGRAPHY ─────────────────────────────────────────── */
 h1,h2,h3,h4,h5,h6,
 .sectionTitle,
 .itemName,
 .cardName {
-  font-family: var(--kt-font-ui) !important;
-  color: var(--kt-blue) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.2em !important;
+  font-family:var(--kt-font-ui)!important;
+  color:var(--kt-blue)!important;
+  text-transform:uppercase!important;
+  letter-spacing:.2em!important;
 }
 
-/* ── GOLD ONLY ON HOVER (HEADERS + CLICKABLE) ──────────────── */
+/* ── REMOVE ALL HEADER BOXES ─────────────────────────────── */
+.sectionTitleLink,
+.sectionTitleButton,
+.emby-tab-button,
+.navMenuOption {
+  background:transparent!important;
+  border:none!important;
+  box-shadow:none!important;
+  outline:none!important;
+}
+
+/* also kill focus/active artifacts */
+.sectionTitleLink:focus,
+.sectionTitleLink:active,
+.emby-tab-button:focus,
+.emby-tab-button:active,
+button:focus {
+  outline:none!important;
+  box-shadow:none!important;
+}
+
+/* ── GOLD HOVER (STRONG SELECTORS) ───────────────────────── */
 .sectionTitleLink:hover,
-.sectionTitleLink:hover *:not(.material-icons),
+.sectionTitleLink:hover *,
 .emby-tab-button:hover,
+.emby-tab-button:hover *,
 .navMenuOption:hover,
-button:hover span:not(.material-icons),
-a:hover span:not(.material-icons) {
-  color: var(--kt-yellow) !important;
-  text-shadow: 0 0 10px var(--kt-yellow-glow);
+.navMenuOption:hover *,
+button:hover span,
+a:hover span {
+  color:var(--kt-yellow)!important;
+  text-shadow:0 0 10px var(--kt-yellow-glow),
+              0 0 20px rgba(245,197,24,0.25)!important;
 }
 
-/* ── HEADER ─────────────────────────────────────────────────── */
+/* ── HEADER BAR ─────────────────────────────────────────── */
 .skinHeader {
-  background: rgba(5,5,15,0.98) !important;
-  border-bottom: 2px solid var(--kt-blue);
+  background:rgba(5,5,15,.98)!important;
+  border-bottom:2px solid var(--kt-blue)!important;
 }
 
-/* ── SIDEBAR ────────────────────────────────────────────────── */
+/* ── SIDEBAR ────────────────────────────────────────────── */
 .mainDrawer {
-  background: linear-gradient(180deg,#0c0c1e,#05050f);
+  background:linear-gradient(180deg,#0c0c1e,#05050f)!important;
 }
 
 .navMenuOption {
-  color: var(--kt-text-dim) !important;
+  color:var(--kt-text-dim)!important;
 }
 
-/* ── CARDS ─────────────────────────────────────────────────── */
-.card:hover .cardBox {
-  box-shadow: 0 0 0 1px var(--kt-blue),
-              0 0 14px rgba(106,180,255,0.15);
-}
-
-/* ── BUTTONS ───────────────────────────────────────────────── */
+/* ── BUTTONS ───────────────────────────────────────────── */
 .emby-button {
-  background: linear-gradient(180deg,#0e0e22,#05050f);
-  color: var(--kt-blue);
-  border: 1px solid var(--kt-steel);
+  background:linear-gradient(180deg,#0e0e22,#05050f)!important;
+  color:var(--kt-blue)!important;
+  border:1px solid var(--kt-steel)!important;
 }
 
 .emby-button:hover {
-  border-color: var(--kt-yellow);
-  box-shadow: 0 0 12px var(--kt-yellow-glow);
+  border-color:var(--kt-yellow)!important;
+  box-shadow:0 0 12px var(--kt-yellow-glow)!important;
 }
 
-/* ── INPUTS ────────────────────────────────────────────────── */
+/* ── INPUTS ────────────────────────────────────────────── */
 input,textarea,select {
-  background: var(--kt-screen);
-  color: var(--kt-blue-bright);
-  border: 1px solid var(--kt-steel);
+  background:#04041a!important;
+  color:#a0d4ff!important;
+  border:1px solid var(--kt-steel)!important;
 }
 
-/* ── DIALOGS ───────────────────────────────────────────────── */
+/* ── DIALOGS ───────────────────────────────────────────── */
 .dialog {
-  background: var(--kt-screen);
-  border: 1px solid var(--kt-steel);
-}
-
-/* ── VIDEO PLAYER (CLEAN MODE) ─────────────────────────────── */
-
-/* No overlays, no blending, no interference */
-.videoPlayerContainer,
-.htmlvideoplayer,
-.htmlvideoplayer-wrap {
-  background: #000 !important;
-  isolation: isolate !important;
-}
-
-/* Ensure video always renders */
-video {
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  background: #000 !important;
-  z-index: 1 !important;
-}
-
-/* Keep Jellyfin controls visible but minimal */
-.osdControls,
-.playerBottomBar {
-  background: linear-gradient(transparent, rgba(0,0,0,0.85)) !important;
-}
-
-/* Absolutely prevent any pseudo overlays */
-.videoPlayerContainer::before,
-.videoPlayerContainer::after,
-.htmlvideoplayer::before,
-.htmlvideoplayer::after {
-  display: none !important;
+  background:#04041a!important;
+  border:1px solid var(--kt-steel)!important;
 }
