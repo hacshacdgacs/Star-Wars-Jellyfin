@@ -1,6 +1,6 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v3.4 — Clean video player, hololine scanlines, gold hover
+   v3.5
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
@@ -38,7 +38,7 @@ body,
   font-family: var(--kt-font) !important;
 }
 
-/* ── HOLOLINE SCANLINES — only on non-video pages ───────────── */
+/* ── HOLOLINE SCANLINES — hidden during video playback ──────── */
 body:not(.videoPlayer-withGui)::after {
   content: '' !important;
   position: fixed !important;
@@ -112,9 +112,7 @@ button:hover span:not(.material-icons),
 .genreItem:hover,
 .tagItem:hover,
 .sectionTitleLink:hover,
-.sectionTitleLink:hover span:not(.material-icons),
-.sectionTitleLink:hover .sectionTitle,
-.sectionTitleLink:hover h2,
+.sectionTitleLink:hover *:not(.material-icons),
 .raised:hover,
 .emby-button:hover span:not(.material-icons) {
   color: var(--kt-yellow) !important;
@@ -172,6 +170,8 @@ button:hover .material-icons {
   padding: 5px 40px !important;
   background: transparent !important;
   border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .sectionTitleLink::before,
@@ -209,10 +209,12 @@ button:hover .material-icons {
   margin-bottom: 10px !important;
 }
 
-/* ── NEXT UP BUTTON — no box ────────────────────────────────── */
+/* ── NEXT UP & FLAT BUTTONS — no box ───────────────────────── */
 .button-flat,
 a.button-flat,
-.emby-button.button-flat {
+.emby-button.button-flat,
+.btnNextUp,
+.sectionTitleButton {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -416,13 +418,9 @@ button[is="emby-button"] {
   font-family: var(--kt-font) !important;
 }
 
-/* ── VIDEO PLAYER — completely untouched ────────────────────── */
-/* Only hide the scanline overlay, touch nothing else */
-.videoPlayerContainer,
-.htmlvideoplayer,
-.htmlvideoplayer-wrap,
-#videoPlayer,
-.videoPlayer,
-video {
-  all: revert !important;
+/* ── VIDEO PLAYER OSD only — never touch the player itself ──── */
+.osdControls,
+.playerBottomBar {
+  background: linear-gradient(transparent, rgba(0,0,8,0.97)) !important;
+  border-top: 1px solid var(--kt-steel) !important;
 }
