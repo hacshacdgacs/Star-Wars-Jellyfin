@@ -459,3 +459,36 @@ a.button-flat,
   color: var(--kt-yellow) !important;
   text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
+
+/* ── VIDEO PLAYER — completely unstyled ─────────────────────── */
+/* Hide the scanline overlay when the video player is active */
+.videoPlayerContainer ~ body::after,
+.htmlvideoplayer-wrap body::after {
+  display: none !important;
+}
+
+/* The scanline body::after must not cover the video element */
+video,
+.videoPlayerContainer,
+.htmlvideoplayer,
+.htmlvideoplayer-wrap,
+#videoPlayer,
+.videoPlayer {
+  position: relative !important;
+  z-index: 10000 !important;
+  filter: none !important;
+  background: transparent !important;
+}
+
+/* Hide scanline overlay entirely on the video page */
+.videoOsdPage body::after,
+.fullscreenVideo body::after {
+  display: none !important;
+}
+
+/* When video player is open, suppress the body overlay */
+body.videoPlayer-withGui::after,
+body:has(video)::after,
+body:has(.htmlvideoplayer)::after {
+  display: none !important;
+}
