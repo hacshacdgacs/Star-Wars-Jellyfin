@@ -420,3 +420,34 @@ button[is="emby-button"]:not(.videoPlayer *):not(.osdControls *):hover {
   color: var(--kt-blue-bright) !important;
   font-family: var(--kt-font) !important;
 }
+
+/* ── VIDEO PAGE — reset everything ──────────────────────────── */
+.videoPlayerContainer,
+.videoPlayerContainer *,
+.htmlvideoplayer,
+.htmlvideoplayer *,
+.videoOsdPage,
+.videoOsdPage *,
+#videoPlayer,
+#videoPlayer * {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: inherit !important;
+  font-family: inherit !important;
+  border: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  text-shadow: none !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+
+video,
+video * {
+  background: #000 !important;
+  filter: none !important;
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
