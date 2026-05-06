@@ -1,102 +1,458 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v2.3 — Background Stack Fix & Gold Recovery
+   v3.0 — HoloLines + Universal Gold Hover
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+/* ── CORE PALETTE ───────────────────────────────────────────── */
 :root {
   --kt-bg:           #05050f;
+  --kt-panel:        #0a0a1a;
+  --kt-panel-mid:    #0e0e22;
+  --kt-screen:       #04041a;
+  --kt-steel:        #2a3a52;
+  --kt-steel-light:  #3a5070;
+  --kt-chrome:       #5a7a9a;
   --kt-blue:         #6ab4ff;
+  --kt-blue-bright:  #a0d4ff;
+  --kt-blue-dim:     #1a4a8a;
   --kt-blue-glow:    rgba(106, 180, 255, 0.25);
-  --kt-yellow:       #f5c518; 
+  --kt-blue-faint:   rgba(106, 180, 255, 0.07);
+  --kt-yellow:       #f5c518;
   --kt-yellow-glow:  rgba(245, 197, 24, 0.6);
   --kt-text:         #8ab8d8;
+  --kt-text-dim:     #3a5a7a;
+  --kt-white:        #d0e8ff;
+  --kt-font:         'Share Tech Mono', 'Courier New', monospace;
+  --kt-font-ui:      'Orbitron', 'Trebuchet MS', monospace;
 }
 
-/* ── THE IMAGE FIX (Background Stack) ───────────────────────── */
-/* Instead of an overlay, we use a gradient mask that doesn't block the image load[cite: 1] */
-.cardImageContainer {
-  background-color: #000 !important;
+/* ── BASE ───────────────────────────────────────────────────── */
+body,
+.backgroundContainer,
+.mainAnimatedPage {
+  background-color: var(--kt-bg) !important;
+  color: var(--kt-text) !important;
+  font-family: var(--kt-font) !important;
 }
 
-.cardImage {
-  /* This creates the scanlines as a repeating linear gradient over the image[cite: 1] */
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.4) 0px,
-    rgba(0, 0, 0, 0.4) 2px,
-    transparent 2px,
-    transparent 4px
-  ) !important;
-  background-blend-mode: multiply !important;
-  filter: brightness(0.9) contrast(1.1) !important;
-  transition: all 0.2s ease-in-out !important;
+/* ── MATERIAL ICONS ─────────────────────────────────────────── */
+.material-icons,
+.md-icon,
+i.md-icon,
+span.material-icons {
+  font-family: 'Material Icons' !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  direction: ltr !important;
+  -webkit-font-feature-settings: 'liga' !important;
+  font-feature-settings: 'liga' !important;
+  -webkit-font-smoothing: antialiased !important;
+  color: var(--kt-chrome) !important;
 }
 
-/* Hover: Remove scanlines and brighten[cite: 1] */
-.card:hover .cardImage, 
-.card:focus .cardImage {
-  background-image: none !important;
-  filter: brightness(1.1) contrast(1) saturate(1.1) !important;
+/* ── TYPOGRAPHY ─────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6,
+.sectionTitle,
+.itemName,
+.originalTitle,
+.cardText,
+.cardName {
+  font-family: var(--kt-font-ui) !important;
+  color: var(--kt-blue) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.2em !important;
 }
 
-/* ── GOLD TEXT RECOVERY (High Specificity) ──────────────────── */
-/* Forced gold color for all text elements when hovering the card[cite: 1] */
-.card:hover .cardText, 
+p, span:not(.material-icons), li, label, td, th {
+  color: var(--kt-text) !important;
+  font-family: var(--kt-font) !important;
+}
+
+/* ── UNIVERSAL GOLD HOVER — all clickable/interactive text ──── */
+a:hover,
+a:hover *,
+a:hover span:not(.material-icons),
+button:hover,
+button:hover span:not(.material-icons),
+.card:hover .cardText,
 .card:hover .cardName,
-.card:hover .cardNameContainer,
+.card:hover .cardTextCentered,
 .card:hover .innerCardFooter,
-.card:hover * {
+.card:hover .cardNameContainer,
+.navMenuOption:hover,
+.navMenuOption:hover *,
+.emby-tab-button:hover,
+.emby-tab-button:hover span:not(.material-icons),
+.listItem:hover,
+.listItem:hover *,
+.paper-listitem:hover,
+.paper-listitem:hover *,
+.genreItem:hover,
+.tagItem:hover,
+.sectionTitleLink:hover,
+.sectionTitleLink:hover *,
+.itemDetailGalleryLink:hover,
+.itemDetailGalleryLink:hover *,
+.raised:hover,
+.emby-button:hover,
+.emby-button:hover span:not(.material-icons),
+.headerButton:hover,
+.headerButton:hover span:not(.material-icons) {
   color: var(--kt-yellow) !important;
-  text-shadow: 0 0 12px var(--kt-yellow-glow) !important;
+  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
-/* ── HEADER BRACKETS ────────────────────────────────────────── */
+/* Icons stay blue on hover, not gold */
+a:hover .material-icons,
+button:hover .material-icons {
+  color: var(--kt-blue-bright) !important;
+  text-shadow: none !important;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────── */
+.skinHeader,
+.headerTop,
+.appbar-wrapper {
+  background: rgba(5, 5, 15, 0.98) !important;
+  border-bottom: 2px solid var(--kt-blue) !important;
+  box-shadow:
+    0 0 20px rgba(106,180,255,0.1),
+    0 3px 16px rgba(0,0,0,0.9) !important;
+}
+
+/* ── SIDEBAR ────────────────────────────────────────────────── */
+.mainDrawer {
+  background: linear-gradient(180deg, #0c0c1e 0%, #05050f 100%) !important;
+  border-right: 1px solid var(--kt-steel) !important;
+  box-shadow: 1px 0 0 var(--kt-blue-dim), 3px 0 16px rgba(0,0,0,0.8) !important;
+}
+
+.navMenuOption {
+  color: var(--kt-text-dim) !important;
+  border-bottom: 1px solid rgba(42,58,82,0.6) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-size: 0.78em !important;
+  font-family: var(--kt-font-ui) !important;
+  transition: all 0.15s ease !important;
+}
+
+.navMenuOption:hover {
+  background: var(--kt-blue-faint) !important;
+  border-left: 2px solid var(--kt-yellow) !important;
+}
+
+.navMenuOption.is-selected {
+  background: rgba(106,180,255,0.06) !important;
+  color: var(--kt-yellow) !important;
+  border-left: 2px solid var(--kt-yellow) !important;
+  text-shadow: 0 0 8px var(--kt-yellow-glow) !important;
+}
+
+/* ── SECTION TITLE BRACKETS ─────────────────────────────────── */
 .sectionTitleLink {
-  position: relative;
+  position: relative !important;
   display: inline-flex !important;
   padding: 5px 40px !important;
   background: transparent !important;
   border: none !important;
 }
 
-.sectionTitleLink::before, .sectionTitleLink::after {
+.sectionTitleLink::before,
+.sectionTitleLink::after {
   content: "";
   position: absolute;
   top: 0; bottom: 0;
   width: 12px;
   border: 2px solid var(--kt-blue);
   pointer-events: none;
-}
-.sectionTitleLink::before { left: 0; border-right: none; border-radius: 6px 0 0 6px; }
-.sectionTitleLink::after { right: 0; border-left: none; border-radius: 0 6px 6px 0; }
-
-/* Forced Gold on Header Hover[cite: 1] */
-.sectionTitleLink:hover * {
-  color: var(--kt-yellow) !important;
-  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.sectionTitleLink:hover::before, .sectionTitleLink:hover::after {
+.sectionTitleLink::before {
+  left: 0;
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+}
+
+.sectionTitleLink::after {
+  right: 0;
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+}
+
+.sectionTitleLink:hover::before,
+.sectionTitleLink:hover::after {
   border-color: var(--kt-yellow) !important;
   box-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
-/* ── BASE LAYOUT ───────────────────────────────────────────── */
-body, .backgroundContainer {
-  background-color: var(--kt-bg) !important;
-  color: var(--kt-text) !important;
-  font-family: 'Share Tech Mono', monospace !important;
+.sectionTitleContainer {
+  border-bottom: 1px solid var(--kt-steel) !important;
+  padding-bottom: 6px !important;
+  margin-bottom: 10px !important;
 }
 
-.cardText, .sectionTitle, h2, .cardName {
+/* ── HOLOLINE IMAGE EFFECT ───────────────────────────────────── */
+/* Scanlines sit on top of the image as a CSS background on the
+   container AFTER the img — so the img itself is never touched  */
+.cardImageContainer {
+  position: relative !important;
+  background-color: #000 !important;
+}
+
+.cardImageContainer::after {
+  content: '' !important;
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 3 !important;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 20, 60, 0.35) 0px,
+      rgba(0, 20, 60, 0.35) 1px,
+      transparent 1px,
+      transparent 3px
+    ) !important;
+  /* Blue tint overlay blended over the scanlines */
+  background-color: rgba(10, 30, 80, 0.15) !important;
+  mix-blend-mode: multiply !important;
+  border-radius: inherit !important;
+  transition: opacity 0.2s ease !important;
+  opacity: 1 !important;
+}
+
+/* On hover — fade out the hololines so the image is clear */
+.card:hover .cardImageContainer::after {
+  opacity: 0 !important;
+}
+
+/* Cards — double border glow, never touch image itself */
+.cardBox {
+  border-radius: 8px !important;
+  outline: 1px solid var(--kt-steel) !important;
+  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
+  transition: outline-color 0.2s, box-shadow 0.2s !important;
+}
+
+.card:hover .cardBox {
+  outline-color: var(--kt-blue-dim) !important;
+  box-shadow:
+    0 0 0 1px var(--kt-blue),
+    0 0 14px rgba(106,180,255,0.15) !important;
+}
+
+/* Progress bar */
+.itemProgressBar,
+.cardProgressBar {
+  background: var(--kt-steel) !important;
+  border-radius: 2px !important;
+  height: 3px !important;
+}
+
+.itemProgressBarForeground,
+.cardProgressBarForeground {
+  background: var(--kt-blue) !important;
+  box-shadow: 0 0 6px var(--kt-blue-glow) !important;
+}
+
+.playedIndicator {
+  background: var(--kt-blue-dim) !important;
+  color: var(--kt-white) !important;
+  border-radius: 3px !important;
+}
+
+/* ── INPUTS ─────────────────────────────────────────────────── */
+.emby-input,
+.emby-textarea,
+.emby-select,
+input,
+textarea,
+select {
+  background: var(--kt-screen) !important;
+  color: var(--kt-blue-bright) !important;
+  border: 1px solid var(--kt-steel) !important;
+  border-radius: 3px !important;
+  font-family: var(--kt-font) !important;
+  caret-color: var(--kt-blue) !important;
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.5) !important;
+}
+
+.emby-input:focus,
+input:focus {
+  border-color: var(--kt-blue) !important;
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.5), 0 0 10px var(--kt-blue-glow) !important;
+  outline: none !important;
+}
+
+.headerSearchInput {
+  background: transparent !important;
+  color: var(--kt-blue-bright) !important;
+  border-bottom: 1px solid var(--kt-steel) !important;
+}
+
+/* ── BUTTONS ────────────────────────────────────────────────── */
+.raised,
+.emby-button,
+button[is="emby-button"] {
+  background: linear-gradient(180deg, #0e0e22 0%, #05050f 100%) !important;
+  color: var(--kt-blue) !important;
+  border: 1px solid var(--kt-steel) !important;
+  border-radius: 3px !important;
+  font-family: var(--kt-font-ui) !important;
+  letter-spacing: 0.1em !important;
+  font-size: 0.78em !important;
   text-transform: uppercase !important;
-  font-family: 'Orbitron', sans-serif !important;
+  transition: all 0.15s ease !important;
+  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
 }
 
-.skinHeader {
-  background: rgba(5, 5, 15, 0.98) !important;
-  border-bottom: 2px solid var(--kt-blue) !important;
+.raised:hover,
+.emby-button:hover {
+  border-color: var(--kt-yellow) !important;
+  box-shadow: 0 0 0 1px var(--kt-yellow), 0 0 12px var(--kt-yellow-glow) !important;
+}
+
+/* ── DETAIL PAGE ────────────────────────────────────────────── */
+.overview {
+  color: var(--kt-text) !important;
+  line-height: 1.9 !important;
+  font-size: 0.93em !important;
+}
+
+.mediaInfoItem,
+.itemMiscInfo {
+  color: var(--kt-text-dim) !important;
+  letter-spacing: 0.08em !important;
+}
+
+.genreItem, .tagItem {
+  border: 1px solid var(--kt-steel) !important;
+  border-radius: 3px !important;
+  color: var(--kt-text-dim) !important;
+  background: transparent !important;
+  font-size: 0.78em !important;
+  letter-spacing: 0.08em !important;
+  transition: all 0.15s ease !important;
+}
+
+.genreItem:hover, .tagItem:hover {
+  border-color: var(--kt-yellow) !important;
+  box-shadow: 0 0 8px var(--kt-yellow-glow) !important;
+}
+
+.starRatingContainer { color: var(--kt-yellow) !important; }
+
+/* ── TABS ───────────────────────────────────────────────────── */
+.emby-tabs-slider,
+.tabsContainerContent {
+  background: var(--kt-panel) !important;
+  border-bottom: 1px solid var(--kt-steel) !important;
+  box-shadow: 0 1px 0 var(--kt-blue-dim) !important;
+}
+
+.emby-tab-button {
+  color: var(--kt-text-dim) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  font-size: 0.75em !important;
+  font-family: var(--kt-font-ui) !important;
+  transition: all 0.15s ease !important;
+}
+
+.emby-tab-button.is-selected,
+.emby-tab-button[aria-selected="true"] {
+  color: var(--kt-yellow) !important;
+  border-bottom: 2px solid var(--kt-yellow) !important;
+  text-shadow: 0 0 8px var(--kt-yellow-glow) !important;
+}
+
+/* ── DIALOGS ────────────────────────────────────────────────── */
+.dialogContainer,
+.dialog,
+.formDialogContent,
+.paperDialogPage {
+  background: var(--kt-screen) !important;
+  border: 1px solid var(--kt-steel) !important;
+  border-radius: 4px !important;
+  box-shadow:
+    0 0 0 1px var(--kt-blue-dim),
+    inset 0 0 40px rgba(0,0,30,0.6),
+    0 8px 40px rgba(0,0,0,0.9) !important;
+  color: var(--kt-text) !important;
+}
+
+.formDialogHeader,
+.dialogHeader {
+  background: linear-gradient(180deg, #0e0e22 0%, #080818 100%) !important;
+  border-bottom: 1px solid var(--kt-steel) !important;
+  box-shadow: 0 1px 0 var(--kt-blue-dim) !important;
+  color: var(--kt-blue-bright) !important;
+  font-family: var(--kt-font-ui) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.2em !important;
+  font-size: 0.8em !important;
+}
+
+/* ── MENUS ──────────────────────────────────────────────────── */
+.actionSheetContent,
+.paperList {
+  background: var(--kt-panel-mid) !important;
+  border: 1px solid var(--kt-steel) !important;
+  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
+}
+
+.listItem,
+.paper-listitem {
+  background: transparent !important;
+  color: var(--kt-text) !important;
+  border-bottom: 1px solid rgba(42,58,82,0.5) !important;
+  letter-spacing: 0.06em !important;
+  transition: all 0.15s ease !important;
+}
+
+/* ── BACKDROP ───────────────────────────────────────────────── */
+.backdropImage {
+  filter: brightness(0.25) saturate(0.4) hue-rotate(200deg) !important;
+}
+
+.backgroundContainer.withBackdrop {
+  background-color: var(--kt-bg) !important;
+}
+
+/* ── SCROLLBAR ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; background: var(--kt-bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--kt-steel);
+  border-radius: 2px;
+  box-shadow: 0 0 4px var(--kt-blue-dim);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--kt-blue-dim); }
+
+/* ── TOAST ──────────────────────────────────────────────────── */
+.toast {
+  background: var(--kt-panel-mid) !important;
+  border: 1px solid var(--kt-steel) !important;
+  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
+  border-radius: 3px !important;
+  color: var(--kt-blue-bright) !important;
+  font-family: var(--kt-font) !important;
+}
+
+/* ── VIDEO PLAYER OSD ───────────────────────────────────────── */
+.osdControls,
+.playerBottomBar {
+  background: linear-gradient(transparent, rgba(0,0,8,0.97)) !important;
+  border-top: 1px solid var(--kt-steel) !important;
+  box-shadow: 0 -1px 0 var(--kt-blue-dim) !important;
 }
