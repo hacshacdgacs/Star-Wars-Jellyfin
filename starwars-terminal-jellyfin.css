@@ -436,3 +436,12 @@ input:focus {
 .playerBottomBar .material-icons:hover {
   color: var(--kt-yellow) !important;
 }
+
+/* ── VIDEO PAGE BACKGROUND FIX ──────────────────────────────── */
+.videoPlayerContainer ~ .mainAnimatedPage,
+.videoOsdPage .mainAnimatedPage,
+.videoOsdPage .backgroundContainer,
+.videoOsdPage .backgroundContainer.withBackdrop {
+  background: transparent !important;
+  background-color: transparent !important;
+}
