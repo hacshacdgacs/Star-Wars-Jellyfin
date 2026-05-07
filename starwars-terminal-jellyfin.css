@@ -219,7 +219,7 @@ a.button-flat,
 }
 
 .card:hover .cardBox {
-  box-shadow: 0 0 0 1px var(--kt-blue), 0 0 14px rgba(106,180,255,0.15) !important;
+  box-shadow: none !important;
 }
 
 .itemProgressBar,
@@ -424,4 +424,156 @@ input:focus {
 .osdControls .material-icons:hover,
 .playerBottomBar .material-icons:hover {
   color: var(--kt-yellow) !important;
+}
+
+/* ── REMOVE CARD ZOOM ON HOVER ──────────────────────────────── */
+.card:hover .cardScalable,
+.card-hoverable:hover .cardScalable,
+.card-hoverable:hover .cardImageContainer,
+.card-hoverable:hover .visualCardBox {
+  transform: none !important;
+}
+
+/* ── BRACKET [ ] FRAMING — all interactive elements ─────────── */
+/* Cards */
+.card:hover .cardBox {
+  position: relative !important;
+}
+
+.card:hover .cardBox::before,
+.card:hover .cardBox::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 8px;
+  border: 2px solid var(--kt-yellow);
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 0 8px var(--kt-yellow-glow);
+}
+
+.card:hover .cardBox::before {
+  left: 4px;
+  border-right: none;
+  border-radius: 3px 0 0 3px;
+}
+
+.card:hover .cardBox::after {
+  right: 4px;
+  border-left: none;
+  border-radius: 0 3px 3px 0;
+}
+
+/* Nav menu items */
+.navMenuOption {
+  position: relative !important;
+}
+
+.navMenuOption:hover::before,
+.navMenuOption:hover::after {
+  content: '';
+  position: absolute;
+  top: 25%;
+  bottom: 25%;
+  width: 4px;
+  border: 1px solid var(--kt-yellow);
+  pointer-events: none;
+  box-shadow: 0 0 6px var(--kt-yellow-glow);
+}
+
+.navMenuOption:hover::before {
+  left: 6px;
+  border-right: none;
+}
+
+.navMenuOption:hover::after {
+  right: 6px;
+  border-left: none;
+}
+
+/* List items */
+.listItem,
+.paper-listitem {
+  position: relative !important;
+}
+
+.listItem:hover::before,
+.listItem:hover::after,
+.paper-listitem:hover::before,
+.paper-listitem:hover::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  bottom: 20%;
+  width: 4px;
+  border: 1px solid var(--kt-yellow);
+  pointer-events: none;
+  box-shadow: 0 0 6px var(--kt-yellow-glow);
+}
+
+.listItem:hover::before,
+.paper-listitem:hover::before {
+  left: 4px;
+  border-right: none;
+}
+
+.listItem:hover::after,
+.paper-listitem:hover::after {
+  right: 4px;
+  border-left: none;
+}
+
+/* Tabs */
+.emby-tab-button {
+  position: relative !important;
+}
+
+.emby-tab-button:hover::before,
+.emby-tab-button:hover::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  bottom: 20%;
+  width: 4px;
+  border: 1px solid var(--kt-yellow);
+  pointer-events: none;
+  box-shadow: 0 0 6px var(--kt-yellow-glow);
+}
+
+.emby-tab-button:hover::before {
+  left: 2px;
+  border-right: none;
+}
+
+.emby-tab-button:hover::after {
+  right: 2px;
+  border-left: none;
+}
+
+/* Buttons */
+.raised {
+  position: relative !important;
+}
+
+.raised:hover::before,
+.raised:hover::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  bottom: 15%;
+  width: 5px;
+  border: 1px solid var(--kt-yellow);
+  pointer-events: none;
+  box-shadow: 0 0 6px var(--kt-yellow-glow);
+}
+
+.raised:hover::before {
+  left: 3px;
+  border-right: none;
+}
+
+.raised:hover::after {
+  right: 3px;
+  border-left: none;
 }
