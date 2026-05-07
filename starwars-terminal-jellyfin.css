@@ -37,14 +37,13 @@ html {
 
 /* ── BACKGROUND — on specific containers, not body ──────────── */
 .backgroundContainer,
-.libraryPage,
 .homePage,
 .standardBg {
   background-color: var(--kt-bg) !important;
 }
 
 /* ── SCANLINES — on mainAnimatedPage, not body ──────────────── */
-.libraryPage:not(.hide)::before {
+.homePage:not(.hide)::before {
   content: '';
   position: fixed;
   inset: 0;
