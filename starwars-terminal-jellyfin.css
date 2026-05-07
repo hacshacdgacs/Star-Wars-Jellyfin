@@ -1,86 +1,81 @@
 /* ============================================================
    KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v5.0 — Complete rewrite, video player safe
+   v5.0 — Clean rewrite
    ============================================================ */
 
 /* ── FONTS ──────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-/* ── CORE PALETTE ───────────────────────────────────────────── */
+/* ── PALETTE ────────────────────────────────────────────────── */
 :root {
-  --kt-bg:           #05050f;
-  --kt-panel:        #0a0a1a;
-  --kt-panel-mid:    #0e0e22;
-  --kt-screen:       #04041a;
-  --kt-steel:        #2a3a52;
-  --kt-chrome:       #5a7a9a;
-  --kt-blue:         #6ab4ff;
-  --kt-blue-bright:  #a0d4ff;
-  --kt-blue-dim:     #1a4a8a;
-  --kt-blue-glow:    rgba(106, 180, 255, 0.25);
-  --kt-blue-faint:   rgba(106, 180, 255, 0.07);
-  --kt-yellow:       #f5c518;
-  --kt-yellow-dim:   #b8960f;
-  --kt-yellow-glow:  rgba(245, 197, 24, 0.5);
-  --kt-text:         #8ab8d8;
-  --kt-text-dim:     #3a5a7a;
-  --kt-white:        #d0e8ff;
-  --kt-font:         'Share Tech Mono', 'Courier New', monospace;
-  --kt-font-ui:      'Orbitron', 'Trebuchet MS', monospace;
+  --kt-bg:          #05050f;
+  --kt-panel:       #0a0a1a;
+  --kt-panel-mid:   #0e0e22;
+  --kt-screen:      #04041a;
+  --kt-steel:       #2a3a52;
+  --kt-chrome:      #5a7a9a;
+  --kt-blue:        #6ab4ff;
+  --kt-blue-bright: #a0d4ff;
+  --kt-blue-dim:    #1a4a8a;
+  --kt-blue-glow:   rgba(106,180,255,0.25);
+  --kt-blue-faint:  rgba(106,180,255,0.07);
+  --kt-yellow:      #f5c518;
+  --kt-yellow-glow: rgba(245,197,24,0.5);
+  --kt-text:        #8ab8d8;
+  --kt-text-dim:    #3a5a7a;
+  --kt-white:       #d0e8ff;
+  --kt-font:        'Share Tech Mono', 'Courier New', monospace;
+  --kt-font-ui:     'Orbitron', 'Trebuchet MS', monospace;
 }
 
-/* ── BASE BACKGROUND ────────────────────────────────────────── */
+/* ── BASE ───────────────────────────────────────────────────── */
 body,
 .backgroundContainer,
 .mainAnimatedPage {
   background-color: var(--kt-bg) !important;
-}
-
-body {
   color: var(--kt-text) !important;
   font-family: var(--kt-font) !important;
 }
 
-/* ── SCANLINES — only on posters/cards, NOT video ───────────── */
-/* Apply scanlines to backdrop images */
-.backdropImage {
-  filter: brightness(0.3) saturate(0.5) hue-rotate(195deg) !important;
-  position: relative;
-}
-
-.backdropImage::after {
+/* ── SCANLINE OVERLAY on UI only ────────────────────────────── */
+body::before {
   content: '';
-  position: absolute;
+  position: fixed;
   inset: 0;
-  background: repeating-linear-gradient(
+  pointer-events: none;
+  z-index: 9000;
+  background-image: repeating-linear-gradient(
     0deg,
-    rgba(0, 10, 40, 0.3) 0px,
-    rgba(0, 10, 40, 0.3) 1px,
+    rgba(0,10,40,0.22) 0px,
+    rgba(0,10,40,0.22) 1px,
     transparent 1px,
     transparent 3px
   );
-  pointer-events: none;
 }
 
-/* Scanlines on cards/posters */
-.card:not(.card-overview-container) {
-  position: relative;
+/* Hide scanlines on video page */
+body:has(.videoPlayerContainer)::before {
+  display: none;
 }
 
-.card:not(.card-overview-container)::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.2) 0px,
-    rgba(0, 0, 0, 0.2) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  border-radius: 8px;
+/* ── MATERIAL ICONS — must never be overridden ──────────────── */
+.material-icons,
+.md-icon,
+i.md-icon,
+span.material-icons {
+  font-family: 'Material Icons' !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  direction: ltr !important;
+  -webkit-font-feature-settings: 'liga' !important;
+  font-feature-settings: 'liga' !important;
+  -webkit-font-smoothing: antialiased !important;
+  color: var(--kt-chrome) !important;
 }
 
 /* ── TYPOGRAPHY ─────────────────────────────────────────────── */
@@ -93,376 +88,351 @@ h1, h2, h3, h4, h5, h6,
   font-family: var(--kt-font-ui) !important;
   color: var(--kt-blue) !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.15em !important;
+  letter-spacing: 0.2em !important;
 }
 
 p, li, label, td, th,
-.listItemText,
-.secondaryText {
+span:not(.material-icons):not([class*="md-"]) {
   color: var(--kt-text) !important;
   font-family: var(--kt-font) !important;
 }
 
-/* ── GOLD GLOW ON HOVER — clickable text only ───────────────── */
-a,
-.navMenuOption,
-.emby-tab-button,
-.sectionTitleLink,
-.card:not(.card-overview-container),
-.listItem,
-.paper-listitem,
-.genreItem,
-.tagItem,
-.button-link {
-  transition: all 0.2s ease !important;
-}
-
+/* ── GOLD HOVER — all clickable text ────────────────────────── */
 a:hover,
+a:hover span:not(.material-icons),
+.card:hover .cardText,
+.card:hover .cardName,
+.card:hover .cardTextCentered,
+.card:hover .innerCardFooter,
+.card:hover .cardNameContainer,
 .navMenuOption:hover,
+.navMenuOption:hover span:not(.material-icons),
 .emby-tab-button:hover,
-.sectionTitleLink:hover,
-.listItem:hover,
-.paper-listitem:hover,
+.emby-tab-button:hover span:not(.material-icons),
+.listItem:hover span:not(.material-icons),
+.paper-listitem:hover span:not(.material-icons),
 .genreItem:hover,
 .tagItem:hover,
-.button-link:hover {
+.sectionTitleLink:hover,
+.sectionTitleLink:hover span:not(.material-icons) {
   color: var(--kt-yellow) !important;
-  text-shadow: 0 0 6px var(--kt-yellow-glow) !important;
+  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
-/* Cards hover effect */
-.card:not(.card-overview-container):hover .cardText,
-.card:not(.card-overview-container):hover .cardName {
-  color: var(--kt-yellow) !important;
-  text-shadow: 0 0 6px var(--kt-yellow-glow) !important;
-}
-
-.card:not(.card-overview-container):hover {
-  cursor: pointer;
-}
-
-/* Gold border on hover for cards */
-.card:not(.card-overview-container):hover .cardBox {
-  box-shadow: 0 0 0 1px var(--kt-yellow-dim), 0 0 12px var(--kt-yellow-glow) !important;
+a:hover .material-icons,
+button:hover .material-icons {
+  color: var(--kt-blue-bright) !important;
+  text-shadow: none !important;
 }
 
 /* ── HEADER ─────────────────────────────────────────────────── */
 .skinHeader,
 .headerTop,
 .appbar-wrapper {
-  background: rgba(5, 5, 15, 0.95) !important;
-  border-bottom: 1px solid var(--kt-blue) !important;
+  background: rgba(5,5,15,0.98) !important;
+  border-bottom: 2px solid var(--kt-blue) !important;
+  box-shadow: 0 0 20px rgba(106,180,255,0.1), 0 3px 16px rgba(0,0,0,0.9) !important;
 }
 
-.headerTitle {
-  color: var(--kt-blue-bright) !important;
-  font-family: var(--kt-font-ui) !important;
-  letter-spacing: 0.3em !important;
-}
-
-/* ── SIDEBAR / DRAWER ───────────────────────────────────────── */
+/* ── SIDEBAR ────────────────────────────────────────────────── */
 .mainDrawer {
-  background: linear-gradient(180deg, #0a0a1a 0%, #05050f 100%) !important;
+  background: linear-gradient(180deg, #0c0c1e 0%, #05050f 100%) !important;
   border-right: 1px solid var(--kt-steel) !important;
+  box-shadow: 1px 0 0 var(--kt-blue-dim), 3px 0 16px rgba(0,0,0,0.8) !important;
 }
 
 .navMenuOption {
   color: var(--kt-text-dim) !important;
-  border-left: 2px solid transparent !important;
-  font-family: var(--kt-font-ui) !important;
-  font-size: 0.85em !important;
-  letter-spacing: 0.1em !important;
+  border-bottom: 1px solid rgba(42,58,82,0.6) !important;
   text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-size: 0.78em !important;
+  font-family: var(--kt-font-ui) !important;
+  transition: all 0.15s ease !important;
 }
 
 .navMenuOption:hover {
   background: var(--kt-blue-faint) !important;
-  border-left-color: var(--kt-yellow) !important;
+  border-left: 2px solid var(--kt-yellow) !important;
 }
 
 .navMenuOption.is-selected {
-  background: rgba(106, 180, 255, 0.08) !important;
+  background: rgba(106,180,255,0.06) !important;
   color: var(--kt-yellow) !important;
-  border-left-color: var(--kt-yellow) !important;
+  border-left: 2px solid var(--kt-yellow) !important;
+  text-shadow: 0 0 8px var(--kt-yellow-glow) !important;
 }
 
-/* ── SECTION TITLE WITH BRACKETS ────────────────────────────── */
-.sectionTitleContainer {
-  border-bottom: 1px solid var(--kt-steel) !important;
-  margin-bottom: 1rem !important;
-}
-
+/* ── SECTION TITLE BRACKETS ─────────────────────────────────── */
 .sectionTitleLink {
   position: relative !important;
-  display: inline-block !important;
-  padding: 0.25rem 1rem !important;
+  display: inline-flex !important;
+  padding: 5px 40px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .sectionTitleLink::before,
 .sectionTitleLink::after {
-  content: "[" !important;
-  position: absolute !important;
+  content: '';
+  position: absolute;
   top: 0;
   bottom: 0;
-  display: flex !important;
-  align-items: center !important;
-  font-size: 1.2em !important;
-  color: var(--kt-blue) !important;
-  transition: color 0.2s;
+  width: 12px;
+  border: 2px solid var(--kt-blue);
+  pointer-events: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .sectionTitleLink::before {
-  left: -0.5rem;
-  content: "[" !important;
+  left: 0;
+  border-right: none;
+  border-radius: 6px 0 0 6px;
 }
 
 .sectionTitleLink::after {
-  right: -0.5rem;
-  content: "]" !important;
+  right: 0;
+  border-left: none;
+  border-radius: 0 6px 6px 0;
 }
 
 .sectionTitleLink:hover::before,
 .sectionTitleLink:hover::after {
-  color: var(--kt-yellow) !important;
+  border-color: var(--kt-yellow) !important;
+  box-shadow: 0 0 10px var(--kt-yellow-glow) !important;
 }
 
-/* ── CARDS & POSTERS ────────────────────────────────────────── */
+.sectionTitleContainer {
+  border-bottom: 1px solid var(--kt-steel) !important;
+  padding-bottom: 6px !important;
+  margin-bottom: 10px !important;
+}
+
+/* ── FLAT BUTTONS — no box ──────────────────────────────────── */
+.button-flat,
+a.button-flat,
+.emby-button.button-flat,
+.btnNextUp,
+.sectionTitleButton {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* ── CARDS — blue glow on hover, never touch images ─────────── */
 .cardBox {
-  background: var(--kt-panel) !important;
-  border-radius: 6px !important;
-  overflow: hidden !important;
+  border-radius: 8px !important;
+  transition: box-shadow 0.2s !important;
 }
 
-.cardImageContainer {
-  background: var(--kt-screen) !important;
+.card:hover .cardBox {
+  box-shadow: 0 0 0 1px var(--kt-blue), 0 0 14px rgba(106,180,255,0.15) !important;
 }
 
-/* Progress bars */
 .itemProgressBar,
 .cardProgressBar {
   background: var(--kt-steel) !important;
+  border-radius: 2px !important;
   height: 3px !important;
 }
 
 .itemProgressBarForeground,
 .cardProgressBarForeground {
   background: var(--kt-blue) !important;
-  box-shadow: 0 0 4px var(--kt-blue-glow) !important;
+  box-shadow: 0 0 6px var(--kt-blue-glow) !important;
 }
 
-/* Played indicator */
 .playedIndicator {
   background: var(--kt-blue-dim) !important;
   color: var(--kt-white) !important;
+  border-radius: 3px !important;
 }
 
-/* ── BUTTONS — flat, terminal-style ─────────────────────────── */
-button[is="emby-button"]:not(.videoOsdControls *),
-.raised:not(.videoOsdControls *) {
-  background: transparent !important;
-  color: var(--kt-blue) !important;
-  border: 1px solid var(--kt-steel) !important;
-  border-radius: 2px !important;
-  font-family: var(--kt-font-ui) !important;
-  font-size: 0.75em !important;
-  letter-spacing: 0.1em !important;
-  text-transform: uppercase !important;
-  transition: all 0.15s ease !important;
-}
-
-button[is="emby-button"]:hover:not(.videoOsdControls *),
-.raised:hover:not(.videoOsdControls *) {
-  border-color: var(--kt-yellow) !important;
-  color: var(--kt-yellow) !important;
-  box-shadow: 0 0 8px var(--kt-yellow-glow) !important;
-}
-
-/* Flat buttons (no border) */
-.button-flat {
-  background: transparent !important;
-  border: none !important;
-}
-
-/* ── INPUT FIELDS ───────────────────────────────────────────── */
+/* ── INPUTS ─────────────────────────────────────────────────── */
 .emby-input,
 .emby-textarea,
 .emby-select,
-input:not([type="range"]),
+input:not(.videoPlayer input),
 textarea,
 select {
   background: var(--kt-screen) !important;
   color: var(--kt-blue-bright) !important;
   border: 1px solid var(--kt-steel) !important;
-  border-radius: 2px !important;
+  border-radius: 3px !important;
   font-family: var(--kt-font) !important;
+  caret-color: var(--kt-blue) !important;
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.5) !important;
 }
 
 .emby-input:focus,
-input:focus:not([type="range"]) {
+input:focus {
   border-color: var(--kt-blue) !important;
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.5), 0 0 10px var(--kt-blue-glow) !important;
   outline: none !important;
-  box-shadow: 0 0 6px var(--kt-blue-glow) !important;
+}
+
+.headerSearchInput {
+  background: transparent !important;
+  color: var(--kt-blue-bright) !important;
+  border-bottom: 1px solid var(--kt-steel) !important;
+}
+
+/* ── BUTTONS — UI only, not player ──────────────────────────── */
+.raised {
+  background: linear-gradient(180deg, #0e0e22 0%, #05050f 100%) !important;
+  color: var(--kt-blue) !important;
+  border: 1px solid var(--kt-steel) !important;
+  border-radius: 3px !important;
+  font-family: var(--kt-font-ui) !important;
+  letter-spacing: 0.1em !important;
+  font-size: 0.78em !important;
+  text-transform: uppercase !important;
+  transition: all 0.15s ease !important;
+}
+
+.raised:hover {
+  border-color: var(--kt-yellow) !important;
+  color: var(--kt-yellow) !important;
+  box-shadow: 0 0 12px var(--kt-yellow-glow) !important;
 }
 
 /* ── DETAIL PAGE ────────────────────────────────────────────── */
-.detailPageContent {
-  background: linear-gradient(135deg, rgba(5,5,15,0.95), rgba(10,10,26,0.95)) !important;
-}
-
 .overview {
   color: var(--kt-text) !important;
-  line-height: 1.6 !important;
+  line-height: 1.9 !important;
+  font-size: 0.93em !important;
 }
 
-.mediaInfoItem {
+.mediaInfoItem,
+.itemMiscInfo {
   color: var(--kt-text-dim) !important;
+  letter-spacing: 0.08em !important;
 }
 
 .genreItem,
 .tagItem {
-  background: transparent !important;
   border: 1px solid var(--kt-steel) !important;
-  border-radius: 2px !important;
+  border-radius: 3px !important;
   color: var(--kt-text-dim) !important;
-  font-size: 0.7em !important;
-  letter-spacing: 0.05em !important;
-  padding: 0.2rem 0.6rem !important;
+  background: transparent !important;
+  font-size: 0.78em !important;
+  letter-spacing: 0.08em !important;
+  transition: all 0.15s ease !important;
 }
 
 .genreItem:hover,
 .tagItem:hover {
   border-color: var(--kt-yellow) !important;
-  color: var(--kt-yellow) !important;
+  box-shadow: 0 0 8px var(--kt-yellow-glow) !important;
 }
 
-.starRatingContainer {
-  color: var(--kt-yellow) !important;
-}
+.starRatingContainer { color: var(--kt-yellow) !important; }
 
 /* ── TABS ───────────────────────────────────────────────────── */
-.emby-tabs {
+.emby-tabs-slider,
+.tabsContainerContent {
+  background: var(--kt-panel) !important;
   border-bottom: 1px solid var(--kt-steel) !important;
+  box-shadow: 0 1px 0 var(--kt-blue-dim) !important;
 }
 
 .emby-tab-button {
   color: var(--kt-text-dim) !important;
-  font-family: var(--kt-font-ui) !important;
-  font-size: 0.7em !important;
-  letter-spacing: 0.15em !important;
   text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  font-size: 0.75em !important;
+  font-family: var(--kt-font-ui) !important;
+  transition: all 0.15s ease !important;
 }
 
 .emby-tab-button.is-selected,
 .emby-tab-button[aria-selected="true"] {
   color: var(--kt-yellow) !important;
   border-bottom: 2px solid var(--kt-yellow) !important;
+  text-shadow: 0 0 8px var(--kt-yellow-glow) !important;
 }
 
-/* ── DIALOGS & MODALS ───────────────────────────────────────── */
-.dialog,
+/* ── DIALOGS ────────────────────────────────────────────────── */
 .dialogContainer,
+.dialog,
+.formDialogContent,
 .paperDialogPage {
   background: var(--kt-screen) !important;
   border: 1px solid var(--kt-steel) !important;
   border-radius: 4px !important;
+  box-shadow: 0 0 0 1px var(--kt-blue-dim), inset 0 0 40px rgba(0,0,30,0.6), 0 8px 40px rgba(0,0,0,0.9) !important;
+  color: var(--kt-text) !important;
 }
 
-.dialogHeader,
-.formDialogHeader {
-  background: var(--kt-panel-mid) !important;
+.formDialogHeader,
+.dialogHeader {
+  background: linear-gradient(180deg, #0e0e22 0%, #080818 100%) !important;
   border-bottom: 1px solid var(--kt-steel) !important;
+  box-shadow: 0 1px 0 var(--kt-blue-dim) !important;
   color: var(--kt-blue-bright) !important;
   font-family: var(--kt-font-ui) !important;
+  text-transform: uppercase !important;
   letter-spacing: 0.2em !important;
+  font-size: 0.8em !important;
 }
 
-/* ── MENUS & LISTS ──────────────────────────────────────────── */
-.paperList,
-.actionSheetContent {
+/* ── MENUS ──────────────────────────────────────────────────── */
+.actionSheetContent,
+.paperList {
   background: var(--kt-panel-mid) !important;
   border: 1px solid var(--kt-steel) !important;
+  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
 }
 
 .listItem,
 .paper-listitem {
   background: transparent !important;
-  border-bottom: 1px solid rgba(42, 58, 82, 0.3) !important;
+  color: var(--kt-text) !important;
+  border-bottom: 1px solid rgba(42,58,82,0.5) !important;
+  letter-spacing: 0.06em !important;
+  transition: all 0.15s ease !important;
 }
 
-.listItem:hover,
-.paper-listitem:hover {
-  background: var(--kt-blue-faint) !important;
+/* ── BACKDROP ───────────────────────────────────────────────── */
+.backdropImage {
+  filter: brightness(0.25) saturate(0.4) hue-rotate(200deg) !important;
 }
 
-/* ── TOAST NOTIFICATIONS ────────────────────────────────────── */
+.backgroundContainer.withBackdrop {
+  background-color: var(--kt-bg) !important;
+}
+
+/* ── SCROLLBAR ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; background: var(--kt-bg); }
+::-webkit-scrollbar-thumb { background: var(--kt-steel); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--kt-blue-dim); }
+
+/* ── TOAST ──────────────────────────────────────────────────── */
 .toast {
   background: var(--kt-panel-mid) !important;
   border: 1px solid var(--kt-steel) !important;
+  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
+  border-radius: 3px !important;
   color: var(--kt-blue-bright) !important;
   font-family: var(--kt-font) !important;
 }
 
-/* ── SCROLLBAR ──────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  background: var(--kt-bg);
+/* ── OSD CONTROLS — styled, video element untouched ─────────── */
+.osdControls,
+.playerBottomBar {
+  background: linear-gradient(transparent, rgba(0,0,8,0.97)) !important;
+  border-top: 1px solid var(--kt-steel) !important;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--kt-bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--kt-steel);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--kt-blue-dim);
-}
-
-/* ── VIDEO PLAYER — COMPLETELY UNTOUCHED ────────────────────── */
-/* This section does NOTHING to the video player - let Jellyfin handle it */
-/* The only exception is removing the scanline overlay during playback */
-
-/* Hide scanlines when video is playing */
-body:has(.videoPlayerContainer)::after,
-body:has(.htmlvideoplayer)::after,
-body:has(#videoPlayer)::after {
-  display: none;
-}
-
-/* Ensure video container has no interference */
-.videoPlayerContainer,
-.htmlvideoplayer,
-#videoPlayer {
-  background: #000 !important;
-}
-
-/* Make sure the OSD (on-screen display) uses terminal colors */
-.videoOsdPage {
-  background: rgba(0, 0, 0, 0.7) !important;
-}
-
-.videoOsdPage button {
-  background: rgba(5, 5, 15, 0.8) !important;
-  border: 1px solid var(--kt-steel) !important;
+.osdControls .material-icons,
+.playerBottomBar .material-icons {
   color: var(--kt-blue) !important;
 }
 
-.videoOsdPage button:hover {
-  border-color: var(--kt-yellow) !important;
+.osdControls .material-icons:hover,
+.playerBottomBar .material-icons:hover {
   color: var(--kt-yellow) !important;
 }
-
-/* Progress slider in OSD */
-.videoOsdPage input[type="range"] {
-  background: var(--kt-steel) !important;
-}
-
-.videoOsdPage input[type="range"]::-webkit-slider-thumb {
-  background: var(--kt-yellow) !important;
-}
-
-/* ========== END — Video player completely untouched ========== */
