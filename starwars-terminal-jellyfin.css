@@ -37,7 +37,6 @@ html {
 
 /* ── BACKGROUND — on specific containers, not body ──────────── */
 .backgroundContainer,
-.mainAnimatedPage,
 .libraryPage,
 .homePage,
 .standardBg {
@@ -45,7 +44,7 @@ html {
 }
 
 /* ── SCANLINES — on mainAnimatedPage, not body ──────────────── */
-.mainAnimatedPage::before {
+.libraryPage:not(.hide)::before {
   content: '';
   position: fixed;
   inset: 0;
