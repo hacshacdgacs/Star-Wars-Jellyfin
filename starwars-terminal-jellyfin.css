@@ -1,4 +1,4 @@
-/* TEST B — quarter of CSS only */
+/* TEST C — no scanline */
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
@@ -29,23 +29,4 @@ body,
   background-color: var(--kt-bg) !important;
   color: var(--kt-text) !important;
   font-family: var(--kt-font) !important;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9000;
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(0,10,40,0.22) 0px,
-    rgba(0,10,40,0.22) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-}
-
-body:has(.videoPlayerContainer)::before {
-  display: none;
 }
