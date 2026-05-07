@@ -1,13 +1,7 @@
-/* ============================================================
-   KOTOR COMPUTER TERMINAL — Jellyfin Custom Theme
-   v5.0 — Clean rewrite
-   ============================================================ */
-
-/* ── FONTS ──────────────────────────────────────────────────── */
+/* TEST A — top half only */
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-/* ── PALETTE ────────────────────────────────────────────────── */
 :root {
   --kt-bg:          #05050f;
   --kt-panel:       #0a0a1a;
@@ -29,7 +23,6 @@
   --kt-font-ui:     'Orbitron', 'Trebuchet MS', monospace;
 }
 
-/* ── BASE ───────────────────────────────────────────────────── */
 body,
 .backgroundContainer,
 .mainAnimatedPage {
@@ -38,7 +31,6 @@ body,
   font-family: var(--kt-font) !important;
 }
 
-/* ── SCANLINE OVERLAY on UI only ────────────────────────────── */
 body::before {
   content: '';
   position: fixed;
@@ -54,12 +46,10 @@ body::before {
   );
 }
 
-/* Hide scanlines on video page */
 body:has(.videoPlayerContainer)::before {
   display: none;
 }
 
-/* ── MATERIAL ICONS — must never be overridden ──────────────── */
 .material-icons,
 .md-icon,
 i.md-icon,
@@ -78,7 +68,6 @@ span.material-icons {
   color: var(--kt-chrome) !important;
 }
 
-/* ── TYPOGRAPHY ─────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6,
 .sectionTitle,
 .itemName,
@@ -97,7 +86,6 @@ span:not(.material-icons):not([class*="md-"]) {
   font-family: var(--kt-font) !important;
 }
 
-/* ── GOLD HOVER — all clickable text ────────────────────────── */
 a:hover,
 a:hover span:not(.material-icons),
 .card:hover .cardText,
@@ -125,7 +113,6 @@ button:hover .material-icons {
   text-shadow: none !important;
 }
 
-/* ── HEADER ─────────────────────────────────────────────────── */
 .skinHeader,
 .headerTop,
 .appbar-wrapper {
@@ -134,7 +121,6 @@ button:hover .material-icons {
   box-shadow: 0 0 20px rgba(106,180,255,0.1), 0 3px 16px rgba(0,0,0,0.9) !important;
 }
 
-/* ── SIDEBAR ────────────────────────────────────────────────── */
 .mainDrawer {
   background: linear-gradient(180deg, #0c0c1e 0%, #05050f 100%) !important;
   border-right: 1px solid var(--kt-steel) !important;
@@ -161,293 +147,4 @@ button:hover .material-icons {
   color: var(--kt-yellow) !important;
   border-left: 2px solid var(--kt-yellow) !important;
   text-shadow: 0 0 8px var(--kt-yellow-glow) !important;
-}
-
-/* ── SECTION TITLE BRACKETS ─────────────────────────────────── */
-.sectionTitleLink {
-  position: relative !important;
-  display: inline-flex !important;
-  padding: 5px 40px !important;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-.sectionTitleLink::before,
-.sectionTitleLink::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 12px;
-  border: 2px solid var(--kt-blue);
-  pointer-events: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.sectionTitleLink::before {
-  left: 0;
-  border-right: none;
-  border-radius: 6px 0 0 6px;
-}
-
-.sectionTitleLink::after {
-  right: 0;
-  border-left: none;
-  border-radius: 0 6px 6px 0;
-}
-
-.sectionTitleLink:hover::before,
-.sectionTitleLink:hover::after {
-  border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 10px var(--kt-yellow-glow) !important;
-}
-
-.sectionTitleContainer {
-  border-bottom: 1px solid var(--kt-steel) !important;
-  padding-bottom: 6px !important;
-  margin-bottom: 10px !important;
-}
-
-/* ── FLAT BUTTONS — no box ──────────────────────────────────── */
-.button-flat,
-a.button-flat,
-.emby-button.button-flat,
-.btnNextUp,
-.sectionTitleButton {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-/* ── CARDS — blue glow on hover, never touch images ─────────── */
-.cardBox {
-  border-radius: 8px !important;
-  transition: box-shadow 0.2s !important;
-}
-
-.card:hover .cardBox {
-  box-shadow: 0 0 0 1px var(--kt-blue), 0 0 14px rgba(106,180,255,0.15) !important;
-}
-
-.itemProgressBar,
-.cardProgressBar {
-  background: var(--kt-steel) !important;
-  border-radius: 2px !important;
-  height: 3px !important;
-}
-
-.itemProgressBarForeground,
-.cardProgressBarForeground {
-  background: var(--kt-blue) !important;
-  box-shadow: 0 0 6px var(--kt-blue-glow) !important;
-}
-
-.playedIndicator {
-  background: var(--kt-blue-dim) !important;
-  color: var(--kt-white) !important;
-  border-radius: 3px !important;
-}
-
-/* ── INPUTS ─────────────────────────────────────────────────── */
-.emby-input,
-.emby-textarea,
-.emby-select,
-input:not(.videoPlayer input),
-textarea,
-select {
-  background: var(--kt-screen) !important;
-  color: var(--kt-blue-bright) !important;
-  border: 1px solid var(--kt-steel) !important;
-  border-radius: 3px !important;
-  font-family: var(--kt-font) !important;
-  caret-color: var(--kt-blue) !important;
-  box-shadow: inset 0 0 12px rgba(0,0,0,0.5) !important;
-}
-
-.emby-input:focus,
-input:focus {
-  border-color: var(--kt-blue) !important;
-  box-shadow: inset 0 0 12px rgba(0,0,0,0.5), 0 0 10px var(--kt-blue-glow) !important;
-  outline: none !important;
-}
-
-.headerSearchInput {
-  background: transparent !important;
-  color: var(--kt-blue-bright) !important;
-  border-bottom: 1px solid var(--kt-steel) !important;
-}
-
-/* ── BUTTONS — UI only, not player ──────────────────────────── */
-.raised {
-  background: linear-gradient(180deg, #0e0e22 0%, #05050f 100%) !important;
-  color: var(--kt-blue) !important;
-  border: 1px solid var(--kt-steel) !important;
-  border-radius: 3px !important;
-  font-family: var(--kt-font-ui) !important;
-  letter-spacing: 0.1em !important;
-  font-size: 0.78em !important;
-  text-transform: uppercase !important;
-  transition: all 0.15s ease !important;
-}
-
-.raised:hover {
-  border-color: var(--kt-yellow) !important;
-  color: var(--kt-yellow) !important;
-  box-shadow: 0 0 12px var(--kt-yellow-glow) !important;
-}
-
-/* ── DETAIL PAGE ────────────────────────────────────────────── */
-.overview {
-  color: var(--kt-text) !important;
-  line-height: 1.9 !important;
-  font-size: 0.93em !important;
-}
-
-.mediaInfoItem,
-.itemMiscInfo {
-  color: var(--kt-text-dim) !important;
-  letter-spacing: 0.08em !important;
-}
-
-.genreItem,
-.tagItem {
-  border: 1px solid var(--kt-steel) !important;
-  border-radius: 3px !important;
-  color: var(--kt-text-dim) !important;
-  background: transparent !important;
-  font-size: 0.78em !important;
-  letter-spacing: 0.08em !important;
-  transition: all 0.15s ease !important;
-}
-
-.genreItem:hover,
-.tagItem:hover {
-  border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 8px var(--kt-yellow-glow) !important;
-}
-
-.starRatingContainer { color: var(--kt-yellow) !important; }
-
-/* ── TABS ───────────────────────────────────────────────────── */
-.emby-tabs-slider,
-.tabsContainerContent {
-  background: var(--kt-panel) !important;
-  border-bottom: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 1px 0 var(--kt-blue-dim) !important;
-}
-
-.emby-tab-button {
-  color: var(--kt-text-dim) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.15em !important;
-  font-size: 0.75em !important;
-  font-family: var(--kt-font-ui) !important;
-  transition: all 0.15s ease !important;
-}
-
-.emby-tab-button.is-selected,
-.emby-tab-button[aria-selected="true"] {
-  color: var(--kt-yellow) !important;
-  border-bottom: 2px solid var(--kt-yellow) !important;
-  text-shadow: 0 0 8px var(--kt-yellow-glow) !important;
-}
-
-/* ── DIALOGS ────────────────────────────────────────────────── */
-.dialogContainer,
-.dialog,
-.formDialogContent,
-.paperDialogPage {
-  background: var(--kt-screen) !important;
-  border: 1px solid var(--kt-steel) !important;
-  border-radius: 4px !important;
-  box-shadow: 0 0 0 1px var(--kt-blue-dim), inset 0 0 40px rgba(0,0,30,0.6), 0 8px 40px rgba(0,0,0,0.9) !important;
-  color: var(--kt-text) !important;
-}
-
-.formDialogHeader,
-.dialogHeader {
-  background: linear-gradient(180deg, #0e0e22 0%, #080818 100%) !important;
-  border-bottom: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 1px 0 var(--kt-blue-dim) !important;
-  color: var(--kt-blue-bright) !important;
-  font-family: var(--kt-font-ui) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.2em !important;
-  font-size: 0.8em !important;
-}
-
-/* ── MENUS ──────────────────────────────────────────────────── */
-.actionSheetContent,
-.paperList {
-  background: var(--kt-panel-mid) !important;
-  border: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
-}
-
-.listItem,
-.paper-listitem {
-  background: transparent !important;
-  color: var(--kt-text) !important;
-  border-bottom: 1px solid rgba(42,58,82,0.5) !important;
-  letter-spacing: 0.06em !important;
-  transition: all 0.15s ease !important;
-}
-
-/* ── BACKDROP ───────────────────────────────────────────────── */
-.backdropImage {
-  filter: brightness(0.25) saturate(0.4) hue-rotate(200deg) !important;
-}
-
-.backgroundContainer.withBackdrop {
-  background-color: var(--kt-bg) !important;
-}
-
-/* ── SCROLLBAR ──────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; background: var(--kt-bg); }
-::-webkit-scrollbar-thumb { background: var(--kt-steel); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--kt-blue-dim); }
-
-/* ── TOAST ──────────────────────────────────────────────────── */
-.toast {
-  background: var(--kt-panel-mid) !important;
-  border: 1px solid var(--kt-steel) !important;
-  box-shadow: 0 0 0 1px var(--kt-blue-dim) !important;
-  border-radius: 3px !important;
-  color: var(--kt-blue-bright) !important;
-  font-family: var(--kt-font) !important;
-}
-
-/* ── OSD CONTROLS — styled, video element untouched ─────────── */
-.osdControls,
-.playerBottomBar {
-  background: linear-gradient(transparent, rgba(0,0,8,0.97)) !important;
-  border-top: 1px solid var(--kt-steel) !important;
-}
-
-.osdControls .material-icons,
-.playerBottomBar .material-icons {
-  color: var(--kt-blue) !important;
-}
-
-.osdControls .material-icons:hover,
-.playerBottomBar .material-icons:hover {
-  color: var(--kt-yellow) !important;
-}
-
-/* ── VIDEO PAGE BACKGROUND FIX ──────────────────────────────── */
-.videoPlayerContainer ~ .mainAnimatedPage,
-.videoOsdPage .mainAnimatedPage,
-.videoOsdPage .backgroundContainer,
-.videoOsdPage .backgroundContainer.withBackdrop {
-  background: transparent !important;
-  background-color: transparent !important;
-}
-
-/* ── VIDEO PAGE BODY FIX ─────────────────────────────────────── */
-body.libraryDocument {
-  height: 100vh !important;
-  min-height: 100vh !important;
 }
