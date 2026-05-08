@@ -428,59 +428,24 @@ input:focus {
 
 
 
-/* ── CARD HOVER — no border, keep zoom as-is ────────────────── */
+
+/* ── CARD HOVER — no border box shadow ─────────────────────── */
 .card:hover .cardBox {
   box-shadow: none !important;
 }
 
-/* ── CARD FOOTER BRACKETS — one set around all text ─────────── */
-.cardFooter,
-.innerCardFooter {
-  position: relative !important;
-  padding: 4px 16px !important;
-}
-
-.cardFooter::before,
-.cardFooter::after,
-.innerCardFooter::before,
-.innerCardFooter::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 6px;
-  border: 1px solid var(--kt-blue-dim);
-  pointer-events: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.cardFooter::before,
-.innerCardFooter::before {
-  left: 0;
-  border-right: none;
-  border-radius: 2px 0 0 2px;
-}
-
-.cardFooter::after,
-.innerCardFooter::after {
-  right: 0;
-  border-left: none;
-  border-radius: 0 2px 2px 0;
-}
-
-.card:hover .cardFooter::before,
-.card:hover .cardFooter::after,
-.card:hover .innerCardFooter::before,
-.card:hover .innerCardFooter::after {
-  border-color: var(--kt-yellow) !important;
-  box-shadow: 0 0 8px var(--kt-yellow-glow) !important;
+/* ── HIDE SECTION TITLE ARROW ───────────────────────────────── */
+.sectionTitleLink .listItemBodyText ~ i,
+.sectionTitleLink .material-icons,
+.sectionTitleLink ~ .listItemBodyText,
+.headerButton.btnSectionTitle,
+.btnNextUp .material-icons,
+a.sectionTitleLink > .material-icons,
+.sectionTitleLink > i {
+  display: none !important;
 }
 
 /* ── SECTION TITLE BRACKETS — always blue, gold on hover ────── */
-.sectionTitleContainer {
-  position: relative !important;
-}
-
 .sectionTitle {
   position: relative !important;
   display: inline-flex !important;
@@ -512,11 +477,8 @@ input:focus {
   border-radius: 0 4px 4px 0;
 }
 
-/* Gold on hover — target the whole sectionTitleLink or any parent anchor */
 .sectionTitleLink:hover .sectionTitle::before,
 .sectionTitleLink:hover .sectionTitle::after,
-a:hover > .sectionTitle::before,
-a:hover > .sectionTitle::after,
 .sectionTitleContainer:hover .sectionTitle::before,
 .sectionTitleContainer:hover .sectionTitle::after {
   border-color: var(--kt-yellow) !important;
@@ -526,5 +488,48 @@ a:hover > .sectionTitle::after,
 .sectionTitleLink:hover .sectionTitle,
 .sectionTitleContainer:hover .sectionTitle {
   color: var(--kt-yellow) !important;
-  text-shadow: 0 0 10px var(--kt-yellow-glow) !important;
+  /* No text-shadow to avoid dark patch */
+}
+
+/* ── CARD TEXT BRACKETS — one set around the text block ─────── */
+.cardTextCentered,
+.cardText-rightmargin {
+  position: relative !important;
+  padding: 2px 16px !important;
+}
+
+.cardTextCentered::before,
+.cardTextCentered::after,
+.cardText-rightmargin::before,
+.cardText-rightmargin::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  border: 1px solid var(--kt-blue-dim);
+  pointer-events: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cardTextCentered::before,
+.cardText-rightmargin::before {
+  left: 0;
+  border-right: none;
+  border-radius: 2px 0 0 2px;
+}
+
+.cardTextCentered::after,
+.cardText-rightmargin::after {
+  right: 0;
+  border-left: none;
+  border-radius: 0 2px 2px 0;
+}
+
+.card:hover .cardTextCentered::before,
+.card:hover .cardTextCentered::after,
+.card:hover .cardText-rightmargin::before,
+.card:hover .cardText-rightmargin::after {
+  border-color: var(--kt-yellow) !important;
+  box-shadow: 0 0 6px var(--kt-yellow-glow) !important;
 }
