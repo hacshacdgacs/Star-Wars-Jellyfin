@@ -429,19 +429,19 @@ input:focus {
 
 
 
+
 /* ── CARD HOVER — no border box shadow ─────────────────────── */
 .card:hover .cardBox {
   box-shadow: none !important;
 }
 
 /* ── HIDE SECTION TITLE ARROW ───────────────────────────────── */
-.sectionTitleLink .listItemBodyText ~ i,
 .sectionTitleLink .material-icons,
-.sectionTitleLink ~ .listItemBodyText,
-.headerButton.btnSectionTitle,
-.btnNextUp .material-icons,
-a.sectionTitleLink > .material-icons,
-.sectionTitleLink > i {
+.sectionTitleLink i,
+.sectionTitleLink svg,
+.sectionTitleLink .listItemIcon,
+.sectionTitleLink .btnSectionTitle,
+.sectionTitleContainer .material-icons {
   display: none !important;
 }
 
@@ -488,20 +488,32 @@ a.sectionTitleLink > .material-icons,
 .sectionTitleLink:hover .sectionTitle,
 .sectionTitleContainer:hover .sectionTitle {
   color: var(--kt-yellow) !important;
-  /* No text-shadow to avoid dark patch */
 }
 
-/* ── CARD TEXT BRACKETS — one set around the text block ─────── */
-.cardTextCentered,
-.cardText-rightmargin {
+/* ── CARD BOTTOM TEXT BRACKETS — one set across all text rows ── */
+/* Target the card's bottom text container which wraps all rows  */
+.cardBox .cardText {
+  position: static !important;
+}
+
+.cardBox {
+  position: relative !important;
+}
+
+/* Use the last child text container in cardBox */
+.card .cardScalable + div,
+.card .cardPadder + div,
+.card .cardImageContainer + div {
   position: relative !important;
   padding: 2px 16px !important;
 }
 
-.cardTextCentered::before,
-.cardTextCentered::after,
-.cardText-rightmargin::before,
-.cardText-rightmargin::after {
+.card .cardScalable + div::before,
+.card .cardScalable + div::after,
+.card .cardPadder + div::before,
+.card .cardPadder + div::after,
+.card .cardImageContainer + div::before,
+.card .cardImageContainer + div::after {
   content: '';
   position: absolute;
   top: 0;
@@ -512,24 +524,28 @@ a.sectionTitleLink > .material-icons,
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.cardTextCentered::before,
-.cardText-rightmargin::before {
+.card .cardScalable + div::before,
+.card .cardPadder + div::before,
+.card .cardImageContainer + div::before {
   left: 0;
   border-right: none;
   border-radius: 2px 0 0 2px;
 }
 
-.cardTextCentered::after,
-.cardText-rightmargin::after {
+.card .cardScalable + div::after,
+.card .cardPadder + div::after,
+.card .cardImageContainer + div::after {
   right: 0;
   border-left: none;
   border-radius: 0 2px 2px 0;
 }
 
-.card:hover .cardTextCentered::before,
-.card:hover .cardTextCentered::after,
-.card:hover .cardText-rightmargin::before,
-.card:hover .cardText-rightmargin::after {
+.card:hover .cardScalable + div::before,
+.card:hover .cardScalable + div::after,
+.card:hover .cardPadder + div::before,
+.card:hover .cardPadder + div::after,
+.card:hover .cardImageContainer + div::before,
+.card:hover .cardImageContainer + div::after {
   border-color: var(--kt-yellow) !important;
   box-shadow: 0 0 6px var(--kt-yellow-glow) !important;
 }
